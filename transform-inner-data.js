@@ -14,7 +14,7 @@ function transformFile(file, fn) {
 // ──────────────────────────────────────────────
 transformFile('src/data/inner-data/ServiceData.ts', c => {
   return c
-    .replace(`title: "Buy a home",\n      btn: "Buy Home",\n      desc: "Explore HOZN 2 million+ homes and uncover your ideal living space.",`,
+    .replace(`title: "Buy a home",\n      btn: "Buy Home",\n      desc: "Explore Dg-property 2 million+ homes and uncover your ideal living space.",`,
              `title: "Commercial Leasing",\n      btn: "View Leases",\n      desc: "Secure the right commercial space for your business across Gauteng and beyond.",`)
     .replace(`title: "Rent a Home",\n      btn: "Rent Home",\n      desc: "Discover a rental you'll love on HOZN, thanks to 35+ filters.",`,
              `title: "Investment Sales",\n      btn: "View Investments",\n      desc: "Buy or sell yielding commercial and industrial assets with specialist brokerage support.",`)

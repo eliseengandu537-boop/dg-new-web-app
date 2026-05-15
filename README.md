@@ -1,4 +1,4 @@
-# Hozn - Real Estate 🏡🚀
+# Dg-property 🏡🚀
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/AHMAD-JX/Hozn-RealEstate-Fullstack?style=for-the-badge)
 ![GitHub stars](https://img.shields.io/github/stars/AHMAD-JX/Hozn-RealEstate-Fullstack?style=for-the-badge)
@@ -19,7 +19,7 @@
 
 
 ## 🌟 Overview
-**Hozn - Real Estate** is a **Full-Stack** real estate website built with **React, Next.js, TypeScript**, and a **Node.js (Express) backend**. The platform allows users to browse, list, and manage properties seamlessly.
+**Dg-property** is a **Full-Stack** real estate website built with **React, Next.js, TypeScript**, and a **Node.js (Express) backend**. The platform allows users to browse, list, and manage properties seamlessly.
 
 ## 🎯 Features
 - 🔥 **Modern UI/UX** with smooth animations
@@ -247,7 +247,7 @@ Feel free to fork the repository and create a pull request! 😊
 ## 📜 License
 This project is licensed under the **MIT License**.
 
-🚀 **HOZN - Real Estate** | Built with ❤️ by [AHMAD-JX](https://github.com/AHMAD-JX)
+🚀 **Dg-property** | Built with ❤️ by [AHMAD-JX](https://github.com/AHMAD-JX)
 
 
 
