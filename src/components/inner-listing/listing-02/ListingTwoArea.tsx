@@ -5,6 +5,7 @@ import type { CommercialSearchFilters } from "@/data/commercialPropertyConfig";
 
 interface ListingTwoAreaProps {
   filters?: CommercialSearchFilters;
+  style?: boolean;
 }
 
 const ListingTwoArea = ({ filters }: ListingTwoAreaProps) => {

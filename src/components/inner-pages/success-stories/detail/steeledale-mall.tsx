@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import Link from "next/link";
 import HeaderOne from "@/layouts/headers/HeaderOne";
 import FooterFour from "@/layouts/footers/FooterFour";
@@ -89,8 +90,14 @@ const SteeledaleMallDetail = () => {
               <div className="row gy-3">
                 {["/assets/images/media/img_46.jpg", "/assets/images/media/invest.jpg", "/assets/images/media/sales.jpg"].map((src, i) => (
                   <div className="col-4" key={i}>
-                    <div style={{ borderRadius: 10, overflow: "hidden", height: 160 }}>
-                      <img src={src} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    <div style={{ borderRadius: 10, overflow: "hidden", height: 160, position: "relative" }}>
+                      <Image
+                        src={src}
+                        alt={`Steeledale Mall gallery image ${i + 1}`}
+                        fill
+                        sizes="(max-width: 768px) 33vw, 160px"
+                        style={{ objectFit: "cover" }}
+                      />
                     </div>
                   </div>
                 ))}
@@ -181,7 +188,13 @@ const SteeledaleMallDetail = () => {
               <div className="col-md-6" key={s.slug}>
                 <Link href={`/success-stories/${s.slug}`} style={{ textDecoration: "none" }}>
                   <div style={{ borderRadius: 12, overflow: "hidden", position: "relative", height: 200 }}>
-                    <img src={s.img} alt={s.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    <Image
+                      src={s.img}
+                      alt={s.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      style={{ objectFit: "cover" }}
+                    />
                     <div style={{ position: "absolute", inset: 0, background: "rgba(8,28,46,0.50)" }} />
                     <div style={{ position: "absolute", bottom: 20, left: 20, color: "#fff" }}>
                       <div style={{ fontSize: 11, color: "#c8d5b0", fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 6 }}>{s.tag}</div>

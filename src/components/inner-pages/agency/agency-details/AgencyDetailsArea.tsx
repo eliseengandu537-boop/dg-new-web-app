@@ -37,7 +37,7 @@ const agency_details_content: ContentType = {
    table_data_2: [{ table_td_1: "Location", table_td_2: contactInfo.fullAddress }, { table_td_1: "Phone:", table_td_2: contactInfo.phoneDisplay }, { table_td_1: "Email", table_td_2: contactInfo.emailDisplay }, { table_td_1: "Qualification:", table_td_2: "Master Degree" },],
    icon: ["whatsapp", "x-twitter", "instagram", "viber"],
    desc_2: (<>Before establishing Beratung in 2001, Mathew founded Silicon Valley internet companies and later held management roles at Salomon in New York.</>),
-   desc_3: (<>Risk management and compliance, when approached strategically, have the potential to go beyond mitigating threats and protecting a company's operations & reputation.They can actually generate value and create properties.</>),
+   desc_3: (<>Risk management and compliance, when approached strategically, have the potential to go beyond mitigating threats and protecting a company&apos;s operations & reputation.They can actually generate value and create properties.</>),
 }
 
 const { title_1, desc_1, table_data, icon, desc_2, desc_3, table_data_2, title_2, desc_4 } = agency_details_content;

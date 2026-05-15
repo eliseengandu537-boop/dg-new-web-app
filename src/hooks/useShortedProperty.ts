@@ -9,9 +9,9 @@ interface DataType {
    page: string;
 }
 
-const UseShortedProperty = ({ itemsPerPage, page }: DataType) => {
+const allProperty = listing_data;
 
-   let all_property = listing_data;
+const UseShortedProperty = ({ itemsPerPage, page }: DataType) => {
 
    const { properties, setProperties } = UseProperty();
    const filteredProperties = properties.filter((item) => item.page === page);
@@ -150,15 +150,15 @@ const UseShortedProperty = ({ itemsPerPage, page }: DataType) => {
    };
 
    // handle Price
-   const maxPrice = all_property.filter(item => item.page === page).reduce((max, item) => {
+   const maxPrice = allProperty.filter(item => item.page === page).reduce((max, item) => {
       return item.price > max ? item.price : max;
    }, 0);
    const [priceValue, setPriceValue] = useState([0, maxPrice]);
 
    useEffect(() => {
-      let filterPrice = all_property.filter((j) => j.price >= priceValue[0] && j.price <= priceValue[1]);
+      const filterPrice = allProperty.filter((j) => j.page === page && j.price >= priceValue[0] && j.price <= priceValue[1]);
       setProperties(filterPrice)
-   }, [priceValue]);
+   }, [page, priceValue, setProperties]);
 
    const handlePriceChange = (val: number[]) => {
       setPriceValue(val)

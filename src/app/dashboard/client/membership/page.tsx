@@ -96,7 +96,7 @@ export default function ClientMembershipPage() {
           <i className="bi bi-clock" style={{ fontSize: 20, color: "#ffc107" }} />
           <div>
             <strong style={{ color: "#795548" }}>Payment under review</strong>
-            <div style={{ color: "#795548", fontSize: 13, marginTop: 2 }}>Your payment for <strong>{subscription?.membershipPlan?.name}</strong> is being verified by our team. You'll be upgraded within 1 business day.</div>
+            <div style={{ color: "#795548", fontSize: 13, marginTop: 2 }}>Your payment for <strong>{subscription?.membershipPlan?.name}</strong> is being verified by our team. You will be upgraded within 1 business day.</div>
           </div>
         </div>
       )}
@@ -117,7 +117,7 @@ export default function ClientMembershipPage() {
       {success && (
         <div style={{ background: "#f0fff4", border: "1px solid #6dbf8b", borderRadius: 10, padding: "14px 20px", marginBottom: 28 }}>
           <strong style={{ color: "#27ae60" }}>✓ Payment submitted!</strong>
-          <p style={{ margin: "4px 0 0", color: "#555", fontSize: 13 }}>Our team will verify your payment and activate your plan within 1 business day. You'll receive a confirmation once it's done.</p>
+          <p style={{ margin: "4px 0 0", color: "#555", fontSize: 13 }}>Our team will verify your payment and activate your plan within 1 business day. You will receive a confirmation once it is done.</p>
         </div>
       )}
 
@@ -192,7 +192,7 @@ export default function ClientMembershipPage() {
                 <button
                   onClick={() => { setSelected(plan); setPayRef(""); setPayProofUrl(""); setError(""); setSuccess(false); }}
                   style={{
-                    padding: "12px 0", borderRadius: 10, border: "none",
+                    padding: "12px 0", borderRadius: 10,
                     background: isBusiness ? "#6dbf8b" : PLAN_ACCENT[i % PLAN_ACCENT.length],
                     color: isBusiness ? "#fff" : PLAN_COLORS[i % PLAN_COLORS.length],
                     fontWeight: 700, fontSize: 14, cursor: "pointer", width: "100%",

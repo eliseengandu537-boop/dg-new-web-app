@@ -3,7 +3,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { fetchAllReviews } from "@/utils/dashboardApi";
 
-const Review = ({ propertyId, style }: { propertyId: number, style?: any }) => {
+const Review = ({ propertyId, style }: { propertyId?: number, style?: any }) => {
    const [reviews, setReviews] = useState<any[]>([]);
    const [loading, setLoading] = useState(true);
    const [showAllReviews, setShowAllReviews] = useState(false);
@@ -11,7 +11,7 @@ const Review = ({ propertyId, style }: { propertyId: number, style?: any }) => {
 
    useEffect(() => {
       setLoading(true);
-      fetchAllReviews({ propertyId })
+      fetchAllReviews(propertyId ? { propertyId } : undefined)
          .then(res => setReviews(res.data?.reviews || []))
          .finally(() => setLoading(false));
    }, [propertyId]);

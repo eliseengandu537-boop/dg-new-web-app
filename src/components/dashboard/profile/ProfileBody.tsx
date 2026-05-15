@@ -17,7 +17,11 @@ const ProfileBody = () => {
    const [lastName, setLastName] = useState("");
    const [phoneNumber, setPhoneNumber] = useState("");
    const [about, setAbout] = useState("");
-   const token = localStorage.getItem("token"); 
+   const [token, setToken] = useState("");
+
+   useEffect(() => {
+      setToken(localStorage.getItem("dg_token") || localStorage.getItem("token") || "");
+   }, []);
 
    useEffect(() => {
       const fetchUserData = async () => {

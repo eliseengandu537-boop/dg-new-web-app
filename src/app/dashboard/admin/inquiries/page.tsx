@@ -194,7 +194,7 @@ export default function InquiriesPage() {
                 )}
                 {(selected.contactApproved === null || selected.contactApproved === undefined) && (
                   <div style={{ fontSize: 12, color: "#795548", marginBottom: 10 }}>
-                    Pending: decide whether to share this buyer's contact with the property owner.
+                    Pending: decide whether to share this buyer contact with the property owner.
                     {selected.ownerPlan && <><br /><strong>Owner plan: {selected.ownerPlan}</strong>{selected.ownerPlan === "Business" ? " (Business owners get auto-approval.)" : ""}</>}
                   </div>
                 )}

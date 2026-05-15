@@ -125,7 +125,7 @@ export default function AddClientListingPage() {
 
         {/* Price */}
         <div style={{ marginBottom: 20 }}>
-          <label style={labelStyle}>Asking Price (ZAR) <span style={{ color: "#aaa", fontWeight: 400 }}>(leave blank for "Price on Application")</span></label>
+          <label style={labelStyle}>Asking Price (ZAR) <span style={{ color: "#aaa", fontWeight: 400 }}>(leave blank for &quot;Price on Application&quot;)</span></label>
           <div style={{ position: "relative" }}>
             <span style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "#888", fontSize: 14, fontWeight: 600 }}>R</span>
             <input
@@ -212,7 +212,7 @@ export default function AddClientListingPage() {
             <li>Your listing is sent to our admin team for review</li>
             <li>Once approved, it goes live on the DG Property portal</li>
             <li>When a buyer inquires, admin reviews and approves contact sharing based on your plan</li>
-            <li>You receive the buyer's contact details and can reach out directly</li>
+            <li>You receive the buyer contact details and can reach out directly</li>
           </ol>
         </div>
 

@@ -16,7 +16,7 @@ interface ContentType {
    desc_2: string;
    email: string;
    number: string;
-   icon: string[];
+   icon: [string, string][];
 }
 
 const footer_content: ContentType = {
@@ -75,7 +75,7 @@ const FooterTwo = () => {
                         </ul>
 
                         <ul className="style-none d-flex align-items-center social-icon">
-                           {(icon as [string,string][]).map(([cls, href], i) => (
+                           {icon.map(([cls, href], i) => (
                               <li key={i}><Link href={href} target="_blank" rel="noopener noreferrer"><i className={cls}></i></Link></li>
                            ))}
                         </ul>

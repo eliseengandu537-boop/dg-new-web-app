@@ -40,7 +40,7 @@ const ListingDetailsFiveArea = () => {
                   </h2>
                   <div id="collapseOneA" className="accordion-collapse collapse show">
                     <div className="accordion-body">
-                      <p className="fs-20 lh-lg m0">Risk management and compliance, when approached strategically, have the potential to go beyond mitigating threats and protecting a company's operations &amp; reputation.They can actually generate value and create properties. </p>
+                      <p className="fs-20 lh-lg m0">Risk management and compliance, when approached strategically, have the potential to go beyond mitigating threats and protecting a company&apos;s operations &amp; reputation. They can actually generate value and create properties.</p>
                     </div>
                   </div>
                 </div>
