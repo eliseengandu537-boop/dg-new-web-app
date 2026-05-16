@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { fetchMostSavedProperties } from "@/utils/dashboardApi";
+import { BACKEND_ROOT } from "@/utils/publicEnv";
 
 interface MostSaved {
   propertyId: number;
@@ -74,7 +75,7 @@ export default function AdminFavoritesPage() {
           const imageUrl = prop?.featuredImage
             ? prop.featuredImage.startsWith("http")
               ? prop.featuredImage
-              : `http://localhost:5001/uploads/properties/${prop.featuredImage}`
+              : `${BACKEND_ROOT}/uploads/properties/${prop.featuredImage.replace(/^\/+/, "")}`
             : null;
 
           return (

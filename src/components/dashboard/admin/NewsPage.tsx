@@ -6,9 +6,7 @@ import {
   updateNewsPost,
   deleteNewsPost,
 } from "@/utils/dashboardApi";
-
-const API_ROOT = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
-const BACKEND = API_ROOT.replace("/api", "");
+import { BACKEND_ROOT } from "@/utils/publicEnv";
 
 interface NewsPost {
   id: number;
@@ -81,7 +79,7 @@ export default function AdminNewsPage() {
   const openEdit = (p: NewsPost) => {
     setEditing({ ...p });
     setIsNew(false);
-    setImagePreview(p.imageUrl ? `${BACKEND}${p.imageUrl}` : null);
+    setImagePreview(p.imageUrl ? `${BACKEND_ROOT}${p.imageUrl}` : null);
     setSaveError("");
     setShowForm(true);
   };
@@ -177,7 +175,7 @@ export default function AdminNewsPage() {
                 <tr key={p.id} style={{ background: i % 2 === 0 ? "#fff" : "#f9fafb", borderTop: "1px solid #f0f0f0" }}>
                   <td style={tdStyle}>
                     {p.imageUrl
-                      ? <img src={`${BACKEND}${p.imageUrl}`} alt="" style={{ width: 64, height: 46, objectFit: "cover", borderRadius: 6 }} />
+                      ? <img src={`${BACKEND_ROOT}${p.imageUrl}`} alt="" style={{ width: 64, height: 46, objectFit: "cover", borderRadius: 6 }} />
                       : <div style={{ width: 64, height: 46, borderRadius: 6, background: "#e2e8f0", display: "flex", alignItems: "center", justifyContent: "center" }}>
                           <i className="bi bi-image" style={{ color: "#a0aec0", fontSize: 18 }} />
                         </div>

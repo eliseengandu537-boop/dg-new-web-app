@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import dotenv from "dotenv";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { Op } from "sequelize";
 import { sequelize } from "./config/database";
 import authRoutes from "./routes/authRoutes";

@@ -4,10 +4,16 @@ import Wrapper from "@/layouts/Wrapper";
 export const metadata = {
    title: "Agent Details HOZN - Real Estate React Next js",
 };
-const index = () => {
+const index = async ({
+   searchParams,
+}: {
+   searchParams?: Promise<{ id?: string }> | { id?: string };
+}) => {
+   const resolvedSearchParams = await Promise.resolve(searchParams);
+
    return (
       <Wrapper>
-         <AgentDetails />
+         <AgentDetails id={resolvedSearchParams?.id} />
       </Wrapper>
    )
 }

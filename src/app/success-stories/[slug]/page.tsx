@@ -5,10 +5,16 @@ export const metadata = {
   title: "Success Story - DG Property",
 };
 
-const Page = ({ params }: { params: { slug: string } }) => {
+const Page = async ({
+  params,
+}: {
+  params: Promise<{ slug: string }> | { slug: string };
+}) => {
+  const resolvedParams = await Promise.resolve(params);
+
   return (
     <Wrapper>
-      <SuccessStoryDetailPage slug={params.slug} />
+      <SuccessStoryDetailPage slug={resolvedParams.slug} />
     </Wrapper>
   );
 };

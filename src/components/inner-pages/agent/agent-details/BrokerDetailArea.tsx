@@ -1,52 +1,27 @@
-"use client"
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import axios from "axios";
-import { API_ROOT } from "@/utils/api";
+import { resolveMediaUrl } from "@/utils/publicMedia";
+import { getPublicBrokerById } from "@/utils/publicServerApi";
 
-interface Broker {
-  id: number;
-  fullName: string;
-  position?: string;
-  email?: string;
-  phone?: string;
-  whatsapp?: string;
-  officeLocation?: string;
-  photo?: string;
-  bio?: string;
-  specialization?: string;
-  linkedin?: string;
-}
+const BrokerDetailArea = async ({ id }: { id?: string }) => {
+  const broker = id ? await getPublicBrokerById(id).catch(() => null) : null;
 
-const BrokerDetailArea = () => {
-  const params = useSearchParams();
-  const id = params.get("id");
-  const [broker, setBroker] = useState<Broker | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    if (!id) { setError(true); setLoading(false); return; }
-    axios.get(`${API_ROOT}/brokers/${id}`)
-      .then(res => setBroker(res.data))
-      .catch(() => setError(true))
-      .finally(() => setLoading(false));
-  }, [id]);
-
-  if (loading) return (
-    <div style={{ padding:"100px 0", textAlign:"center" }}>
-      <p style={{ color:"#888", fontSize:"1rem" }}>Loading broker details...</p>
-    </div>
-  );
-
-  if (error || !broker) return (
-    <div style={{ padding:"100px 0", textAlign:"center" }}>
-      <p style={{ color:"#888", fontSize:"1rem", marginBottom:24 }}>Broker not found.</p>
-      <Link href="/agent" style={{ padding:"12px 28px", background:"#0d1f2d", color:"#fff", borderRadius:6, textDecoration:"none", fontWeight:600 }}>← Back to Brokers</Link>
-    </div>
-  );
+  if (!broker) {
+    return (
+      <div style={{ padding: "80px 0 96px", textAlign: "center" }}>
+        <div className="container">
+          <div style={{ maxWidth: 560, margin: "0 auto", background: "#fff", borderRadius: 24, padding: "32px 24px", border: "1px solid rgba(13,31,45,0.08)", boxShadow: "0 12px 36px rgba(13,31,45,0.08)" }}>
+            <p style={{ color: "#5f6b76", fontSize: "1rem", lineHeight: 1.7, marginBottom: 22 }}>
+              Broker details are unavailable right now. Please go back to the team page and try another profile.
+            </p>
+            <Link href="/agent" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "13px 22px", background: "#0d1f2d", color: "#fff", borderRadius: 999, textDecoration: "none", fontWeight: 700 }}>
+              Back to Brokers
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const bioParagraphs = broker.bio?.trim() ? broker.bio.split(/\n\n+/) : [];
 
@@ -63,8 +38,8 @@ const BrokerDetailArea = () => {
               <div style={{ background:"#fff", borderRadius:20, overflow:"hidden", boxShadow:"0 8px 32px rgba(0,0,0,0.08)", border:"1px solid #f0f0f0", marginBottom:24 }}>
                 <div style={{ position:"relative", background:"#f0f0f0" }}>
                   {broker.photo ? (
-                    <Image src={broker.photo} alt={broker.fullName} width={500} height={560}
-                      style={{ objectFit:"contain", width:"100%", height:"auto", display:"block" }} unoptimized />
+                    <Image src={resolveMediaUrl(broker.photo)} alt={broker.fullName} width={500} height={560}
+                      style={{ objectFit:"cover", width:"100%", height:"auto", display:"block" }} sizes="(max-width: 991px) 100vw, 33vw" />
                   ) : (
                     <div style={{ height:320, background:"linear-gradient(135deg,#0d1f2d,#1a3a52)", display:"flex", alignItems:"center", justifyContent:"center" }}>
                       <i className="bi bi-person-circle" style={{ fontSize:100, color:"rgba(255,255,255,0.2)" }} />

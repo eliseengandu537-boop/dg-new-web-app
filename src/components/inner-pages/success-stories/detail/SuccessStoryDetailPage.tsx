@@ -1,55 +1,41 @@
-"use client";
-
-import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import HeaderOne from "@/layouts/headers/HeaderOne";
 import FooterFour from "@/layouts/footers/FooterFour";
 import FancyBanner from "@/components/common/FancyBanner";
-import { fetchPublicSuccessStories, fetchPublicSuccessStoryBySlug } from "@/utils/dashboardApi";
+import { resolveMediaUrl } from "@/utils/publicMedia";
+import { getPublicSuccessStories, getPublicSuccessStoryBySlug } from "@/utils/publicServerApi";
 import type { SuccessStory } from "../types";
 
-const API_ROOT = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
-const BACKEND = API_ROOT.replace("/api", "");
+const SuccessStoryDetailPage = async ({ slug }: { slug: string }) => {
+  let story: SuccessStory | null = null;
+  let relatedStories: SuccessStory[] = [];
+  let error = "";
 
-const SuccessStoryDetailPage = ({ slug }: { slug: string }) => {
-  const [story, setStory] = useState<SuccessStory | null>(null);
-  const [relatedStories, setRelatedStories] = useState<SuccessStory[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  try {
+    const [loadedStory, stories] = await Promise.all([
+      getPublicSuccessStoryBySlug(slug),
+      getPublicSuccessStories(),
+    ]);
 
-  useEffect(() => {
-    setLoading(true);
-    setError("");
+    story = loadedStory;
+    relatedStories = loadedStory
+      ? stories.filter((item) => item.slug !== loadedStory.slug).slice(0, 2)
+      : [];
+  } catch {
+    error = "Failed to load this success story.";
+  }
 
-    Promise.all([
-      fetchPublicSuccessStoryBySlug(slug),
-      fetchPublicSuccessStories(),
-    ])
-      .then(([storyRes, storiesRes]) => {
-        const loadedStory = storyRes.data as SuccessStory;
-        const stories = Array.isArray(storiesRes.data) ? storiesRes.data as SuccessStory[] : [];
+  if (!story && !error) {
+    error = "This success story could not be found.";
+  }
 
-        setStory(loadedStory);
-        setRelatedStories(stories.filter((item) => item.slug !== loadedStory.slug).slice(0, 2));
-      })
-      .catch((err) => {
-        setStory(null);
-        setRelatedStories([]);
-        setError(err?.response?.status === 404 ? "This success story could not be found." : "Failed to load this success story.");
-      })
-      .finally(() => setLoading(false));
-  }, [slug]);
+  const bodyParagraphs = (story?.body?.trim() || story?.summary?.trim() || "")
+    .split(/\n+/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
 
-  const bodyParagraphs = useMemo(() => {
-    const content = story?.body?.trim() || story?.summary?.trim() || "";
-    return content
-      .split(/\n+/)
-      .map((paragraph) => paragraph.trim())
-      .filter(Boolean);
-  }, [story]);
-
-  const getImageUrl = (imageUrl?: string) => imageUrl ? `${BACKEND}${imageUrl}` : "";
-  const brochureUrl = story?.brochureUrl ? `${BACKEND}${story.brochureUrl}` : "";
+  const brochureUrl = resolveMediaUrl(story?.brochureUrl);
   const mapSrc = story?.googleMapsQuery
     ? `https://www.google.com/maps?q=${encodeURIComponent(story.googleMapsQuery)}&output=embed`
     : "";
@@ -67,11 +53,7 @@ const SuccessStoryDetailPage = ({ slug }: { slug: string }) => {
     <>
       <HeaderOne style={true} />
 
-      {loading ? (
-        <section style={{ padding: "180px 0 100px", textAlign: "center", color: "#718096" }}>
-          Loading success story...
-        </section>
-      ) : error || !story ? (
+      {error || !story ? (
         <section style={{ padding: "180px 0 100px", textAlign: "center" }}>
           <div className="container">
             <h1 style={{ fontSize: 34, fontWeight: 800, color: "#0d1f2d", marginBottom: 16 }}>Success Story</h1>
@@ -101,12 +83,23 @@ const SuccessStoryDetailPage = ({ slug }: { slug: string }) => {
               minHeight: 480,
               display: "flex",
               alignItems: "flex-end",
-              background: story.imageUrl
-                ? `linear-gradient(to top, rgba(8,28,46,0.88) 0%, rgba(8,28,46,0.30) 100%), url(${getImageUrl(story.imageUrl)}) center/cover`
-                : "linear-gradient(135deg, #203647 0%, #425b6d 100%)",
+              background: "linear-gradient(135deg, #203647 0%, #425b6d 100%)",
               overflow: "hidden",
             }}
           >
+            {story.imageUrl && (
+              <>
+                <Image
+                  src={resolveMediaUrl(story.imageUrl)}
+                  alt={story.title}
+                  fill
+                  priority
+                  sizes="100vw"
+                  style={{ objectFit: "cover" }}
+                />
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(8,28,46,0.88) 0%, rgba(8,28,46,0.30) 100%)" }} />
+              </>
+            )}
             <div className="container" style={{ position: "relative", zIndex: 2, paddingBottom: 60, paddingTop: 140 }}>
               <Link
                 href="/success-stories"
@@ -146,10 +139,10 @@ const SuccessStoryDetailPage = ({ slug }: { slug: string }) => {
                   <h3 style={{ fontSize: 22, fontWeight: 700, color: "#0d1f2d", marginBottom: 16 }}>Project Overview</h3>
                   {story.summary && (
                     <p style={{ fontSize: 16, lineHeight: 1.9, color: "#4a5568", marginBottom: bodyParagraphs.length ? 20 : 40 }}>
-                      {story.summary}
-                    </p>
-                  )}
-                  {bodyParagraphs.map((paragraph, index) => (
+                  {story.summary}
+                </p>
+              )}
+              {bodyParagraphs.map((paragraph, index) => (
                     <p key={index} style={{ fontSize: 15.5, lineHeight: 1.9, color: "#4a5568", marginBottom: index === bodyParagraphs.length - 1 ? 40 : 20 }}>
                       {paragraph}
                     </p>
@@ -177,13 +170,21 @@ const SuccessStoryDetailPage = ({ slug }: { slug: string }) => {
                       <h4 style={{ fontSize: 18, fontWeight: 700, color: "#0d1f2d", marginBottom: 20 }}>Featured Project Image</h4>
                       <div
                         style={{
+                          position: "relative",
                           borderRadius: 14,
                           overflow: "hidden",
                           height: 360,
-                          background: `url(${getImageUrl(story.imageUrl)}) center/cover`,
                           boxShadow: "0 8px 28px rgba(0,0,0,0.12)",
                         }}
-                      />
+                      >
+                        <Image
+                          src={resolveMediaUrl(story.imageUrl)}
+                          alt={story.title}
+                          fill
+                          sizes="(max-width: 991px) 100vw, 66vw"
+                          style={{ objectFit: "cover" }}
+                        />
+                      </div>
                     </>
                   )}
                 </div>
@@ -271,11 +272,18 @@ const SuccessStoryDetailPage = ({ slug }: { slug: string }) => {
                             overflow: "hidden",
                             position: "relative",
                             height: 200,
-                            background: item.imageUrl
-                              ? `url(${getImageUrl(item.imageUrl)}) center/cover`
-                              : "linear-gradient(135deg, #dfe8ee 0%, #edf2f7 100%)",
+                            background: "linear-gradient(135deg, #dfe8ee 0%, #edf2f7 100%)",
                           }}
                         >
+                          {item.imageUrl && (
+                            <Image
+                              src={resolveMediaUrl(item.imageUrl)}
+                              alt={item.title}
+                              fill
+                              sizes="(max-width: 767px) 100vw, 50vw"
+                              style={{ objectFit: "cover" }}
+                            />
+                          )}
                           <div style={{ position: "absolute", inset: 0, background: "rgba(8,28,46,0.50)" }} />
                           <div style={{ position: "absolute", bottom: 20, left: 20, color: "#fff" }}>
                             {(item.tag || item.projectType) && (

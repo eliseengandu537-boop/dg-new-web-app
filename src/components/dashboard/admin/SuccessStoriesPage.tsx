@@ -6,9 +6,7 @@ import {
   updateSuccessStory,
   deleteSuccessStory,
 } from "@/utils/dashboardApi";
-
-const API_ROOT = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
-const BACKEND = API_ROOT.replace("/api", "");
+import { BACKEND_ROOT } from "@/utils/publicEnv";
 
 interface Story {
   id: number;
@@ -76,7 +74,7 @@ export default function AdminSuccessStoriesPage() {
   const openEdit = (s: Story) => {
     setEditing({ ...s });
     setIsNew(false);
-    setImagePreview(s.imageUrl ? `${BACKEND}${s.imageUrl}` : null);
+    setImagePreview(s.imageUrl ? `${BACKEND_ROOT}${s.imageUrl}` : null);
     setSaveError("");
     setShowForm(true);
   };
@@ -175,7 +173,7 @@ export default function AdminSuccessStoriesPage() {
                 <tr key={s.id} style={{ background: i % 2 === 0 ? "#fff" : "#f9fafb", borderTop: "1px solid #f0f0f0" }}>
                   <td style={tdStyle}>
                     {s.imageUrl ? (
-                      <img src={`${BACKEND}${s.imageUrl}`} alt="" style={{ width: 60, height: 44, objectFit: "cover", borderRadius: 6 }} />
+                      <img src={`${BACKEND_ROOT}${s.imageUrl}`} alt="" style={{ width: 60, height: 44, objectFit: "cover", borderRadius: 6 }} />
                     ) : <span style={{ color: "#cbd5e0" }}>N/A</span>}
                   </td>
                   <td style={{ ...tdStyle, fontWeight: 600, color: "#1a2332" }}>
@@ -206,7 +204,7 @@ export default function AdminSuccessStoriesPage() {
                         <i className="bi bi-trash" />
                       </button>
                       {s.brochureUrl && (
-                        <a href={`${BACKEND}${s.brochureUrl}`} target="_blank" rel="noreferrer" title="Download Brochure" style={{ ...btnEdit, textDecoration: "none" }}>
+                        <a href={`${BACKEND_ROOT}${s.brochureUrl}`} target="_blank" rel="noreferrer" title="Download Brochure" style={{ ...btnEdit, textDecoration: "none" }}>
                           <i className="bi bi-file-earmark-pdf" />
                         </a>
                       )}
@@ -309,7 +307,7 @@ export default function AdminSuccessStoriesPage() {
                 <label style={labelStyle}>Brochure (PDF)</label>
                 <div>
                   {editing.brochureUrl && !isNew && (
-                    <a href={`${BACKEND}${editing.brochureUrl}`} target="_blank" rel="noreferrer" style={{ fontSize: 13, color: "#888e7d", display: "inline-flex", alignItems: "center", gap: 5, marginBottom: 8 }}>
+                    <a href={`${BACKEND_ROOT}${editing.brochureUrl}`} target="_blank" rel="noreferrer" style={{ fontSize: 13, color: "#888e7d", display: "inline-flex", alignItems: "center", gap: 5, marginBottom: 8 }}>
                       <i className="bi bi-file-earmark-pdf" /> Current brochure (click to view)
                     </a>
                   )}

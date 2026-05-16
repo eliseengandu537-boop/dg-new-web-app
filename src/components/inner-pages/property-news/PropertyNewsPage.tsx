@@ -3,9 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 import HeaderOne from "@/layouts/headers/HeaderOne";
-
-const API_ROOT = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
-const BACKEND = API_ROOT.replace("/api", "");
+import { API_ROOT, BACKEND_ROOT } from "@/utils/publicEnv";
 
 interface NewsPost {
   id: number;
@@ -176,7 +174,7 @@ export default function PropertyNewsPage() {
                   {/* Image */}
                   <div style={{ height: 200, overflow: "hidden", background: "#e2e8f0", flexShrink: 0, position: "relative" }}>
                     {post.imageUrl ? (
-                      <img src={`${BACKEND}${post.imageUrl}`} alt={post.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      <img src={`${BACKEND_ROOT}${post.imageUrl}`} alt={post.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     ) : (
                       <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
                         <i className="bi bi-newspaper" style={{ fontSize: 44, color: "#cbd5e0" }} />
@@ -217,7 +215,7 @@ export default function PropertyNewsPage() {
             {/* Cover image */}
             {selected.imageUrl && (
               <div style={{ height: 320, overflow: "hidden" }}>
-                <img src={`${BACKEND}${selected.imageUrl}`} alt={selected.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <img src={`${BACKEND_ROOT}${selected.imageUrl}`} alt={selected.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </div>
             )}
             <div style={{ padding: "32px 36px" }}>

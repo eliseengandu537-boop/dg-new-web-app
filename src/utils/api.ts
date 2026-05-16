@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API_ROOT } from "./publicEnv";
+export { API_ROOT, BACKEND_ROOT, HAS_PUBLIC_API_URL } from "./publicEnv";
 
-export const API_ROOT = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
 export const AUTH_API_URL = `${API_ROOT}/auth`;
 
 export const api = axios.create({

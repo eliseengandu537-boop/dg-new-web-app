@@ -1,28 +1,32 @@
-"use client";
-import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import HeaderOne from "@/layouts/headers/HeaderOne";
 import FooterFour from "@/layouts/footers/FooterFour";
 import FancyBanner from "@/components/common/FancyBanner";
-import { fetchPublicSuccessStories } from "@/utils/dashboardApi";
+import { resolveMediaUrl } from "@/utils/publicMedia";
+import { getPublicSuccessStories } from "@/utils/publicServerApi";
 import type { SuccessStory } from "./types";
 
-const API_ROOT = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
-const BACKEND = API_ROOT.replace("/api", "");
+const emptyCardStyle = {
+  maxWidth: 680,
+  margin: "0 auto",
+  textAlign: "center" as const,
+  background: "#fff",
+  borderRadius: 24,
+  padding: "34px 24px",
+  boxShadow: "0 12px 36px rgba(13,31,45,0.08)",
+  border: "1px solid rgba(13,31,45,0.08)",
+};
 
-const SuccessStories = () => {
-  const [stories, setStories] = useState<SuccessStory[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+const SuccessStories = async () => {
+  let stories: SuccessStory[] = [];
+  let error = "";
 
-  useEffect(() => {
-    fetchPublicSuccessStories()
-      .then((res) => setStories(Array.isArray(res.data) ? res.data : []))
-      .catch(() => setError("Failed to load success stories. Please try again later."))
-      .finally(() => setLoading(false));
-  }, []);
-
-  const getImageUrl = (imageUrl?: string) => imageUrl ? `${BACKEND}${imageUrl}` : "";
+  try {
+    stories = await getPublicSuccessStories();
+  } catch {
+    error = "We could not load success stories right now. Please try again shortly.";
+  }
 
   return (
     <>
@@ -32,7 +36,7 @@ const SuccessStories = () => {
       <section
         style={{
           position: "relative",
-          minHeight: 520,
+          minHeight: 480,
           display: "flex",
           alignItems: "center",
           backgroundImage: "url(/assets/images/media/m12.jpeg)",
@@ -138,24 +142,34 @@ const SuccessStories = () => {
       {/* ── STORIES GRID ──────────────────────────────────────────── */}
       <section style={{ background: "#f8f9fa", paddingBottom: 90 }}>
         <div className="container">
-          {loading && (
-            <div style={{ textAlign: "center", padding: "40px 0", color: "#718096" }}>
-              Loading success stories...
-            </div>
-          )}
           {error && (
-            <div style={{ textAlign: "center", padding: "40px 0", color: "#c53030" }}>
-              {error}
+            <div style={emptyCardStyle}>
+              <h3 style={{ fontSize: 24, fontWeight: 800, color: "#0d1f2d", marginBottom: 12 }}>
+                Success stories are temporarily unavailable
+              </h3>
+              <p style={{ color: "#5f6b76", lineHeight: 1.8, marginBottom: 18 }}>
+                {error}
+              </p>
+              <Link href="/contact" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "13px 24px", borderRadius: 999, background: "#0d1f2d", color: "#fff", textDecoration: "none", fontWeight: 700 }}>
+                Talk to Our Team
+              </Link>
             </div>
           )}
-          {!loading && !error && stories.length === 0 && (
-            <div style={{ textAlign: "center", padding: "40px 0", color: "#718096" }}>
-              No published success stories are available yet.
+          {!error && stories.length === 0 && (
+            <div style={emptyCardStyle}>
+              <h3 style={{ fontSize: 24, fontWeight: 800, color: "#0d1f2d", marginBottom: 12 }}>
+                No published success stories yet
+              </h3>
+              <p style={{ color: "#5f6b76", lineHeight: 1.8, marginBottom: 0 }}>
+                As soon as stories are published from the admin dashboard, they will appear here automatically.
+              </p>
             </div>
           )}
-          <div className="row gy-5">
+
+          {!error && stories.length > 0 && (
+            <div className="row gy-4">
             {stories.map((story) => (
-              <div className="col-lg-4 col-md-6" key={story.id}>
+              <div className="col-12 col-md-6 col-xl-4" key={story.id}>
                 <Link href={`/success-stories/${story.slug}`} style={{ textDecoration: "none", color: "inherit", display: "block", height: "100%" }}>
                   <div
                     style={{
@@ -166,28 +180,28 @@ const SuccessStories = () => {
                       height: "100%",
                       display: "flex",
                       flexDirection: "column",
-                      transition: "transform 0.25s, box-shadow 0.25s",
-                    }}
-                    onMouseEnter={e => {
-                      (e.currentTarget as HTMLDivElement).style.transform = "translateY(-6px)";
-                      (e.currentTarget as HTMLDivElement).style.boxShadow = "0 18px 48px rgba(0,0,0,0.13)";
-                    }}
-                    onMouseLeave={e => {
-                      (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)";
-                      (e.currentTarget as HTMLDivElement).style.boxShadow = "0 6px 28px rgba(0,0,0,0.08)";
                     }}
                   >
                     <div
                       style={{
                         position: "relative",
-                        height: 230,
+                        height: 220,
                         overflow: "hidden",
-                        background: story.imageUrl
-                          ? `linear-gradient(to top, rgba(8,28,46,0.55) 0%, rgba(8,28,46,0.08) 60%), url(${getImageUrl(story.imageUrl)}) center/cover`
-                          : "linear-gradient(135deg, #dfe8ee 0%, #edf2f7 100%)",
+                        background: "linear-gradient(135deg, #dfe8ee 0%, #edf2f7 100%)",
                       }}
                     >
-                      {!story.imageUrl && (
+                      {story.imageUrl ? (
+                        <>
+                          <Image
+                            src={resolveMediaUrl(story.imageUrl)}
+                            alt={story.title}
+                            fill
+                            sizes="(max-width: 767px) 100vw, (max-width: 1199px) 50vw, 33vw"
+                            style={{ objectFit: "cover" }}
+                          />
+                          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(8,28,46,0.62) 0%, rgba(8,28,46,0.08) 60%)" }} />
+                        </>
+                      ) : (
                         <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8", fontSize: 38 }}>
                           <i className="bi bi-trophy" />
                         </div>
@@ -273,7 +287,8 @@ const SuccessStories = () => {
                 </Link>
               </div>
             ))}
-          </div>
+            </div>
+          )}
         </div>
       </section>
 

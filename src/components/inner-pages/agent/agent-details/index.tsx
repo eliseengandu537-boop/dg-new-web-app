@@ -4,7 +4,7 @@ import FooterFour from "@/layouts/footers/FooterFour"
 import BrokerDetailArea from "./BrokerDetailArea"
 import Link from "next/link"
 
-const AgentDetails = () => {
+const AgentDetails = ({ id }: { id?: string }) => {
    return (
       <>
          <HeaderOne style={true} />
@@ -40,7 +40,7 @@ const AgentDetails = () => {
          </div>
 
          <Suspense fallback={<div className="container text-center py-80"><p>Loading...</p></div>}>
-            <BrokerDetailArea />
+            <BrokerDetailArea id={id} />
          </Suspense>
          <FooterFour />
       </>
