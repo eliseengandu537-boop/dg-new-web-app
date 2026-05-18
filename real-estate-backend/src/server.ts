@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import path from "path";
 import dotenv from "dotenv";
@@ -34,6 +34,11 @@ app.use(express.json());
 
 // Serve uploaded files statically
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+
+// Simple readiness endpoint for Render health checks.
+app.get("/healthz", (_req: Request, res: Response) => {
+  res.status(200).json({ ok: true });
+});
 
 // Routes
 app.use("/api/auth", authRoutes);

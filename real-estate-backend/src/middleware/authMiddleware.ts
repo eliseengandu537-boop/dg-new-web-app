@@ -3,9 +3,7 @@ import jwt from "jsonwebtoken";
 
 const SECRET_KEY = process.env.JWT_SECRET || "your_secret_key";
 
-export interface AuthRequest extends Request {
-  user?: { id: number; role: string };
-}
+export type AuthRequest = Request;
 
 export const authenticateUser = (req: AuthRequest, res: Response, next: NextFunction): void => {
   const token = req.header("Authorization")?.split(" ")[1];
