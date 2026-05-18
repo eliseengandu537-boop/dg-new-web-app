@@ -1,7 +1,0 @@
-.git
-node_modules
-dist
-npm-debug.log*
-backend-*.log
-data/*.sqlite-shm
-data/*.sqlite-wal

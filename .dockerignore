@@ -1,8 +1,0 @@
-.git
-.next
-.next-stale-*
-node_modules
-npm-debug.log*
-frontend-*.log
-*.tsbuildinfo
-real-estate-backend/
