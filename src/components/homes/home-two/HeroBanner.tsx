@@ -15,7 +15,9 @@ const stats = [
 const HeroBanner = () => {
    const heroSlides = [
       "/assets/images/assets/back1.jpg",
-      "/assets/images/assets/back2.jpg",
+      "/assets/images/assets/ba1.jpg",
+      "/assets/images/assets/ba2.jpg",
+      "/assets/images/assets/ba3.jpg",
       "/assets/images/assets/back3.jpg",
    ];
    const [isVideoOpen, setIsVideoOpen] = useState(false);
