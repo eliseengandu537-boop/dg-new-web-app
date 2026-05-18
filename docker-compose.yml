@@ -1,0 +1,38 @@
+services:
+  backend:
+    build:
+      context: ./real-estate-backend
+      dockerfile: Dockerfile
+    container_name: dg-property-backend
+    environment:
+      NODE_ENV: production
+      PORT: 5001
+      DB_DIALECT: sqlite
+      DB_STORAGE: /app/data/dev.sqlite
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
+      DEFAULT_ADMIN_EMAIL: ${DEFAULT_ADMIN_EMAIL:-elisee@dg-property.co.za}
+      DEFAULT_ADMIN_PASSWORD: ${DEFAULT_ADMIN_PASSWORD:-adminelisee}
+      UPLOADS_BASE_URL: ${UPLOADS_BASE_URL:-http://localhost:3000/uploads}
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./real-estate-backend/data:/app/data
+      - ./real-estate-backend/uploads:/app/uploads
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dg-property-frontend
+    depends_on:
+      - backend
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      NEXT_TELEMETRY_DISABLED: 1
+      API_PROXY_TARGET: http://backend:5001/api
+      BACKEND_URL: http://backend:5001
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
