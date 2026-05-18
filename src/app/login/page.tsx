@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import axios from "axios";
 import { loginUser } from "@/utils/dashboardApi";
 
 export default function LoginPage() {
@@ -18,6 +19,11 @@ export default function LoginPage() {
     try {
       const res = await loginUser({ email, password });
       const { token, user } = res.data;
+      if (!token || !user) {
+        console.error("Unexpected login response:", res.data);
+        setError("The server responded, but the login data was invalid.");
+        return;
+      }
       localStorage.setItem("dg_token", token);
       localStorage.setItem("dg_user", JSON.stringify(user));
       if (user.role === "admin") {
@@ -25,11 +31,16 @@ export default function LoginPage() {
       } else {
         router.push("/dashboard/client");
       }
-    } catch (e: any) {
-      if (!e.response) {
-        setError("Cannot reach the server. Please make sure the backend is running.");
+    } catch (e: unknown) {
+      if (axios.isAxiosError(e)) {
+        if (!e.response) {
+          setError("Cannot reach the server. Please make sure the backend is running.");
+        } else {
+          setError((e.response.data as { error?: string } | undefined)?.error || "Invalid credentials.");
+        }
       } else {
-        setError(e.response.data?.error || "Invalid credentials.");
+        console.error("Login flow failed after a successful request:", e);
+        setError(e instanceof Error ? e.message : "An unexpected login error occurred.");
       }
     }
     setLoading(false);
