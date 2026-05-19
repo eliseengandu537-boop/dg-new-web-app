@@ -10,7 +10,7 @@ const ServiceDetails = () => {
          <HeaderOne style={true} />
 
          {/* ── HERO BANNER ────────────────────────────────────────── */}
-         <section style={{ position: "relative", minHeight: 520, display: "flex", alignItems: "center", backgroundImage: "url(/assets/images/media/retail.jpg)", backgroundSize: "cover", backgroundPosition: "center", overflow: "hidden" }}>
+         <section style={{ position: "relative", minHeight: 520, display: "flex", alignItems: "center", backgroundImage: "url(/assets/images/media/p12.jpeg)", backgroundSize: "cover", backgroundPosition: "center", overflow: "hidden" }}>
             {/* gold top line */}
             <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: 4, background: "linear-gradient(90deg, #c8973a, #e8b86d, #c8973a)", zIndex: 3 }} />
             {/* dark glow overlay */}

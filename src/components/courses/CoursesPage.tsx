@@ -22,9 +22,11 @@ const courseHeroHighlights = [
   },
 ];
 
+const COURSE_UNAVAILABLE_MESSAGE = "Coming Soon  Currently Not AVAILABLE";
+
 const CoursesPage = () => {
   const showCourseUnavailable = () => {
-    toast.info("Course not available for now.", {
+    toast.info(COURSE_UNAVAILABLE_MESSAGE, {
       position: "top-center",
     });
   };
@@ -406,7 +408,7 @@ const CoursesPage = () => {
                         textAlign: "left",
                         cursor: "pointer",
                       }}
-                      aria-label="Course not available for now"
+                      aria-label={COURSE_UNAVAILABLE_MESSAGE}
                     >
                     <div style={{ position: "relative", height: "100%", minHeight: 280 }}>
                       <Image
@@ -443,7 +445,7 @@ const CoursesPage = () => {
                           textAlign: "left",
                           cursor: "pointer",
                         }}
-                        aria-label="Course not available for now"
+                        aria-label={COURSE_UNAVAILABLE_MESSAGE}
                       >
                       <h4
                         style={{

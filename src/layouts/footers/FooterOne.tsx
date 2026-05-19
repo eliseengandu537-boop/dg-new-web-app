@@ -27,7 +27,7 @@ const FooterOne = ({ style }: any) => {
                                  <Image src={footerLogo} alt="DG logo" width={120} height={50} style={{ filter: "brightness(0) invert(1)" }} />
                               </Link>
                            </div>
-                           <p className="mb-60 lg-mb-40 md-mb-20">{contactInfo.locationName}<br />Address: {contactInfo.fullAddress}</p>
+                           <p className="mb-60 lg-mb-40 md-mb-20">{contactInfo.locationName}<br />{contactInfo.fullAddress}</p>
                            <h6>CONTACT</h6>
                            <Link href={contactInfo.emailHref} className={`email tran3s mb-70 lg-mb-50 ${style ? "font-garamond" : "fs-24 text-decoration-underline"}`} style={{ whiteSpace: "nowrap" }}>{contactInfo.emailDisplay}</Link>
                            <ul className="style-none d-flex align-items-center social-icon">

@@ -11,7 +11,7 @@ const BLockFeatureTwo = () => {
                   <div className="pb-45">
                      <div className="title-one mb-70 lg-mb-50">
                         <div className="upper-title">Why US</div>
-                        <h3>Find your Dream Property Easily.</h3>
+                        <h3>Why DG Property</h3>
                      </div>
                      <div className="accordion accordion-style-one top-bottom-line p0 mb-80 lg-mb-50" id="accordionOne">
                         <FaqOne />

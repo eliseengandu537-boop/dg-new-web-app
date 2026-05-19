@@ -22,7 +22,7 @@ interface ContentType {
 const footer_content: ContentType = {
    title: "Our Newsletter",
    desc_1: "Get instant news by subscribe to our newsletter",
-   desc_2: `Located in: ${contactInfo.locationName} | Address: ${contactInfo.fullAddress}`,
+   desc_2: `Located in: ${contactInfo.locationName} | ${contactInfo.fullAddress}`,
    email: contactInfo.emailDisplay,
    number: contactInfo.phoneDisplay,
    icon: [["fa-brands fa-facebook-f", "https://www.facebook.com/share/1Cfzm1Fy4t/?mibextid=wwXIfr"], ["fa-brands fa-linkedin-in", "https://www.linkedin.com/company/degennaro-property/"], ["fa-brands fa-instagram", "https://www.instagram.com/dg_property_/"]],

@@ -76,13 +76,13 @@ export default function PropertyNewsPage() {
                 DG PROPERTY Newsletter
               </span>
               <h1 style={{ fontFamily: "var(--site-font-family)", fontSize: "clamp(34px, 5vw, 56px)", fontWeight: 800, color: "#fff", lineHeight: 1.1, margin: "0 0 18px", letterSpacing: -0.5 }}>
-                Property News
+                Newsletter
               </h1>
               <div style={{ width: 50, height: 3, background: "linear-gradient(90deg,#c8973a,#e8b86d)", borderRadius: 2, marginBottom: 20 }} />
               <nav style={{ fontSize: 13, color: "rgba(255,255,255,0.5)" }}>
                 <Link href="/" style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Home</Link>
                 <span style={{ margin: "0 8px" }}>/</span>
-                <span style={{ color: "#e8b86d", fontWeight: 600 }}>Property News</span>
+                <span style={{ color: "#e8b86d", fontWeight: 600 }}>Newsletter</span>
               </nav>
             </div>
             <div className="col-lg-5 d-none d-lg-flex justify-content-end align-items-center">

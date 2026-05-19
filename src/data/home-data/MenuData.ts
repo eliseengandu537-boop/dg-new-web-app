@@ -73,7 +73,7 @@ const menu_data: MenuItem[] = [
         title: "Insights",
         link: "#",
         sub_menus: [
-            { link: "/property-news", title: "Property News" },
+            { link: "/property-news", title: "Newsletter" },
         ],
     },
 

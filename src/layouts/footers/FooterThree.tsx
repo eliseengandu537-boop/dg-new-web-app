@@ -20,7 +20,7 @@ const FooterThree = () => {
                               <Image src={footerLogo} alt="DG logo" width={120} height={50} />
                            </Link>
                         </div>
-                        <p className="mb-45 lg-mb-30">Located in: {contactInfo.locationName}<br />Address: {contactInfo.fullAddress}</p>
+                        <p className="mb-45 lg-mb-30">Located in: {contactInfo.locationName}<br />{contactInfo.fullAddress}</p>
                         <ul className="style-none d-flex align-items-center social-icon">
                            <li><Link href="https://www.facebook.com/share/1Cfzm1Fy4t/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer"><i className="fa-brands fa-facebook-f"></i></Link></li>
                            <li><Link href="https://www.linkedin.com/company/degennaro-property/" target="_blank" rel="noopener noreferrer"><i className="fa-brands fa-linkedin-in"></i></Link></li>

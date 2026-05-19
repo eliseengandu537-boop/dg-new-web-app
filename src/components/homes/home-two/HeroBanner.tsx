@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import CountUp from "react-countup";
-import VideoPopup from "@/modals/VideoPopup";
 import DropdownTwo from "@/components/search-dropdown/home-dropdown/DropdownTwo";
 
 const stats = [
@@ -20,7 +19,6 @@ const HeroBanner = () => {
       "/assets/images/assets/ba3.jpg",
       "/assets/images/assets/back3.jpg",
    ];
-   const [isVideoOpen, setIsVideoOpen] = useState(false);
    const [activeSlide, setActiveSlide] = useState(0);
 
    useEffect(() => {
@@ -164,37 +162,6 @@ const HeroBanner = () => {
                            <i className="bi bi-arrow-up-right" style={{ fontSize: 17 }} />
                         </Link>
 
-                        <a
-                           onClick={() => setIsVideoOpen(true)}
-                           style={{
-                              display: "inline-flex",
-                              alignItems: "center",
-                              gap: 14,
-                              cursor: "pointer",
-                              textDecoration: "none",
-                           }}
-                        >
-                           <div
-                              style={{
-                                 width: 52,
-                                 height: 52,
-                                 borderRadius: "50%",
-                                 background: "rgba(255,255,255,0.15)",
-                                 border: "2px solid rgba(255,255,255,0.50)",
-                                 display: "flex",
-                                 alignItems: "center",
-                                 justifyContent: "center",
-                                 backdropFilter: "blur(6px)",
-                                 flexShrink: 0,
-                              }}
-                           >
-                              <i className="fa-light fa-play" style={{ color: "#fff", fontSize: 16, paddingLeft: 3 }} />
-                           </div>
-                           <div>
-                              <span style={{ display: "block", color: "rgba(255,255,255,0.60)", fontSize: 12, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 2 }}>Watch</span>
-                              <strong style={{ color: "#ffffff", fontSize: 15, fontWeight: 600 }}>Company Overview</strong>
-                           </div>
-                        </a>
                      </div>
 
                      {/* Search bar */}
@@ -271,12 +238,6 @@ const HeroBanner = () => {
             </div>
          </div>
 
-         {/* video modal */}
-         <VideoPopup
-            isVideoOpen={isVideoOpen}
-            setIsVideoOpen={setIsVideoOpen}
-            videoId={"tUP5S4YdEJo"}
-         />
       </>
    )
 }

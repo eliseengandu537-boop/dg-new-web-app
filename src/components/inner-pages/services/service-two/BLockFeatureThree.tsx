@@ -14,7 +14,7 @@ const BLockFeatureThree = () => {
                   </div>
                </div>
                <div className="row mt-60 lg-mt-40">
-                  <div className="col-lg-10 mx-auto">
+                  <div className="col-lg-10 mx-auto text-center">
                      <p className="fs-20 lh-lg mb-25 color-dark">Our investment sales process is designed to protect the value and confidentiality of each transaction. Unlike traditional agencies, we do not publicly market investment assets on mass-market platforms such as Property24 or Private Property. Instead, we operate through a curated network of qualified investors and high-net-worth individuals who have demonstrated genuine acquisition capability.</p>
                      <p className="fs-20 lh-lg mb-25 color-dark">Each engagement begins with a Non-Disclosure Agreement (NDA) to ensure full confidentiality before any information is shared. Our process is structured, professional, and designed to match the right buyer to the right asset, discreetly and efficiently.</p>
                      <p className="fs-20 lh-lg color-dark">From initial mandate to final transfer, we manage the full investment sales journey, including pricing strategy, buyer qualification, due diligence support, and transaction coordination.</p>
