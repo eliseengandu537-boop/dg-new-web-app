@@ -7,6 +7,7 @@ import {
   deleteNewsPost,
 } from "@/utils/dashboardApi";
 import { BACKEND_ROOT } from "@/utils/publicEnv";
+import { getApiErrorMessage } from "@/utils/apiError";
 
 interface NewsPost {
   id: number;
@@ -102,9 +103,8 @@ export default function AdminNewsPage() {
       }
       setShowForm(false);
       load();
-    } catch (e: any) {
-      const msg = e?.response?.data?.error || e?.message || "Failed to save. Check backend is running.";
-      setSaveError(msg);
+    } catch (e: unknown) {
+      setSaveError(getApiErrorMessage(e, "Failed to save. Check backend is running."));
     } finally {
       setSaving(false);
     }

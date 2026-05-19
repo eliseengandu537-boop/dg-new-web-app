@@ -4,6 +4,7 @@ import { Bar, Doughnut } from "react-chartjs-2";
 import "chart.js/auto";
 import AdminHeader from "@/components/dashboard/admin/AdminHeader";
 import StatsCard from "@/components/dashboard/admin/StatsCard";
+import { getApiErrorMessage } from "@/utils/apiError";
 import {
   fetchAdminStats,
   fetchPropertyStatusChart,
@@ -66,8 +67,8 @@ export default function AdminOverviewPage() {
         setStatusChart(statusRes.data);
         setPageViewStats(pvStatsRes.data);
         setRecentInquiries(inquiryRes.data);
-      } catch (e: any) {
-        setError(e.response?.data?.error || "Failed to load dashboard data.");
+      } catch (e: unknown) {
+        setError(getApiErrorMessage(e, "Failed to load dashboard data."));
       } finally {
         setLoading(false);
       }

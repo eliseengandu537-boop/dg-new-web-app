@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
 import { loginUser } from "@/utils/dashboardApi";
+import { getApiErrorMessage } from "@/utils/apiError";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -36,7 +37,7 @@ export default function LoginPage() {
         if (!e.response) {
           setError("Cannot reach the server. Please make sure the backend is running.");
         } else {
-          setError((e.response.data as { error?: string } | undefined)?.error || "Invalid credentials.");
+          setError(getApiErrorMessage(e, "Invalid credentials."));
         }
       } else {
         console.error("Login flow failed after a successful request:", e);

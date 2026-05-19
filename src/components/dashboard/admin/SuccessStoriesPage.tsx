@@ -7,6 +7,7 @@ import {
   deleteSuccessStory,
 } from "@/utils/dashboardApi";
 import { BACKEND_ROOT } from "@/utils/publicEnv";
+import { getApiErrorMessage } from "@/utils/apiError";
 
 interface Story {
   id: number;
@@ -100,8 +101,8 @@ export default function AdminSuccessStoriesPage() {
       }
       setShowForm(false);
       load();
-    } catch (e: any) {
-      setSaveError(e?.response?.data?.error || "Failed to save.");
+    } catch (e: unknown) {
+      setSaveError(getApiErrorMessage(e, "Failed to save."));
     } finally {
       setSaving(false);
     }

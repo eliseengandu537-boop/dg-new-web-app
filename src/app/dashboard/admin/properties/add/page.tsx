@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import AdminHeader from "@/components/dashboard/admin/AdminHeader";
 import { createProperty, fetchAllBrokers } from "@/utils/dashboardApi";
+import { getApiErrorMessage } from "@/utils/apiError";
 import { useDropzone } from "react-dropzone";
 import {
   ADMIN_LISTING_CATEGORY_DEFAULT_PROPERTY_TYPE,
@@ -137,13 +138,8 @@ export default function AddPropertyPage() {
 
       await createProperty(fd);
       router.push("/dashboard/admin/properties");
-    } catch (e: any) {
-      const apiError = e.response?.data;
-      setError(
-        apiError?.details
-          ? `${apiError.error || "Failed to create property."} ${apiError.details}`
-          : apiError?.error || "Failed to create property."
-      );
+    } catch (e: unknown) {
+      setError(getApiErrorMessage(e, "Failed to create property."));
     }
     setSaving(false);
   };

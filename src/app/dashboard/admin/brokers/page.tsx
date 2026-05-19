@@ -5,6 +5,7 @@ import {
   fetchAllBrokers, createBroker, updateBroker,
   deleteBroker, toggleBrokerActive, toggleBrokerWebsite, reorderBrokers,
 } from "@/utils/dashboardApi";
+import { getApiErrorMessage } from "@/utils/apiError";
 
 interface Broker {
   id: number; fullName: string; position?: string; email: string;
@@ -18,6 +19,8 @@ const EMPTY: Partial<Broker> = {
   officeLocation: "", bio: "", specialization: "", linkedin: "",
   isActive: true, showOnWebsite: true,
 };
+
+const BROKER_PHOTO_MAX_BYTES = 4 * 1024 * 1024;
 
 export default function BrokersPage() {
   const [brokers, setBrokers] = useState<Broker[]>([]);
@@ -49,6 +52,14 @@ export default function BrokersPage() {
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (!f) return;
+    if (f.size > BROKER_PHOTO_MAX_BYTES) {
+      setPhotoFile(null);
+      setPhotoPreview(editing?.photo || "");
+      setError("The broker photo is too large for the live site. Please use an image under 4 MB.");
+      if (fileRef.current) fileRef.current.value = "";
+      return;
+    }
+    setError("");
     setPhotoFile(f);
     setPhotoPreview(URL.createObjectURL(f));
   };
@@ -71,8 +82,8 @@ export default function BrokersPage() {
         setBrokers((prev) => [res.data, ...prev]);
       }
       closeModal();
-    } catch (e: any) {
-      setError(e.response?.data?.error || "Failed to save broker.");
+    } catch (e: unknown) {
+      setError(getApiErrorMessage(e, "Failed to save broker."));
     }
     setSaving(false);
   };

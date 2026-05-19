@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import AdminHeader from "@/components/dashboard/admin/AdminHeader";
 import { fetchPropertyById, updateProperty, fetchAllBrokers } from "@/utils/dashboardApi";
+import { getApiErrorMessage } from "@/utils/apiError";
 import { useDropzone } from "react-dropzone";
 import {
   ADMIN_LISTING_CATEGORY_DEFAULT_PROPERTY_TYPE,
@@ -137,8 +138,8 @@ export default function EditPropertyPage() {
       floorPlanFiles.forEach((f) => fd.append("floorPlans", f));
       await updateProperty(parseInt(id), fd);
       router.push("/dashboard/admin/properties");
-    } catch (e: any) {
-      setError(e.response?.data?.error || "Failed to update property.");
+    } catch (e: unknown) {
+      setError(getApiErrorMessage(e, "Failed to update property."));
     }
     setSaving(false);
   };

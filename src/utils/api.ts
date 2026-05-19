@@ -1,8 +1,15 @@
 import axios from "axios";
-import { API_ROOT } from "./publicEnv";
-export { API_ROOT, BACKEND_ROOT, HAS_PUBLIC_API_URL } from "./publicEnv";
+import { API_ROOT, AUTH_API_ROOT } from "./publicEnv";
+export {
+  API_ROOT,
+  AUTH_API_ROOT,
+  BACKEND_ROOT,
+  AUTH_BACKEND_ROOT,
+  HAS_PUBLIC_API_URL,
+  HAS_AUTH_API_URL,
+} from "./publicEnv";
 
-export const AUTH_API_URL = `${API_ROOT}/auth`;
+export const AUTH_API_URL = `${AUTH_API_ROOT}/auth`;
 
 export const api = axios.create({
   baseURL: AUTH_API_URL,
@@ -11,7 +18,7 @@ export const api = axios.create({
 
 // Authenticated API client — attaches Bearer token automatically
 export const authApi = axios.create({
-  baseURL: API_ROOT,
+  baseURL: AUTH_API_ROOT,
   headers: { "Content-Type": "application/json" },
 });
 
