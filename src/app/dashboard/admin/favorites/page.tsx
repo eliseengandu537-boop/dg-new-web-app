@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { fetchMostSavedProperties } from "@/utils/dashboardApi";
-import { BACKEND_ROOT } from "@/utils/publicEnv";
+import { resolveAbsoluteMediaUrl } from "@/utils/publicMedia";
 
 interface MostSaved {
   propertyId: number;
@@ -73,9 +73,7 @@ export default function AdminFavoritesPage() {
         {items.map((item, index) => {
           const prop = item.property;
           const imageUrl = prop?.featuredImage
-            ? prop.featuredImage.startsWith("http")
-              ? prop.featuredImage
-              : `${BACKEND_ROOT}/uploads/properties/${prop.featuredImage.replace(/^\/+/, "")}`
+            ? resolveAbsoluteMediaUrl(prop.featuredImage)
             : null;
 
           return (

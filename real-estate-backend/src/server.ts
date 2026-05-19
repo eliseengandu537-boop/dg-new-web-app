@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
-import path from "path";
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
+import fs from "fs";
 import { Op } from "sequelize";
 import { sequelize } from "./config/database";
 import authRoutes from "./routes/authRoutes";
@@ -21,6 +21,7 @@ import { User } from "./models/User";
 import { MembershipPlan } from "./models/MembershipPlan";
 import { PageView } from "./models/PageView";
 import { Property } from "./models/Property";
+import { UPLOADS_DIR } from "./utils/uploads";
 
 dotenv.config();
 
@@ -33,7 +34,8 @@ app.use(cors());
 app.use(express.json());
 
 // Serve uploaded files statically
-app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+app.use("/uploads", express.static(UPLOADS_DIR));
 
 // Simple readiness endpoint for Render health checks.
 app.get("/healthz", (_req: Request, res: Response) => {

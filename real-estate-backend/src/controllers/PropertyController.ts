@@ -8,8 +8,7 @@ import { UserSubscription } from "../models/UserSubscription";
 import { MembershipPlan } from "../models/MembershipPlan";
 import { AuthRequest } from "../middleware/authMiddleware";
 import { v4 as uuidv4 } from "uuid";
-
-const UPLOADS_BASE = process.env.UPLOADS_BASE_URL || "http://localhost:5001/uploads";
+import { toUploadUrl } from "../utils/uploads";
 
 // Returns { type: 'client'|'broker', planName, data: {...} } for the "agent" shown on a listing
 const buildAgentInfo = async (property: Property): Promise<{ type: string; planName: string; data: any }> => {
@@ -56,7 +55,7 @@ const parseFiles = (files: any) => {
   }
 
   // All files land in uploads/misc when using uploadAny
-  const url = (f: any) => `${UPLOADS_BASE}/misc/${f.filename}`;
+  const url = (f: any) => toUploadUrl("misc", f.filename);
 
   if (byField.featuredImage?.[0]) result.featuredImage = url(byField.featuredImage[0]);
   if (byField.gallery?.length)    result.gallery    = byField.gallery.map(url);

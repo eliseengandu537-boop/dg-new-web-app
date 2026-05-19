@@ -25,7 +25,9 @@ export const proxyRequest = async (request: Request, targetUrl: string) => {
   };
 
   if (!BODYLESS_METHODS.has(request.method.toUpperCase())) {
-    init.body = Buffer.from(await request.arrayBuffer());
+    const streamingInit = init as RequestInit & { duplex?: "half" };
+    streamingInit.body = request.body;
+    streamingInit.duplex = "half";
   }
 
   const upstream = await fetch(targetUrl, init);

@@ -1,11 +1,12 @@
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import { getUploadSubdirPath } from "../utils/uploads";
 
 const createStorage = (subfolder: string) =>
   multer.diskStorage({
     destination: (_req, _file, cb) => {
-      const dir = path.join(process.cwd(), "uploads", subfolder);
+      const dir = getUploadSubdirPath(subfolder);
       fs.mkdirSync(dir, { recursive: true });
       cb(null, dir);
     },

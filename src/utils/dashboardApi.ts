@@ -1,8 +1,23 @@
 /**
  * Dashboard API — all calls go through authApi (auto-attaches Bearer token).
  */
-import { authApi, API_ROOT } from "./api";
+import { authApi, API_ROOT, AUTH_API_ROOT, AUTH_BACKEND_ROOT, BACKEND_ROOT } from "./api";
 import axios from "axios";
+
+const trimTrailingSlash = (value?: string) => value?.replace(/\/$/, "") || "";
+const directUploadBackendRoot = trimTrailingSlash(AUTH_BACKEND_ROOT || BACKEND_ROOT);
+const uploadApiRoot = directUploadBackendRoot
+  ? `${directUploadBackendRoot}/api`
+  : AUTH_API_ROOT;
+
+const uploadWithAuth = (method: "post" | "put", url: string, data: FormData) =>
+  authApi.request({
+    method,
+    url,
+    data,
+    baseURL: uploadApiRoot,
+    headers: { "Content-Type": "multipart/form-data" },
+  });
 
 // ── Auth ────────────────────────────────────────────────────────────────
 export const login = (email: string, password: string) =>
@@ -31,10 +46,9 @@ export const recordPageView = (sessionId: string, path: string) =>
 export const fetchAllBrokers = () => authApi.get("/brokers");
 export const fetchPublicBrokers = () => axios.get(`${API_ROOT}/brokers/public`);
 export const fetchBrokerById = (id: number) => authApi.get(`/brokers/${id}`);
-export const createBroker = (data: FormData) =>
-  authApi.post("/brokers", data, { headers: { "Content-Type": "multipart/form-data" } });
+export const createBroker = (data: FormData) => uploadWithAuth("post", "/brokers", data);
 export const updateBroker = (id: number, data: FormData) =>
-  authApi.put(`/brokers/${id}`, data, { headers: { "Content-Type": "multipart/form-data" } });
+  uploadWithAuth("put", `/brokers/${id}`, data);
 export const deleteBroker = (id: number) => authApi.delete(`/brokers/${id}`);
 export const toggleBrokerActive = (id: number) => authApi.patch(`/brokers/${id}/toggle-active`);
 export const toggleBrokerWebsite = (id: number) => authApi.patch(`/brokers/${id}/toggle-website`);
@@ -50,10 +64,9 @@ export const fetchPublicPropertySuggestions = (params?: Record<string, any>) =>
 export const fetchPublicPropertyById = (id: number) =>
   axios.get(`${API_ROOT}/properties/public/${id}`);
 export const fetchPropertyById = (id: number) => authApi.get(`/properties/${id}`);
-export const createProperty = (data: FormData) =>
-  authApi.post("/properties", data, { headers: { "Content-Type": "multipart/form-data" } });
+export const createProperty = (data: FormData) => uploadWithAuth("post", "/properties", data);
 export const updateProperty = (id: number, data: FormData) =>
-  authApi.put(`/properties/${id}`, data, { headers: { "Content-Type": "multipart/form-data" } });
+  uploadWithAuth("put", `/properties/${id}`, data);
 export const updatePropertyStatus = (id: number, status: string) =>
   authApi.patch(`/properties/${id}/status`, { status });
 export const deleteProperty = (id: number) => authApi.delete(`/properties/${id}`);
@@ -172,9 +185,9 @@ export const fetchPublicSuccessStoryBySlug = (slug: string) =>
 export const fetchAllSuccessStories = () =>
   authApi.get("/success-stories");
 export const createSuccessStory = (data: FormData) =>
-  authApi.post("/success-stories", data, { headers: { "Content-Type": "multipart/form-data" } });
+  uploadWithAuth("post", "/success-stories", data);
 export const updateSuccessStory = (id: number, data: FormData) =>
-  authApi.put(`/success-stories/${id}`, data, { headers: { "Content-Type": "multipart/form-data" } });
+  uploadWithAuth("put", `/success-stories/${id}`, data);
 export const deleteSuccessStory = (id: number) =>
   authApi.delete(`/success-stories/${id}`);
 
@@ -186,8 +199,8 @@ export const fetchPublicNewsBySlug = (slug: string) =>
 export const fetchAllNews = () =>
   authApi.get("/news");
 export const createNewsPost = (data: FormData) =>
-  authApi.post("/news", data, { headers: { "Content-Type": "multipart/form-data" } });
+  uploadWithAuth("post", "/news", data);
 export const updateNewsPost = (id: number, data: FormData) =>
-  authApi.put(`/news/${id}`, data, { headers: { "Content-Type": "multipart/form-data" } });
+  uploadWithAuth("put", `/news/${id}`, data);
 export const deleteNewsPost = (id: number) =>
   authApi.delete(`/news/${id}`);

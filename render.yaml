@@ -3,10 +3,14 @@ services:
     name: dg-property-backend
     runtime: node
     rootDir: real-estate-backend
-    plan: free
+    plan: starter
     buildCommand: npm ci && npm run build
     startCommand: npm start
     healthCheckPath: /healthz
+    disk:
+      name: uploads
+      mountPath: /var/data/uploads
+      sizeGB: 10
     envVars:
       - key: NODE_VERSION
         value: "20"
@@ -18,5 +22,7 @@ services:
         sync: false
       - key: DEFAULT_ADMIN_PASSWORD
         sync: false
+      - key: UPLOADS_DIR
+        value: /var/data/uploads
       - key: UPLOADS_BASE_URL
         sync: false

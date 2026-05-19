@@ -5,17 +5,31 @@ const LOCAL_BACKEND_ROOT = "http://127.0.0.1:5001";
 
 const trimTrailingSlash = (value?: string | null) =>
   value?.trim().replace(/\/$/, "") || "";
+const toBackendRoot = (apiRoot: string) =>
+  apiRoot.endsWith("/api") ? apiRoot.slice(0, -4) : apiRoot;
 
-const configuredApiRoot = trimTrailingSlash(
+const configuredPublicApiRoot = trimTrailingSlash(
   process.env.API_PROXY_TARGET ||
     process.env.NEXT_PUBLIC_API_URL ||
     process.env.API_URL,
 );
 
-const configuredBackendRoot = trimTrailingSlash(
-  process.env.BACKEND_URL ||
-    process.env.UPLOADS_BASE_URL?.replace(/\/uploads\/?$/, ""),
+const configuredAuthApiRoot = trimTrailingSlash(
+  process.env.NEXT_PUBLIC_AUTH_API_URL ||
+    process.env.NEXT_PUBLIC_ADMIN_API_URL,
 );
+
+const configuredApiRoot = configuredPublicApiRoot || configuredAuthApiRoot;
+
+const configuredBackendRoot =
+  trimTrailingSlash(
+    process.env.BACKEND_URL ||
+      process.env.NEXT_PUBLIC_BACKEND_URL,
+  ) ||
+  toBackendRoot(configuredAuthApiRoot || configuredPublicApiRoot) ||
+  trimTrailingSlash(
+    process.env.UPLOADS_BASE_URL?.replace(/\/uploads\/?$/, ""),
+  );
 
 export const getServerApiRoot = () => {
   if (configuredApiRoot) return configuredApiRoot;

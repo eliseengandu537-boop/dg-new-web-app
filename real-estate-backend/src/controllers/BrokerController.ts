@@ -2,10 +2,12 @@ import { Response } from "express";
 import { Broker } from "../models/Broker";
 import { PropertyBroker } from "../models/PropertyBroker";
 import { AuthRequest } from "../middleware/authMiddleware";
-import path from "path";
 import fs from "fs";
-
-const UPLOADS_BASE = process.env.UPLOADS_BASE_URL || "http://localhost:5001/uploads";
+import {
+  extractUploadFilename,
+  getUploadFilePath,
+  toUploadUrl,
+} from "../utils/uploads";
 
 // ── GET all brokers (admin) ──────────────────────────────────────────────
 export const getAllBrokers = async (req: AuthRequest, res: Response): Promise<void> => {
@@ -46,7 +48,7 @@ export const createBroker = async (req: AuthRequest, res: Response): Promise<voi
   try {
     const data = req.body;
     if ((req as any).file) {
-      data.photo = `${UPLOADS_BASE}/brokers/${(req as any).file.filename}`;
+      data.photo = toUploadUrl("brokers", (req as any).file.filename);
     }
     const broker = await Broker.create(data);
     res.status(201).json(broker);
@@ -69,10 +71,11 @@ export const updateBroker = async (req: AuthRequest, res: Response): Promise<voi
     if ((req as any).file) {
       // Remove old photo
       if (broker.photo) {
-        const oldFile = path.join(process.cwd(), "uploads", "brokers", path.basename(broker.photo));
+        const oldFilename = extractUploadFilename(broker.photo);
+        const oldFile = oldFilename ? getUploadFilePath("brokers", oldFilename) : "";
         if (fs.existsSync(oldFile)) fs.unlinkSync(oldFile);
       }
-      data.photo = `${UPLOADS_BASE}/brokers/${(req as any).file.filename}`;
+      data.photo = toUploadUrl("brokers", (req as any).file.filename);
     }
 
     await broker.update(data);
@@ -92,7 +95,8 @@ export const deleteBroker = async (req: AuthRequest, res: Response): Promise<voi
     await PropertyBroker.destroy({ where: { brokerId: broker.id } });
 
     if (broker.photo) {
-      const file = path.join(process.cwd(), "uploads", "brokers", path.basename(broker.photo));
+      const filename = extractUploadFilename(broker.photo);
+      const file = filename ? getUploadFilePath("brokers", filename) : "";
       if (fs.existsSync(file)) fs.unlinkSync(file);
     }
     await broker.destroy();

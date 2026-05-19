@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { fetchClientListings, deleteClientListing, fetchMySubscription } from "@/utils/dashboardApi";
-import { BACKEND_ROOT } from "@/utils/publicEnv";
+import { resolveAbsoluteMediaUrl } from "@/utils/publicMedia";
 
 interface Listing {
   id: number;
@@ -122,7 +122,7 @@ export default function ClientListingsPage() {
         {listings.map((listing) => {
           const badge = STATUS_BADGE[listing.status] || STATUS_BADGE.draft;
           const imgUrl = listing.featuredImage
-            ? listing.featuredImage.startsWith("http") ? listing.featuredImage : `${BACKEND_ROOT}/uploads/properties/${listing.featuredImage.replace(/^\/+/, "")}`
+            ? resolveAbsoluteMediaUrl(listing.featuredImage)
             : null;
           const canEdit = ["draft", "pending"].includes(listing.status);
 
