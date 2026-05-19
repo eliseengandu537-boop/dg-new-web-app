@@ -37,7 +37,7 @@ const Property = () => {
                   </p>
                </div>
                <Link
-                  href="/listing_05"
+                  href="/listing_07"
                   className="d-none d-md-inline-flex align-items-center gap-2 tran3s"
                   style={{ fontSize: 14, fontWeight: 600, color: "#0d1f2d", borderBottom: "1px solid #0d1f2d", paddingBottom: 2, whiteSpace: "nowrap" }}
                >
@@ -76,7 +76,7 @@ const Property = () => {
             )}
 
             <div className="text-center mt-40 d-md-none">
-               <Link href="/listing_05" className="btn-eight"><span>View All Properties</span> <i className="bi bi-arrow-up-right"></i></Link>
+               <Link href="/listing_07" className="btn-eight"><span>View All Properties</span> <i className="bi bi-arrow-up-right"></i></Link>
             </div>
 
          </div>

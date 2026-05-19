@@ -6,6 +6,7 @@ import {
   deleteBroker, toggleBrokerActive, toggleBrokerWebsite, reorderBrokers,
 } from "@/utils/dashboardApi";
 import { getApiErrorMessage } from "@/utils/apiError";
+import { resolveMediaUrl } from "@/utils/publicMedia";
 
 interface Broker {
   id: number; fullName: string; position?: string; email: string;
@@ -46,7 +47,7 @@ export default function BrokersPage() {
   useEffect(() => { load(); }, []);
 
   const openAdd = () => { setEditing(null); setForm(EMPTY); setPhotoFile(null); setPhotoPreview(""); setShowModal(true); };
-  const openEdit = (b: Broker) => { setEditing(b); setForm(b); setPhotoPreview(b.photo || ""); setPhotoFile(null); setShowModal(true); };
+  const openEdit = (b: Broker) => { setEditing(b); setForm(b); setPhotoPreview(resolveMediaUrl(b.photo)); setPhotoFile(null); setShowModal(true); };
   const closeModal = () => { setShowModal(false); setError(""); };
 
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -160,7 +161,7 @@ export default function BrokersPage() {
                     <tr key={b.id} style={{ borderBottom: "1px solid #f0f4f8" }}>
                       <td style={tdStyle}>
                         {b.photo ? (
-                          <img src={b.photo} alt={b.fullName} style={{ width: 40, height: 40, borderRadius: "50%", objectFit: "cover" }} />
+                          <img src={resolveMediaUrl(b.photo)} alt={b.fullName} style={{ width: 40, height: 40, borderRadius: "50%", objectFit: "cover" }} />
                         ) : (
                           <div style={{ width: 40, height: 40, borderRadius: "50%", background: "#e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, color: "#718096" }}>
                             {b.fullName[0]}

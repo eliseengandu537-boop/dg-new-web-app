@@ -20,7 +20,7 @@ const ListingSix = () => {
    const router = useRouter();
    const searchParams = useSearchParams();
    const defaultFilters = useMemo<CommercialSearchFilters>(
-      () => parseCommercialSearchFilters(searchParams, { listingType: "sale" }),
+      () => parseCommercialSearchFilters(searchParams, { listingType: "" }),
       [searchParams]
    );
    const [appliedFilters, setAppliedFilters] = useState<CommercialSearchFilters>(defaultFilters);
@@ -31,7 +31,6 @@ const ListingSix = () => {
 
    const handleSearch = useCallback((filters: CommercialSearchFilters) => {
       const nextFilters = normalizeCommercialSearchFilters({
-         listingType: filters.listingType || "sale",
          ...filters,
       });
 
@@ -44,7 +43,8 @@ const ListingSix = () => {
    const heroBadge = useMemo(() => {
       if (appliedFilters.listingType === "lease") return "To Let";
       if (appliedFilters.listingType === "investment") return "Investment";
-      return "For Sale";
+      if (appliedFilters.listingType === "sale") return "For Sale";
+      return "All";
    }, [appliedFilters.listingType]);
 
    return (

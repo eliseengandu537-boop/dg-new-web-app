@@ -34,7 +34,7 @@ const BLockFeatureOne = () => {
                               <span style={{ fontSize: 12, color: "rgba(255,255,255,0.70)", textTransform: "uppercase", letterSpacing: 1.5 }}>Gauteng · SA</span>
                            </div>
                         </div>
-                        <Link href="/listing_05" className="stretched-link"></Link>
+                        <Link href="/listing_07" className="stretched-link"></Link>
                      </div>
                   </div>
                ))}
@@ -42,7 +42,7 @@ const BLockFeatureOne = () => {
 
             {/* Bottom CTA */}
             <div className="text-center mt-50 wow fadeInUp">
-               <Link href="/listing_05"
+               <Link href="/listing_07"
                   style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "14px 36px", border: "1px solid rgba(240,185,94,0.5)", borderRadius: 50, color: "#f0b95e", fontSize: 14, fontWeight: 600, letterSpacing: 1, textTransform: "uppercase", transition: "all 0.3s" }}
                   className="tran3s"
                >
