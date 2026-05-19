@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import AdminHeader from "@/components/dashboard/admin/AdminHeader";
 import { createProperty, fetchAllBrokers } from "@/utils/dashboardApi";
 import { getApiErrorMessage } from "@/utils/apiError";
+import { resolveMediaUrl } from "@/utils/publicMedia";
 import { useDropzone } from "react-dropzone";
 import {
   ADMIN_LISTING_CATEGORY_DEFAULT_PROPERTY_TYPE,
@@ -451,7 +452,7 @@ export default function AddPropertyPage() {
                         }}
                       >
                         {b.photo ? (
-                          <img src={b.photo} alt="" style={{ width: 36, height: 36, borderRadius: "50%", objectFit: "cover" }} />
+                          <img src={resolveMediaUrl(b.photo)} alt="" style={{ width: 36, height: 36, borderRadius: "50%", objectFit: "cover" }} />
                         ) : (
                           <div style={{ width: 36, height: 36, borderRadius: "50%", background: "#e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, color: "#718096" }}>
                             {b.fullName[0]}

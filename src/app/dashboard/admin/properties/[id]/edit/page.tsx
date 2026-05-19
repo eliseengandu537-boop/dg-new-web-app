@@ -4,6 +4,7 @@ import { useRouter, useParams } from "next/navigation";
 import AdminHeader from "@/components/dashboard/admin/AdminHeader";
 import { fetchPropertyById, updateProperty, fetchAllBrokers } from "@/utils/dashboardApi";
 import { getApiErrorMessage } from "@/utils/apiError";
+import { resolveMediaUrl } from "@/utils/publicMedia";
 import { useDropzone } from "react-dropzone";
 import {
   ADMIN_LISTING_CATEGORY_DEFAULT_PROPERTY_TYPE,
@@ -413,7 +414,7 @@ export default function EditPropertyPage() {
                 <button key={b.id} onClick={() => setAssignedBrokerId(b.id)}
                   style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 14px", border: `2px solid ${assignedBrokerId === b.id ? "#6dbf8b" : "#e2e8f0"}`, borderRadius: 8, background: assignedBrokerId === b.id ? "#f0fff4" : "#fff", cursor: "pointer" }}>
                   {b.photo
-                    ? <img src={b.photo} alt="" style={{ width: 28, height: 28, borderRadius: "50%", objectFit: "cover" }} />
+                    ? <img src={resolveMediaUrl(b.photo)} alt="" style={{ width: 28, height: 28, borderRadius: "50%", objectFit: "cover" }} />
                     : <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, color: "#718096", fontSize: 12 }}>{b.fullName[0]}</div>}
                   <span style={{ fontSize: 13, fontWeight: assignedBrokerId === b.id ? 600 : 400, color: assignedBrokerId === b.id ? "#276749" : "#4a5568" }}>{b.fullName}</span>
                 </button>
@@ -431,7 +432,7 @@ export default function EditPropertyPage() {
               return (
                 <button key={b.id} onClick={() => setSelectedBrokers((p) => sel ? p.filter((x) => x !== b.id) : [...p, b.id])}
                   style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 14px", border: `2px solid ${sel ? "#6dbf8b" : "#e2e8f0"}`, borderRadius: 8, background: sel ? "#f0fff4" : "#fff", cursor: "pointer" }}>
-                  {b.photo ? <img src={b.photo} alt="" style={{ width: 28, height: 28, borderRadius: "50%", objectFit: "cover" }} /> :
+                  {b.photo ? <img src={resolveMediaUrl(b.photo)} alt="" style={{ width: 28, height: 28, borderRadius: "50%", objectFit: "cover" }} /> :
                     <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, color: "#718096", fontSize: 12 }}>{b.fullName[0]}</div>}
                   <span style={{ fontSize: 13, fontWeight: sel ? 600 : 400, color: sel ? "#276749" : "#4a5568" }}>{b.fullName}</span>
                 </button>

@@ -532,6 +532,16 @@ export const createProperty = async (req: AuthRequest, res: Response): Promise<v
       data.listingCategory = deriveListingCategory(data.category, data.listingType);
     }
 
+    const toNullableFloat = (v: any) =>
+      (v === "" || v === "null" || v === "undefined" || v == null) ? null : (parseFloat(v) || null);
+    const toNullableInt = (v: any) =>
+      (v === "" || v === "null" || v === "undefined" || v == null) ? null : (parseInt(v, 10) || null);
+
+    if (data.assignedBrokerId !== undefined) data.assignedBrokerId = toNullableInt(data.assignedBrokerId);
+    if (data.submittedByUserId !== undefined) data.submittedByUserId = toNullableInt(data.submittedByUserId);
+    if (data.gpsLat !== undefined) data.gpsLat = toNullableFloat(data.gpsLat);
+    if (data.gpsLng !== undefined) data.gpsLng = toNullableFloat(data.gpsLng);
+    if (data.price !== undefined) data.price = toNullableFloat(data.price);
     if (data.isFeatured !== undefined) {
       data.isFeatured = data.isFeatured === true || data.isFeatured === "true";
     }
