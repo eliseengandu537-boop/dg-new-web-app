@@ -35,7 +35,7 @@ const faq_data:DataType[] = [
       id: 1,
       page: "home_2_faq_2",
       question: "What property types do you focus on?",
-      answer: "Our focus is commercial property: retail, industrial, office and selected investment properties across South Africa.",
+      answer: "Focused on delivering strategic commercial property solutions across leasing, sales, investments, and valuations.",
       showAnswer: false,
    },
    {

@@ -15,8 +15,8 @@ const stats = [
 const HeroBanner = () => {
    const heroSlides = [
       "/assets/images/assets/back1.jpg",
-      "/assets/images/assets/ba1.jpg",
-      "/assets/images/assets/ba2.jpg",
+      "/assets/images/assets/p1.jpeg",
+      "/assets/images/assets/p2.jpeg",
       "/assets/images/assets/ba3.jpg",
       "/assets/images/assets/back3.jpg",
    ];
@@ -96,7 +96,7 @@ const HeroBanner = () => {
                            border: "1px solid rgba(240,185,94,0.40)",
                         }}
                      >
-                        Commercial Real Estate · South Africa
+                        Brokering In Excellence
                      </div>
 
                      {/* Main heading */}
@@ -138,7 +138,7 @@ const HeroBanner = () => {
                            marginBottom: 42,
                         }}
                      >
-                        Discover premium commercial properties across South Africa: leasing, investment sales, and development expertise under one roof.
+                        Discover premium commercial property opportunities across South Africa, with expert services in leasing, investment sales, and development all under one roof.
                      </p>
 
                      {/* CTAs */}

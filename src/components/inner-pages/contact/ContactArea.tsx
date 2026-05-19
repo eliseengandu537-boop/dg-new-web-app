@@ -149,7 +149,7 @@ const ContactArea = () => {
                               fontWeight: 700,
                            }}
                         >
-                           Start with the contact method that feels easiest.
+                           Connect With Us
                         </h2>
                         <div style={{ display: "grid", gap: 12, marginTop: 22 }}>
                            {quickContact.slice(0, 2).map((item) => (
