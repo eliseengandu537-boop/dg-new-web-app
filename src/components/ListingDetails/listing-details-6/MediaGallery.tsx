@@ -1,91 +1,219 @@
 import Fancybox from "@/components/common/Fancybox";
+import { resolveMediaUrl } from "@/utils/publicMedia";
 
 interface Props {
-   featuredImage?: string;
-   gallery?: string[];
-   title?: string;
+  featuredImage?: string;
+  gallery?: string[];
+  title?: string;
 }
-
-const mainGalleryHeight = "clamp(300px, 52vw, 520px)";
-const thumbGalleryHeight = "calc((clamp(300px, 52vw, 520px) - 48px) / 4)";
 
 const MediaGallery = ({ featuredImage, gallery = [], title = "" }: Props) => {
-   // Build full image list: featured first, then gallery extras
-   const allImages: string[] = [];
-   if (featuredImage) allImages.push(featuredImage);
-   gallery.forEach((img) => { if (img && img !== featuredImage) allImages.push(img); });
+  const allImages: string[] = [];
+  if (featuredImage) allImages.push(resolveMediaUrl(featuredImage));
 
-   if (allImages.length === 0) {
-      return (
-         <div className="media-gallery-grid p0 mb-60">
-            <div className="bg-white shadow4 border-20 p-30" style={{ minHeight: 280, display: "flex", alignItems: "center", justifyContent: "center" }}>
-               <div style={{ textAlign: "center", color: "#a0aec0" }}>
-                  <i className="bi bi-building" style={{ fontSize: 64 }}></i>
-                  <p className="mt-3 fs-18">No images available</p>
-               </div>
-            </div>
-         </div>
-      );
-   }
+  gallery.forEach((image) => {
+    const resolved = resolveMediaUrl(image);
+    if (resolved && !allImages.includes(resolved)) {
+      allImages.push(resolved);
+    }
+  });
 
-   const sliderId = "media_slider_6";
-
-   return (
-      <div className="media-gallery-grid p0 mb-60">
-         <div id={sliderId} className="carousel slide row g-3 align-items-stretch">
-            {/* Main image */}
-            <div className="col-lg-9">
-               <div className="bg-white shadow4 border-20 p-20 h-100">
-                  <div className="position-relative z-1 overflow-hidden border-20" style={{ height: mainGalleryHeight, minHeight: 180 }}>
-                     <div className="img-fancy-btn border-10 fw-500 fs-16 color-dark">
-                        See all {allImages.length} Photos
-                        <Fancybox options={{ Carousel: { infinite: true } }}>
-                           {allImages.map((img, index) => (
-                              <a key={index} className="d-block" data-fancybox="prop-gallery" href={img}></a>
-                           ))}
-                        </Fancybox>
-                     </div>
-                     <div className="carousel-inner" style={{ height: "100%" }}>
-                        {allImages.map((img, index) => (
-                           <div key={index} className={`carousel-item h-100 ${index === 0 ? "active" : ""}`}>
-                              <img src={img} alt={title} className="border-20 w-100"
-                                 style={{ height: "100%", minHeight: 180, objectFit: "cover" }} />
-                           </div>
-                        ))}
-                     </div>
-                     <button className="carousel-control-prev" type="button" data-bs-target={`#${sliderId}`} data-bs-slide="prev">
-                        <i className="bi bi-chevron-left"></i>
-                        <span className="visually-hidden">Previous</span>
-                     </button>
-                     <button className="carousel-control-next" type="button" data-bs-target={`#${sliderId}`} data-bs-slide="next">
-                        <i className="bi bi-chevron-right"></i>
-                        <span className="visually-hidden">Next</span>
-                     </button>
-                  </div>
-               </div>
-            </div>
-
-            {/* Thumbnails column — each as its own card */}
-            <div className="col-lg-3 d-none d-lg-flex flex-column gap-3">
-               {allImages.slice(0, 4).map((img, i) => (
-                  <button
-                     key={i}
-                     type="button"
-                     data-bs-target={`#${sliderId}`}
-                     data-bs-slide-to={`${i}`}
-                     className={`p-0 border-0 bg-transparent flex-fill ${i === 0 ? "active" : ""}`}
-                     aria-label={`Slide ${i + 1}`}
-                     style={{ minHeight: thumbGalleryHeight, height: thumbGalleryHeight, flex: "0 0 auto" }}
-                  >
-                     <div className="bg-white shadow4 border-15 overflow-hidden" style={{ height: "100%" }}>
-                        <img src={img} alt="" className="w-100 h-100" style={{ objectFit: "cover", display: "block" }} />
-                     </div>
-                  </button>
-               ))}
-            </div>
-         </div>
+  if (allImages.length === 0) {
+    return (
+      <div style={{ marginBottom: 28 }}>
+        <div
+          style={{
+            minHeight: 320,
+            borderRadius: 22,
+            border: "1px solid #e2e8f0",
+            background: "#f8fafc",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
+            color: "#64748b",
+            gap: 10,
+            padding: 24,
+          }}
+        >
+          <i className="bi bi-building" style={{ fontSize: 44 }}></i>
+          <p style={{ fontSize: 17, margin: 0 }}>No media available for this property yet.</p>
+        </div>
       </div>
-   );
-}
+    );
+  }
 
-export default MediaGallery
+  const mainImage = allImages[0];
+  const sideImages = allImages.slice(1, 3);
+  const hiddenImages = allImages.slice(3);
+  const secondaryCount = Math.max(allImages.length - 2, 0);
+
+  return (
+    <div style={{ marginBottom: 24 }}>
+      <Fancybox options={{ Carousel: { infinite: true } }}>
+        <div
+          style={{
+            position: "relative",
+            background: "#fff",
+            borderRadius: 22,
+            padding: 10,
+            border: "1px solid #dbe4ee",
+            boxShadow: "0 18px 44px rgba(15,23,42,0.06)",
+          }}
+        >
+          <div className="row g-3">
+            <div className="col-lg-8">
+              <a
+                href={mainImage}
+                data-fancybox="property-gallery"
+                style={{
+                  position: "relative",
+                  display: "block",
+                  minHeight: 430,
+                  borderRadius: 18,
+                  overflow: "hidden",
+                  background: "#e2e8f0",
+                }}
+              >
+                <img
+                  src={mainImage}
+                  alt={title}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    minHeight: 430,
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                />
+              </a>
+            </div>
+
+            <div className="col-lg-4">
+              <div style={{ display: "grid", gap: 10, gridTemplateRows: "repeat(2, minmax(0, 1fr))", height: "100%" }}>
+                {sideImages.map((image, index) => {
+                  const isGalleryTile = index === sideImages.length - 1 && allImages.length > 2;
+
+                  return (
+                    <a
+                      key={image}
+                      href={image}
+                      data-fancybox="property-gallery"
+                      style={{
+                        position: "relative",
+                        display: "block",
+                        minHeight: 210,
+                        borderRadius: 18,
+                        overflow: "hidden",
+                        background: "#e2e8f0",
+                      }}
+                    >
+                      <img
+                        src={image}
+                        alt={`${title} ${index + 2}`}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          minHeight: 210,
+                          objectFit: "cover",
+                          display: "block",
+                        }}
+                      />
+                      {isGalleryTile && secondaryCount > 1 && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            inset: 0,
+                            background: "linear-gradient(180deg, rgba(15,23,42,0.08) 0%, rgba(15,23,42,0.62) 100%)",
+                            display: "flex",
+                            alignItems: "flex-end",
+                            justifyContent: "flex-start",
+                            padding: 18,
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: 8,
+                              borderRadius: 999,
+                              padding: "9px 14px",
+                              background: "rgba(255,255,255,0.92)",
+                              color: "#0f172a",
+                              fontSize: 13,
+                              fontWeight: 700,
+                            }}
+                          >
+                            + {secondaryCount - 1} Photos
+                          </div>
+                        </div>
+                      )}
+                    </a>
+                  );
+                })}
+
+                {Array.from({ length: Math.max(0, 2 - sideImages.length) }).map((_, index) => (
+                  <div
+                    key={`placeholder-${index}`}
+                    style={{
+                      minHeight: 210,
+                      borderRadius: 18,
+                      background: "#f8fafc",
+                      border: "1px dashed #d6e0ea",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "#94a3b8",
+                      fontSize: 13,
+                      fontWeight: 700,
+                      letterSpacing: 0.4,
+                    }}
+                  >
+                    More photos soon
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <a
+            href={mainImage}
+            data-fancybox="property-gallery"
+            style={{
+              position: "absolute",
+              top: 22,
+              right: 22,
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "10px 16px",
+              borderRadius: 999,
+              background: "rgba(255,255,255,0.96)",
+              color: "#0f172a",
+              textDecoration: "none",
+              fontSize: 12,
+              fontWeight: 700,
+              boxShadow: "0 8px 18px rgba(15,23,42,0.12)",
+            }}
+          >
+            See all photos
+          </a>
+
+          {hiddenImages.map((image, index) => (
+            <a
+              key={`${image}-${index}`}
+              href={image}
+              data-fancybox="property-gallery"
+              style={{ display: "none" }}
+            >
+              Hidden image
+            </a>
+          ))}
+        </div>
+      </Fancybox>
+    </div>
+  );
+};
+
+export default MediaGallery;

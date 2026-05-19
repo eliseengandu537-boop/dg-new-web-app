@@ -3,7 +3,14 @@ import jwt from "jsonwebtoken";
 
 const SECRET_KEY = process.env.JWT_SECRET || "your_secret_key";
 
-export type AuthRequest = Request;
+export interface AuthUser {
+  id: number;
+  role: string;
+}
+
+export interface AuthRequest extends Request {
+  user?: AuthUser;
+}
 
 export const authenticateUser = (req: AuthRequest, res: Response, next: NextFunction): void => {
   const token = req.header("Authorization")?.split(" ")[1];
@@ -14,7 +21,7 @@ export const authenticateUser = (req: AuthRequest, res: Response, next: NextFunc
   }
 
   try {
-    const decoded = jwt.verify(token, SECRET_KEY) as { id: number; role: string };
+    const decoded = jwt.verify(token, SECRET_KEY) as AuthUser;
     req.user = decoded;
     next();
   } catch (error) {

@@ -14,6 +14,7 @@ import {
 interface Props {
   rounded?: boolean;
   sourceContext?: string;
+  compact?: boolean;
 }
 
 interface SubmissionState {
@@ -28,7 +29,7 @@ const resultCards = [
   { key: "totalPayable", label: "Total amount payable" },
 ] as const;
 
-const BondCalculatorForm = ({ rounded = true, sourceContext }: Props) => {
+const BondCalculatorForm = ({ rounded = true, sourceContext, compact = false }: Props) => {
   const pathname = usePathname();
   const [homePrice, setHomePrice] = useState("");
   const [downPayment, setDownPayment] = useState("");
@@ -51,10 +52,22 @@ const BondCalculatorForm = ({ rounded = true, sourceContext }: Props) => {
     annualInterestRate: interestRateValue,
     loanTermYears: loanTermValue,
   });
+  const canRevealResults = Boolean(fullName.trim() && phone.trim() && email.trim());
 
   const inputClassName = `type-input ${rounded ? "" : "rounded-0"}`.trim();
   const buttonClassName = `btn-five text-uppercase sm w-100 mb-10 ${rounded ? "rounded-3" : "rounded-0"}`.trim();
   const leadSource = sourceContext ? `Bond Calculator - ${sourceContext}` : `Bond Calculator - ${pathname}`;
+  const fieldSpacing = compact ? 14 : 25;
+  const finalFieldSpacing = compact ? 14 : 20;
+  const inputStyle = compact ? compactInputStyle : undefined;
+  const labelStyle = compact ? compactLabelStyle : undefined;
+  const buttonStyle = compact ? compactButtonStyle : undefined;
+  const activeResultsGridStyle = compact ? { ...resultsGridStyle, gap: 10, marginBottom: 16 } : resultsGridStyle;
+  const activeResultCardStyle = compact ? { ...resultCardStyle, padding: "12px 14px" } : resultCardStyle;
+  const activeResultLabelStyle = compact ? { ...resultLabelStyle, fontSize: 11, marginBottom: 6 } : resultLabelStyle;
+  const activeResultValueStyle = compact ? { ...resultValueStyle, fontSize: 16 } : resultValueStyle;
+  const activeLockedResultsStyle = compact ? { ...lockedResultsStyle, marginBottom: 16, padding: "12px 14px", fontSize: 12, lineHeight: 1.5 } : lockedResultsStyle;
+  const activeLeadSectionStyle = compact ? { ...leadSectionStyle, paddingTop: 0 } : leadSectionStyle;
 
   const clearFeedback = () => {
     if (submissionState) setSubmissionState(null);
@@ -71,6 +84,11 @@ const BondCalculatorForm = ({ rounded = true, sourceContext }: Props) => {
 
     if (!phone.trim()) {
       setSubmissionState({ type: "error", message: "Phone number is required." });
+      return;
+    }
+
+    if (!email.trim()) {
+      setSubmissionState({ type: "error", message: "Email is required." });
       return;
     }
 
@@ -122,8 +140,8 @@ const BondCalculatorForm = ({ rounded = true, sourceContext }: Props) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="input-box-three mb-25">
-        <div className="label">Home Price*</div>
+      <div className="input-box-three" style={{ marginBottom: fieldSpacing }}>
+        <div className="label" style={labelStyle}>Home Price*</div>
         <input
           type="text"
           inputMode="numeric"
@@ -134,11 +152,12 @@ const BondCalculatorForm = ({ rounded = true, sourceContext }: Props) => {
           }}
           placeholder="1 320 000"
           className={inputClassName}
+          style={inputStyle}
         />
       </div>
 
-      <div className="input-box-three mb-25">
-        <div className="label">Down Payment*</div>
+      <div className="input-box-three" style={{ marginBottom: fieldSpacing }}>
+        <div className="label" style={labelStyle}>Down Payment*</div>
         <input
           type="text"
           inputMode="numeric"
@@ -149,11 +168,12 @@ const BondCalculatorForm = ({ rounded = true, sourceContext }: Props) => {
           }}
           placeholder="100 000"
           className={inputClassName}
+          style={inputStyle}
         />
       </div>
 
-      <div className="input-box-three mb-25">
-        <div className="label">Interest Rate*</div>
+      <div className="input-box-three" style={{ marginBottom: fieldSpacing }}>
+        <div className="label" style={labelStyle}>Interest Rate*</div>
         <input
           type="text"
           inputMode="decimal"
@@ -164,11 +184,12 @@ const BondCalculatorForm = ({ rounded = true, sourceContext }: Props) => {
           }}
           placeholder="11.75"
           className={inputClassName}
+          style={inputStyle}
         />
       </div>
 
-      <div className="input-box-three mb-25">
-        <div className="label">Loan Term (Years)*</div>
+      <div className="input-box-three" style={{ marginBottom: fieldSpacing }}>
+        <div className="label" style={labelStyle}>Loan Term (Years)*</div>
         <input
           type="text"
           inputMode="numeric"
@@ -179,21 +200,13 @@ const BondCalculatorForm = ({ rounded = true, sourceContext }: Props) => {
           }}
           placeholder="20"
           className={inputClassName}
+          style={inputStyle}
         />
       </div>
 
-      <div style={resultsGridStyle}>
-        {resultCards.map((card) => (
-          <div key={card.key} style={resultCardStyle}>
-            <div style={resultLabelStyle}>{card.label}</div>
-            <div style={resultValueStyle}>{formatZar(results[card.key])}</div>
-          </div>
-        ))}
-      </div>
-
-      <div style={leadSectionStyle}>
-        <div className="input-box-three mb-25">
-          <div className="label">Full name*</div>
+      <div style={activeLeadSectionStyle}>
+        <div className="input-box-three" style={{ marginBottom: fieldSpacing }}>
+          <div className="label" style={labelStyle}>Full name*</div>
           <input
             type="text"
             value={fullName}
@@ -203,11 +216,12 @@ const BondCalculatorForm = ({ rounded = true, sourceContext }: Props) => {
             }}
             placeholder="Your full name"
             className={inputClassName}
+            style={inputStyle}
           />
         </div>
 
-        <div className="input-box-three mb-25">
-          <div className="label">Phone number*</div>
+        <div className="input-box-three" style={{ marginBottom: fieldSpacing }}>
+          <div className="label" style={labelStyle}>Phone number*</div>
           <input
             type="tel"
             inputMode="tel"
@@ -218,11 +232,12 @@ const BondCalculatorForm = ({ rounded = true, sourceContext }: Props) => {
             }}
             placeholder="Your phone number"
             className={inputClassName}
+            style={inputStyle}
           />
         </div>
 
-        <div className="input-box-three mb-20">
-          <div className="label">Email</div>
+        <div className="input-box-three" style={{ marginBottom: finalFieldSpacing }}>
+          <div className="label" style={labelStyle}>Email*</div>
           <input
             type="email"
             value={email}
@@ -232,9 +247,25 @@ const BondCalculatorForm = ({ rounded = true, sourceContext }: Props) => {
             }}
             placeholder="Enter email address"
             className={inputClassName}
+            style={inputStyle}
           />
         </div>
       </div>
+
+      {canRevealResults ? (
+        <div style={activeResultsGridStyle}>
+          {resultCards.map((card) => (
+            <div key={card.key} style={activeResultCardStyle}>
+              <div style={activeResultLabelStyle}>{card.label}</div>
+              <div style={activeResultValueStyle}>{formatZar(results[card.key])}</div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div style={activeLockedResultsStyle}>
+          Enter name, phone, and email to unlock the bond results.
+        </div>
+      )}
 
       {submissionState && (
         <div
@@ -249,7 +280,7 @@ const BondCalculatorForm = ({ rounded = true, sourceContext }: Props) => {
         </div>
       )}
 
-      <button type="submit" className={buttonClassName} disabled={isSubmitting}>
+      <button type="submit" className={buttonClassName} style={buttonStyle} disabled={isSubmitting}>
         Save Bond Lead
       </button>
     </form>
@@ -284,8 +315,39 @@ const resultValueStyle: React.CSSProperties = {
   lineHeight: 1.3,
 };
 
+const lockedResultsStyle: React.CSSProperties = {
+  marginBottom: 24,
+  padding: "16px 18px",
+  border: "1px dashed rgba(0,0,0,0.14)",
+  borderRadius: 14,
+  background: "#fafafa",
+  color: "rgba(0,0,0,0.62)",
+  fontSize: 13,
+  lineHeight: 1.7,
+};
+
 const leadSectionStyle: React.CSSProperties = {
   paddingTop: 8,
+};
+
+const compactLabelStyle: React.CSSProperties = {
+  fontSize: 12,
+  marginBottom: 6,
+};
+
+const compactInputStyle: React.CSSProperties = {
+  height: 42,
+  fontSize: 14,
+  padding: "0 12px",
+  borderRadius: 8,
+};
+
+const compactButtonStyle: React.CSSProperties = {
+  minWidth: 0,
+  lineHeight: "46px",
+  fontSize: 12,
+  padding: "0 20px",
+  letterSpacing: 0.8,
 };
 
 const feedbackStyle: React.CSSProperties = {

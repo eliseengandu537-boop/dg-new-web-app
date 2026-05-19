@@ -3,6 +3,7 @@ import Link from "next/link"
 
 import infoAvatar from "@/assets/images/agent/img_06.jpg"
 import { contactInfo } from "@/data/contact-info";
+import { resolveMediaUrl } from "@/utils/publicMedia";
 
 interface AgentInfo {
    type: "client" | "broker";
@@ -15,6 +16,74 @@ interface Props {
 }
 
 const SidebarInfo = ({ agentInfo }: Props) => {
+   const renderAvatar = (avatarUrl: string | null | undefined, name: string) => {
+      const resolved = resolveMediaUrl(avatarUrl);
+
+      if (resolved) {
+         return (
+            <img src={resolved} alt={name}
+               className="lazy-img rounded-circle ms-auto me-auto"
+               style={{ width: 104, height: 104, objectFit: "cover", display: "block", border: "4px solid #f5f7f2" }} />
+         );
+      }
+
+      return (
+         <div
+            className="ms-auto me-auto"
+            style={{
+               width: 104,
+               height: 104,
+               borderRadius: "50%",
+               background: "linear-gradient(135deg, #dfe7d5 0%, #f4f7ef 100%)",
+               display: "flex",
+               alignItems: "center",
+               justifyContent: "center",
+               fontSize: 34,
+               fontWeight: 700,
+               color: "#586245",
+               border: "4px solid #f5f7f2",
+            }}
+         >
+            {name?.[0]?.toUpperCase() || "?"}
+         </div>
+      );
+   };
+
+   const renderContactRow = (icon: string, label: string, value: React.ReactNode) => (
+      <div
+         style={{
+            display: "grid",
+            gridTemplateColumns: "42px 1fr",
+            gap: 12,
+            alignItems: "start",
+            padding: "14px 0",
+            borderTop: "1px solid #edf0ea",
+         }}
+      >
+         <div
+            style={{
+               width: 42,
+               height: 42,
+               borderRadius: 14,
+               background: "#f4f7f1",
+               color: "#586245",
+               display: "flex",
+               alignItems: "center",
+               justifyContent: "center",
+               fontSize: 16,
+            }}
+         >
+            <i className={`bi ${icon}`}></i>
+         </div>
+         <div>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", color: "#8a927f", marginBottom: 4 }}>
+               {label}
+            </div>
+            <div style={{ color: "#203040", fontSize: 14, lineHeight: 1.7 }}>{value}</div>
+         </div>
+      </div>
+   );
+
    // Dynamic agent from API
    if (agentInfo?.data) {
       const a = agentInfo.data;
@@ -29,43 +98,101 @@ const SidebarInfo = ({ agentInfo }: Props) => {
 
       return (
          <>
-            {avatarUrl ? (
-               <img src={avatarUrl} alt={name}
-                  className="lazy-img rounded-circle ms-auto me-auto mt-3 avatar"
-                  style={{ width: 90, height: 90, objectFit: "cover", display: "block" }} />
-            ) : (
-               <div className="ms-auto me-auto mt-3" style={{ width: 90, height: 90, borderRadius: "50%", background: "#e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32, fontWeight: 700, color: "#718096" }}>
-                  {name?.[0]?.toUpperCase() || "?"}
-               </div>
-            )}
-            <div className="text-center mt-25">
-               <h6 className="name">{name}</h6>
-               <p className="fs-16">{role}</p>
+            <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "center", marginBottom: 18 }}>
+               <span
+                  style={{
+                     display: "inline-flex",
+                     alignItems: "center",
+                     gap: 8,
+                     borderRadius: 999,
+                     padding: "8px 14px",
+                     background: "#f4f7f1",
+                     color: "#586245",
+                     fontSize: 12,
+                     fontWeight: 700,
+                     letterSpacing: 1,
+                     textTransform: "uppercase",
+                  }}
+               >
+                  {isClient ? "Property Owner" : "Lead Broker"}
+               </span>
                {isClient && agentInfo.planName && agentInfo.planName !== "Free" && (
-                  <span style={{ background: "#f0fff4", color: "#276749", border: "1px solid #c6f6d5", borderRadius: 12, fontSize: 11, fontWeight: 600, padding: "3px 10px", display: "inline-block", marginBottom: 8 }}>
+                  <span style={{ color: "#276749", fontSize: 12, fontWeight: 700 }}>
                      {agentInfo.planName} Member
                   </span>
                )}
             </div>
-            <div className="divider-line mt-40 mb-45 pt-20">
-               <ul className="style-none">
-                  {address && (
-                     <li style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 2 }}>
-                        <span style={{ fontWeight: 500 }}>Address:</span>
-                        <span style={{ textAlign: "left" }}>{address}</span>
-                     </li>
-                  )}
-                  {email && <li>Email: <span><Link href={`mailto:${email}`}>{email}</Link></span></li>}
-                  {phone && <li>Phone: <span><Link href={`tel:${phone}`}>{phone}</Link></span></li>}
-                  {isClient && a.whatsapp && a.whatsapp !== phone && (
-                     <li>WhatsApp: <span><Link href={`https://wa.me/${a.whatsapp.replace(/\D/g,"")}`}>{a.whatsapp}</Link></span></li>
-                  )}
-                  {linkedin && (
-                     <li>LinkedIn: <span><Link href={linkedin.startsWith("http") ? linkedin : `https://${linkedin}`} target="_blank" rel="noopener noreferrer">View Profile</Link></span></li>
-                  )}
-               </ul>
+
+            <div style={{ textAlign: "center", marginBottom: 24 }}>
+               {renderAvatar(avatarUrl, name)}
+               <h5 style={{ color: "#122231", fontSize: 24, margin: "18px 0 6px" }}>{name}</h5>
+               <p style={{ color: "#667085", fontSize: 15, margin: 0 }}>{role}</p>
+               <p style={{ color: "#4b5563", fontSize: 14, lineHeight: 1.7, margin: "14px 0 0" }}>
+                  {isClient
+                     ? "Connect directly for ownership and property-specific information."
+                     : "Reach out for pricing, availability, viewings and leasing guidance."}
+               </p>
             </div>
-            <Link href="/contact" className="btn-nine text-uppercase rounded-3 w-100 mb-10">CONTACT AGENT</Link>
+
+            <div>
+               {address && renderContactRow("bi-geo-alt", "Location", <span>{address}</span>)}
+               {email && renderContactRow("bi-envelope", "Email", <Link href={`mailto:${email}`}>{email}</Link>)}
+               {phone && renderContactRow("bi-telephone", "Phone", <Link href={`tel:${phone}`}>{phone}</Link>)}
+               {isClient && a.whatsapp && a.whatsapp !== phone && (
+                  renderContactRow("bi-whatsapp", "WhatsApp", <Link href={`https://wa.me/${a.whatsapp.replace(/\D/g, "")}`}>{a.whatsapp}</Link>)
+               )}
+               {linkedin && renderContactRow(
+                  "bi-linkedin",
+                  "LinkedIn",
+                  <Link href={linkedin.startsWith("http") ? linkedin : `https://${linkedin}`} target="_blank" rel="noopener noreferrer">View Profile</Link>
+               )}
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: phone ? "1fr 1fr" : "1fr", gap: 10, marginTop: 24 }}>
+               {phone && (
+                  <Link
+                     href={`tel:${phone}`}
+                     style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 8,
+                        borderRadius: 999,
+                        padding: "14px 18px",
+                        background: "#f4f7f1",
+                        color: "#1d2d3d",
+                        textDecoration: "none",
+                        fontSize: 13,
+                        fontWeight: 700,
+                        letterSpacing: 1,
+                        textTransform: "uppercase",
+                     }}
+                  >
+                     Call now
+                  </Link>
+               )}
+               <Link
+                  href="/contact"
+                  style={{
+                     display: "inline-flex",
+                     alignItems: "center",
+                     justifyContent: "center",
+                     gap: 8,
+                     borderRadius: 999,
+                     padding: "14px 18px",
+                     background: "linear-gradient(135deg, #7a8561 0%, #5d6847 100%)",
+                     color: "#fff",
+                     textDecoration: "none",
+                     fontSize: 13,
+                     fontWeight: 700,
+                     letterSpacing: 1,
+                     textTransform: "uppercase",
+                     boxShadow: "0 16px 28px rgba(93,104,71,0.18)",
+                  }}
+               >
+                  Contact agent
+               </Link>
+            </div>
          </>
       );
    }
@@ -73,20 +200,42 @@ const SidebarInfo = ({ agentInfo }: Props) => {
    // Fallback: static placeholder
    return (
       <>
-         <Image src={infoAvatar} alt=""
-            className="lazy-img rounded-circle ms-auto me-auto mt-3 avatar" />
-         <div className="text-center mt-25">
-            <h6 className="name">DG Property Agent</h6>
-            <p className="fs-16">Property Agent & Broker</p>
+         <div style={{ display: "inline-flex", alignItems: "center", gap: 8, borderRadius: 999, padding: "8px 14px", background: "#f4f7f1", color: "#586245", fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", marginBottom: 18 }}>
+            DG Property
          </div>
-         <div className="divider-line mt-40 mb-45 pt-20">
-            <ul className="style-none">
-               <li>Location: <span>{contactInfo.fullAddress}</span></li>
-               <li>Email: <span><Link href={contactInfo.emailHref}>{contactInfo.emailDisplay}</Link></span></li>
-               <li>Phone: <span><Link href={contactInfo.phoneHref}>{contactInfo.phoneDisplay}</Link></span></li>
-            </ul>
+         <div style={{ textAlign: "center", marginBottom: 24 }}>
+            <Image src={infoAvatar} alt=""
+               className="lazy-img rounded-circle ms-auto me-auto" />
+            <h5 style={{ color: "#122231", fontSize: 24, margin: "18px 0 6px" }}>DG Property Advisor</h5>
+            <p style={{ color: "#667085", fontSize: 15, margin: 0 }}>Commercial Property Broker</p>
          </div>
-         <Link href="/contact" className="btn-nine text-uppercase rounded-3 w-100 mb-10">CONTACT AGENT</Link>
+         <div>
+            {renderContactRow("bi-geo-alt", "Location", <span>{contactInfo.fullAddress}</span>)}
+            {renderContactRow("bi-envelope", "Email", <Link href={contactInfo.emailHref}>{contactInfo.emailDisplay}</Link>)}
+            {renderContactRow("bi-telephone", "Phone", <Link href={contactInfo.phoneHref}>{contactInfo.phoneDisplay}</Link>)}
+         </div>
+         <Link
+            href="/contact"
+            style={{
+               display: "inline-flex",
+               alignItems: "center",
+               justifyContent: "center",
+               gap: 8,
+               width: "100%",
+               marginTop: 24,
+               borderRadius: 999,
+               padding: "14px 18px",
+               background: "linear-gradient(135deg, #7a8561 0%, #5d6847 100%)",
+               color: "#fff",
+               textDecoration: "none",
+               fontSize: 13,
+               fontWeight: 700,
+               letterSpacing: 1,
+               textTransform: "uppercase",
+            }}
+         >
+            Contact agent
+         </Link>
       </>
    )
 }
