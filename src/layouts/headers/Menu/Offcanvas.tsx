@@ -23,7 +23,7 @@ interface FeaturedProperty {
 }
 
 const getListingTag = (listingType?: string) => {
-   if (listingType === "lease") return "FOR LEASE"
+   if (listingType === "lease") return "TO LET"
    if (listingType === "investment") return "INVESTMENT"
    return "FOR SALE"
 }

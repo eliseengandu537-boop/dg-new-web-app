@@ -15,7 +15,7 @@ const CATEGORIES = [
 
 const LISTING_TYPES = [
   { value: "sale", label: "For Sale" },
-  { value: "lease", label: "To Let / Lease" },
+  { value: "lease", label: "To Let" },
   { value: "investment", label: "Investment Opportunity" },
 ];
 

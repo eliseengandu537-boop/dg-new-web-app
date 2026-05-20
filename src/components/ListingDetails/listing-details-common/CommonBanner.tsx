@@ -18,7 +18,7 @@ const formatPrice = (price?: number) => {
 const CommonBanner = ({ style_3, property }: { style_3?: any; property?: Property | null }) => {
    const title = property?.title || "Luxury Apartments on California.";
    const listingType = property?.listingType || "sale";
-   const typeLabel = listingType === "lease" ? "FOR LEASE" : listingType === "investment" ? "INVESTMENT" : "FOR SALE";
+   const typeLabel = listingType === "lease" ? "TO LET" : listingType === "investment" ? "INVESTMENT" : "FOR SALE";
    const addressParts = [property?.address, property?.suburb, property?.city, property?.province].filter(Boolean);
    const address = addressParts.length > 0 ? addressParts.join(", ") : "3891 Ranchview Dr. Richardson, California";
    const price = formatPrice(property?.price);

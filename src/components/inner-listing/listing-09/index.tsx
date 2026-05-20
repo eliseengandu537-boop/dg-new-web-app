@@ -11,8 +11,8 @@ const ListingNine = () => {
              <HeaderFour />
              <PropertyHero
                 title="Retail Leasing"
-                badge="For Lease"
-                subtitle="Retail spaces available for lease in top locations."
+                badge="To Let"
+                subtitle="Retail spaces available to let in top locations."
              />
              <ListingNineArea />
          <FancyBanner />

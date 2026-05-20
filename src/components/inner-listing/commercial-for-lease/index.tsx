@@ -10,7 +10,7 @@ const CommercialForLeaseIndex = () => {
     <>
       <HeaderFour />
       <PropertyHero
-        title="Commercial For Lease"
+        title="Commercial To Let"
         badge="Commercial"
         subtitle="Browse commercial office and mixed-use listings across South Africa from one page."
       />

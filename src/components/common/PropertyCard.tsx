@@ -34,7 +34,7 @@ const PropertyCard = ({ item, detailsLink = "/listing_details_06" }: PropertyCar
   // Badge
   const tag: string =
     item.tag ||
-    (item.listingType === "lease" ? "FOR LEASE" :
+    (item.listingType === "lease" ? "TO LET" :
      item.listingType === "investment" ? "INVESTMENT" : "FOR SALE");
   const { bg: badgeBg, color: badgeColor } = getBadgeColors(tag);
 

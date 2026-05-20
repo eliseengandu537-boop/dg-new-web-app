@@ -233,7 +233,7 @@ export default function AddPropertyPage() {
                 <label style={labelStyle}>Listing Type *</label>
                 <select value={form.listingType} onChange={(e) => setForm({ ...form, listingType: e.target.value })} style={inputStyle}>
                   <option value="sale">For Sale</option>
-                  <option value="lease">For Lease</option>
+                  <option value="lease">To Let</option>
                   <option value="investment">Investment</option>
                 </select>
               </div>

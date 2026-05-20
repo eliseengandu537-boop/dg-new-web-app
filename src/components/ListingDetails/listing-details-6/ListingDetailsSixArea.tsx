@@ -27,7 +27,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 const LISTING_TYPE_LABELS: Record<string, string> = {
   sale: "For Sale",
-  lease: "For Lease",
+  lease: "To Let",
   investment: "Investment",
 };
 
@@ -234,7 +234,7 @@ const ListingDetailsSixArea = () => {
 
   const priceLabel =
     listingType === "lease"
-      ? "Rental guide"
+      ? "Monthly Rental"
       : listingType === "investment"
         ? "Investment guide"
         : "Asking price";

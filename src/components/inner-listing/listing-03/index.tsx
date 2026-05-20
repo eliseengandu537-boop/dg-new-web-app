@@ -11,7 +11,7 @@ const ListingSix = () => {
              <HeaderOne style={true} />
              <PropertyHero
                 title="Industrial Warehouse"
-                badge="For Lease"
+                badge="To Let"
                 subtitle="Warehouses, logistics parks and industrial units available to lease nationwide."
              />
              <ListingThreeArea style={false} />

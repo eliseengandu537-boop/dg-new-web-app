@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
 export const metadata = {
-  title: "Commercial for Lease | DG Property",
+  title: "Commercial To Let | DG Property",
 };
 
 const ListingFiveRedirectPage = () => {

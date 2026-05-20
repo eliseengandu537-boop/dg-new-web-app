@@ -230,7 +230,7 @@ export default function EditPropertyPage() {
           <div style={grid2}>
             <div><label style={lbl}>Listing Type</label>
               <select value={form.listingType} onChange={(e) => setForm({ ...form, listingType: e.target.value })} style={inp}>
-                <option value="sale">For Sale</option><option value="lease">For Lease</option><option value="investment">Investment</option>
+                <option value="sale">For Sale</option><option value="lease">To Let</option><option value="investment">Investment</option>
               </select>
             </div>
             <Field label="Price (R)" value={String(form.price)} onChange={(v) => setForm({ ...form, price: v })} type="number" />

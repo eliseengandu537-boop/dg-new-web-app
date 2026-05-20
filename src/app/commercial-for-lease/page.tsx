@@ -2,7 +2,7 @@ import CommercialForLease from "@/components/inner-listing/commercial-for-lease"
 import Wrapper from "@/layouts/Wrapper";
 
 export const metadata = {
-  title: "Commercial for Lease | DG Property",
+  title: "Commercial To Let | DG Property",
 };
 
 const CommercialForLeasePage = () => {

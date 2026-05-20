@@ -34,7 +34,7 @@ const menu_data: MenuItem[] = [
         link: "#",
         sub_menus: [
             { link: "/listing_07", title: "All Listings" },
-            { link: "/commercial-for-lease", title: "Commercial for Lease" },
+            { link: "/commercial-for-lease", title: "Commercial To Let" },
             { link: "/fuel-station", title: "Fuel Station" },
             { link: "/investment", title: "Investment" },
             { link: "/listing_09", title: "Retail Leasing" },

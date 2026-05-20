@@ -122,7 +122,7 @@ export default function PropertiesPage() {
           </Select>
           <Select value={filters.listingType} onChange={(v) => setFilters({ ...filters, listingType: v })} placeholder="All Types">
             <option value="sale">For Sale</option>
-            <option value="lease">For Lease</option>
+            <option value="lease">To Let</option>
             <option value="investment">Investment</option>
           </Select>
         </div>
