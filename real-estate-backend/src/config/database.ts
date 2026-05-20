@@ -50,7 +50,7 @@ export const sequelize = databaseUrl
       dialect: dbDialect === "postgres" ? "postgres" : "sqlite",
       database: process.env.DB_NAME || "real_estate_db",
       username: process.env.DB_USER || "postgres",
-      password: process.env.DB_PASSWORD || "1572001",
+      password: process.env.DB_PASSWORD || "",
       host: process.env.DB_HOST || "127.0.0.1",
       storage: process.env.DB_STORAGE || "./data/dev.sqlite",
       logging: false,

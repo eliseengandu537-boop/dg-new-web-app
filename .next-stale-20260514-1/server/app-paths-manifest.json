@@ -1,9 +1,0 @@
-{
-  "/page": "app/page.js",
-  "/contact/page": "app/contact/page.js",
-  "/listing_07/page": "app/listing_07/page.js",
-  "/courses/page": "app/courses/page.js",
-  "/[...not-found]/page": "app/[...not-found]/page.js",
-  "/dashboard/admin/page": "app/dashboard/admin/page.js",
-  "/dashboard/admin/inquiries/page": "app/dashboard/admin/inquiries/page.js"
-}

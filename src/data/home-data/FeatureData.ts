@@ -298,7 +298,7 @@ const feature_data: DataType[] = [
       icon: feature6Icon_2,
       title: "Industrial Property",
       btn: "View Industrial",
-      desc: "Warehouses, logistics hubs and manufacturing facilities for lease or sale across South Africa.",
+      desc: "Warehouses, logistics hubs and manufacturing facilities to let or for sale across South Africa.",
       data_delay_time: "0.1s",
    },
    {

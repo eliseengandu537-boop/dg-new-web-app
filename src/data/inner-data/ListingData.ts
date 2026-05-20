@@ -64,7 +64,7 @@ const listing_data: DataType[] = [
    {
       id: 1,
       page: "listing_1",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_1, active: "active" }, { img: propertyThumb_2 }, { img: propertyThumb_3 }],
       title: "Sandton Corporate Park",
       address: "14 Alice Lane, Sandton, Johannesburg",
@@ -113,7 +113,7 @@ const listing_data: DataType[] = [
    {
       id: 4,
       page: "listing_1",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_4, active: "active" }, { img: propertyThumb_5 }, { img: propertyThumb_6 }],
       title: "Rosebank Mixed-Use Tower",
       address: "50 Bath Ave, Rosebank, Johannesburg",
@@ -146,7 +146,7 @@ const listing_data: DataType[] = [
    {
       id: 6,
       page: "listing_1",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_6, active: "active" }, { img: propertyThumb_5 }, { img: propertyThumb_4 }],
       title: "Cape Town Business Park",
       address: "Voortrekker Rd, Bellville, Cape Town",
@@ -179,7 +179,7 @@ const listing_data: DataType[] = [
    {
       id: 8,
       page: "listing_1",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_8, active: "active" }, { img: propertyThumb_5 }, { img: propertyThumb_6 }],
       title: "Durban Industrial Estate",
       address: "8 Mahogany Rd, Westmead, Durban",
@@ -211,7 +211,7 @@ const listing_data: DataType[] = [
    {
       id: 10,
       page: "listing_1",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_6, active: "active" }, { img: propertyThumb_5 }, { img: propertyThumb_4 }],
       title: "Kramerville Office Park",
       address: "3 Kramerville Rd, Sandton, Johannesburg",
@@ -244,7 +244,7 @@ const listing_data: DataType[] = [
    {
       id: 12,
       page: "listing_1",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_8, active: "active" }, { img: propertyThumb_5 }, { img: propertyThumb_6 }],
       title: "Bedfordview Retail Centre",
       address: "59 Van Buuren Rd, Bedfordview, Johannesburg",
@@ -260,7 +260,7 @@ const listing_data: DataType[] = [
    {
       id: 13,
       page: "listing_1",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_1, active: "active" }, { img: propertyThumb_2 }, { img: propertyThumb_3 }],
       title: "Germiston Industrial Hub",
       address: "22 Jet Park Rd, Germiston, Gauteng",
@@ -309,7 +309,7 @@ const listing_data: DataType[] = [
    {
       id: 16,
       page: "listing_1",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_4, active: "active" }, { img: propertyThumb_5 }, { img: propertyThumb_6 }],
       title: "Cape Town Business Park",
       address: "Voortrekker Rd, Bellville, Cape Town",
@@ -326,7 +326,7 @@ const listing_data: DataType[] = [
    {
       id: 17,
       page: "listing_1",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_1, active: "active" }, { img: propertyThumb_2 }, { img: propertyThumb_3 }],
       title: "Pretoria Commercial Node",
       address: "501 Church St, Arcadia, Tshwane",
@@ -375,7 +375,7 @@ const listing_data: DataType[] = [
    {
       id: 20,
       page: "listing_1",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_4, active: "active" }, { img: propertyThumb_5 }, { img: propertyThumb_6 }],
       title: "Kramerville Office Park",
       address: "3 Kramerville Rd, Sandton, Johannesburg",
@@ -395,7 +395,7 @@ const listing_data: DataType[] = [
    {
       id: 1,
       page: "listing_2",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_9, active: "active" }, { img: propertyThumb_10 }, { img: propertyThumb_11 }],
       title: "Sandton Corporate Park",
       address: "14 Alice Lane, Sandton, Johannesburg",
@@ -442,7 +442,7 @@ const listing_data: DataType[] = [
    {
       id: 4,
       page: "listing_2",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_12, active: "active" }, { img: propertyThumb_9 }, { img: propertyThumb_10 }],
       title: "Rosebank Mixed-Use Tower",
       address: "50 Bath Ave, Rosebank, Johannesburg",
@@ -474,7 +474,7 @@ const listing_data: DataType[] = [
    {
       id: 6,
       page: "listing_2",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_14, active: "active" }, { img: propertyThumb_13 }, { img: propertyThumb_12 }],
       title: "Cape Town Business Park",
       address: "Voortrekker Rd, Bellville, Cape Town",
@@ -490,7 +490,7 @@ const listing_data: DataType[] = [
    {
       id: 7,
       page: "listing_2",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_12, active: "active" }, { img: propertyThumb_9 }, { img: propertyThumb_10 }],
       title: "Pretoria Commercial Node",
       address: "501 Church St, Arcadia, Tshwane",
@@ -522,7 +522,7 @@ const listing_data: DataType[] = [
    {
       id: 9,
       page: "listing_2",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_14, active: "active" }, { img: propertyThumb_13 }, { img: propertyThumb_12 }],
       title: "Alrode Warehouse Facility",
       address: "15 Steel Rd, Alrode, Alberton",
@@ -538,7 +538,7 @@ const listing_data: DataType[] = [
    {
       id: 10,
       page: "listing_2",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_9, active: "active" }, { img: propertyThumb_10 }, { img: propertyThumb_11 }],
       title: "Kramerville Office Park",
       address: "3 Kramerville Rd, Sandton, Johannesburg",
@@ -585,7 +585,7 @@ const listing_data: DataType[] = [
    {
       id: 13,
       page: "listing_2",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_12, active: "active" }, { img: propertyThumb_9 }, { img: propertyThumb_10 }],
       title: "Germiston Industrial Hub",
       address: "22 Jet Park Rd, Germiston, Gauteng",
@@ -617,7 +617,7 @@ const listing_data: DataType[] = [
    {
       id: 15,
       page: "listing_2",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_14, active: "active" }, { img: propertyThumb_13 }, { img: propertyThumb_12 }],
       title: "Midrand Logistics Centre",
       address: "12 Allandale Rd, Midrand, Gauteng",
@@ -633,7 +633,7 @@ const listing_data: DataType[] = [
    {
       id: 16,
       page: "listing_2",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_9, active: "active" }, { img: propertyThumb_10 }, { img: propertyThumb_11 }],
       title: "Cape Town Business Park",
       address: "Voortrekker Rd, Bellville, Cape Town",
@@ -667,7 +667,7 @@ const listing_data: DataType[] = [
    {
       id: 2,
       page: "listing_3",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       bg_img: "item-two",
       carousel_thumb: [{id:"3", img: propertyLargeThumb_3 }, {id:"2", img: propertyLargeThumb_2 }, {id:"1", img: propertyLargeThumb_1 }],
       title: "Pretoria Commercial Node",
@@ -700,7 +700,7 @@ const listing_data: DataType[] = [
    {
       id: 4,
       page: "listing_3",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       bg_img: "item-four",
       carousel_thumb: [{id:"4", img: propertyLargeThumb_4 }, {id:"5", img: propertyLargeThumb_5 }, {id:"6", img: propertyLargeThumb_6 }],
       title: "Galaxy Touch Flat",
@@ -750,7 +750,7 @@ const listing_data: DataType[] = [
    {
       id: 7,
       page: "listing_3",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       bg_img: "item-four",
       carousel_thumb: [{id:"4", img: propertyLargeThumb_4 }, {id:"5", img: propertyLargeThumb_5 }, {id:"6", img: propertyLargeThumb_6 }],
       title: "Galaxy Touch Flat",
@@ -800,7 +800,7 @@ const listing_data: DataType[] = [
    {
       id: 10,
       page: "listing_3",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       bg_img: "item-two",
       carousel_thumb: [{id:"3", img: propertyLargeThumb_3 }, {id:"2", img: propertyLargeThumb_2 }, {id:"1", img: propertyLargeThumb_1 }],
       title: "Durban Industrial Estate",
@@ -833,7 +833,7 @@ const listing_data: DataType[] = [
    {
       id: 12,
       page: "listing_3",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       bg_img: "item-two",
       carousel_thumb: [{id:"3", img: propertyLargeThumb_3 }, {id:"2", img: propertyLargeThumb_2 }, {id:"1", img: propertyLargeThumb_1 }],
       title: "Alrode Warehouse Facility",
@@ -853,7 +853,7 @@ const listing_data: DataType[] = [
    {
       id: 1,
       page: "listing_4",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_1, active: "active" }, { img: propertyThumb_2 }, { img: propertyThumb_3 }],
       title: "Kramerville Office Park",
       address: "15 Steel Rd, Alrode, Alberton",
@@ -903,7 +903,7 @@ const listing_data: DataType[] = [
    {
       id: 4,
       page: "listing_4",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_4, active: "active" }, { img: propertyThumb_5 }, { img: propertyThumb_6 }],
       title: "Germiston Industrial Hub",
       address: "59 Van Buuren Rd, Bedfordview, Johannesburg",
@@ -936,7 +936,7 @@ const listing_data: DataType[] = [
    {
       id: 6,
       page: "listing_4",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_6, active: "active" }, { img: propertyThumb_5 }, { img: propertyThumb_4 }],
       title: "Midrand Logistics Centre",
       address: "50 Bath Ave, Rosebank, Johannesburg",
@@ -969,7 +969,7 @@ const listing_data: DataType[] = [
    {
       id: 8,
       page: "listing_4",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_8, active: "active" }, { img: propertyThumb_5 }, { img: propertyThumb_6 }],
       title: "Pretoria Commercial Node",
       address: "Voortrekker Rd, Bellville, Cape Town",
@@ -985,7 +985,7 @@ const listing_data: DataType[] = [
    {
       id: 9,
       page: "listing_4",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_15, active: "active" }, { img: propertyThumb_5 }, { img: propertyThumb_6 }],
       title: "Durban Industrial Estate",
       address: "501 Church St, Arcadia, Tshwane",
@@ -1001,7 +1001,7 @@ const listing_data: DataType[] = [
    {
       id: 10,
       page: "listing_4",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_4, active: "active" }, { img: propertyThumb_5 }, { img: propertyThumb_6 }],
       title: "Alrode Warehouse Facility",
       address: "8 Mahogany Rd, Westmead, Durban",
@@ -1034,7 +1034,7 @@ const listing_data: DataType[] = [
    {
       id: 12,
       page: "listing_4",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_6, active: "active" }, { img: propertyThumb_5 }, { img: propertyThumb_4 }],
       title: "Sandton Corporate Park",
       address: "3 Kramerville Rd, Sandton, Johannesburg",
@@ -1067,7 +1067,7 @@ const listing_data: DataType[] = [
    {
       id: 14,
       page: "listing_4",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_8, active: "active" }, { img: propertyThumb_5 }, { img: propertyThumb_6 }],
       title: "Germiston Industrial Hub",
       address: "59 Van Buuren Rd, Bedfordview, Johannesburg",
@@ -1083,7 +1083,7 @@ const listing_data: DataType[] = [
    {
       id: 15,
       page: "listing_4",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_15, active: "active" }, { img: propertyThumb_5 }, { img: propertyThumb_6 }],
       title: "Rosebank Mixed-Use Tower",
       address: "22 Jet Park Rd, Germiston, Gauteng",
@@ -1099,7 +1099,7 @@ const listing_data: DataType[] = [
    {
       id: 16,
       page: "listing_4",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_1, active: "active" }, { img: propertyThumb_2 }, { img: propertyThumb_3 }],
       title: "Midrand Logistics Centre",
       address: "50 Bath Ave, Rosebank, Johannesburg",
@@ -1149,7 +1149,7 @@ const listing_data: DataType[] = [
    {
       id: 19,
       page: "listing_4",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_1, active: "active" }, { img: propertyThumb_2 }, { img: propertyThumb_3 }],
       title: "Durban Industrial Estate",
       address: "501 Church St, Arcadia, Tshwane",
@@ -1202,7 +1202,7 @@ const listing_data: DataType[] = [
    {
       id: 1,
       page: "listing_5",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_9, active: "active" }, { img: propertyThumb_10 }, { img: propertyThumb_11 }],
       title: "Sandton Corporate Park",
       address: "3 Kramerville Rd, Sandton, Johannesburg",
@@ -1250,7 +1250,7 @@ const listing_data: DataType[] = [
    {
       id: 4,
       page: "listing_5",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_12, active: "active" }, { img: propertyThumb_9 }, { img: propertyThumb_10 }],
       title: "Rosebank Mixed-Use Tower",
       address: "22 Jet Park Rd, Germiston, Gauteng",
@@ -1282,7 +1282,7 @@ const listing_data: DataType[] = [
    {
       id: 6,
       page: "listing_5",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_14, active: "active" }, { img: propertyThumb_13 }, { img: propertyThumb_12 }],
       title: "Cape Town Business Park",
       address: "12 Allandale Rd, Midrand, Gauteng",
@@ -1298,7 +1298,7 @@ const listing_data: DataType[] = [
    {
       id: 7,
       page: "listing_5",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_9, active: "active" }, { img: propertyThumb_10 }, { img: propertyThumb_11 }],
       title: "Pretoria Commercial Node",
       address: "Voortrekker Rd, Bellville, Cape Town",
@@ -1346,7 +1346,7 @@ const listing_data: DataType[] = [
    {
       id: 10,
       page: "listing_5",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_12, active: "active" }, { img: propertyThumb_9 }, { img: propertyThumb_10 }],
       title: "Kramerville Office Park",
       address: "15 Steel Rd, Alrode, Alberton",
@@ -1378,7 +1378,7 @@ const listing_data: DataType[] = [
    {
       id: 12,
       page: "listing_5",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       carousel_thumb: [{ img: propertyThumb_14, active: "active" }, { img: propertyThumb_13 }, { img: propertyThumb_12 }],
       title: "Bedfordview Retail Centre",
       address: "14 Alice Lane, Sandton, Johannesburg",
@@ -1413,7 +1413,7 @@ const listing_data: DataType[] = [
    {
       id: 2,
       page: "listing_6",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       bg_img: "item-two",
       carousel_thumb: [{id:"3", img: propertyLargeThumb_3 }, {id:"2", img: propertyLargeThumb_2 }, {id:"1", img: propertyLargeThumb_1 }],
       title: "Germiston Industrial Hub",
@@ -1446,7 +1446,7 @@ const listing_data: DataType[] = [
    {
       id: 4,
       page: "listing_6",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       bg_img: "item-four",
       carousel_thumb: [{id:"4", img: propertyLargeThumb_4 }, {id:"5", img: propertyLargeThumb_5 }, {id:"6", img: propertyLargeThumb_6 }],
       title: "Galaxy Touch Flat",
@@ -1497,7 +1497,7 @@ const listing_data: DataType[] = [
    {
       id: 7,
       page: "listing_6",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       bg_img: "item-four",
       carousel_thumb: [{id:"4", img: propertyLargeThumb_4 }, {id:"5", img: propertyLargeThumb_5 }, {id:"6", img: propertyLargeThumb_6 }],
       title: "Galaxy Touch Flat",
@@ -1534,7 +1534,7 @@ const listing_data: DataType[] = [
    {
       id: 1,
       page: "listing_7",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       thumb: propertyThumb_16,
       carousel_thumb: [{id:"1", img: propertyThumb_1, active: "active" }, {id:"2", img: propertyThumb_2 }, {id:"3", img: propertyThumb_3 }],
       title: "Rosebank Mixed-Use Tower",
@@ -1586,7 +1586,7 @@ const listing_data: DataType[] = [
    {
       id: 4,
       page: "listing_7",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       thumb: propertyThumb_19,
       carousel_thumb: [{id:"4", img: propertyThumb_4, active: "active" }, {id:"5", img: propertyThumb_5 }, {id:"6", img: propertyThumb_6 }],
       title: "Pretoria Commercial Node",
@@ -1621,7 +1621,7 @@ const listing_data: DataType[] = [
    {
       id: 6,
       page: "listing_7",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       thumb: propertyThumb_19,
       carousel_thumb: [{id:"4", img: propertyThumb_4, active: "active" }, {id:"5", img: propertyThumb_5 }, {id:"6", img: propertyThumb_6 }],
       title: "Alrode Warehouse Facility",
@@ -1639,7 +1639,7 @@ const listing_data: DataType[] = [
    {
       id: 7,
       page: "listing_7",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       thumb: propertyThumb_16,
       carousel_thumb: [{id:"1", img: propertyThumb_1, active: "active" }, {id:"2", img: propertyThumb_2 }, {id:"3", img: propertyThumb_3 }],
       title: "Kramerville Office Park",
@@ -1674,7 +1674,7 @@ const listing_data: DataType[] = [
    {
       id: 9,
       page: "listing_7",
-      tag: "FOR LEASE",
+      tag: "TO LET",
       thumb: propertyThumb_16,
       carousel_thumb: [{id:"1", img: propertyThumb_1, active: "active" }, {id:"2", img: propertyThumb_2 }, {id:"3", img: propertyThumb_3 }],
       title: "Bedfordview Retail Centre",

@@ -172,6 +172,35 @@ or
 npm run dev
 
 ```
+
+## 🐳 Docker Setup
+
+You can run the full project with Docker Compose using:
+
+```sh
+docker compose up --build
+```
+
+Optional: copy the example Docker environment file first if you want to override ports, credentials, or public URLs:
+
+```sh
+cp .env.docker.example .env
+```
+
+### Services
+
+- **Frontend:** `http://localhost:3000`
+- **Backend API:** `http://localhost:5001/api`
+- **Backend health check:** `http://localhost:5001/healthz`
+- **PostgreSQL:** `localhost:5432`
+
+### Notes
+
+- The compose stack uses **PostgreSQL** instead of the local SQLite fallback.
+- Uploaded files are persisted in the `backend_uploads` Docker volume.
+- PostgreSQL data is persisted in the `postgres_data` Docker volume.
+- The backend seeds the default admin user on startup using `DEFAULT_ADMIN_EMAIL` and `DEFAULT_ADMIN_PASSWORD`.
+
 ## 🛠️ API Endpoints
 
 | Method | Endpoint            | Description                 |

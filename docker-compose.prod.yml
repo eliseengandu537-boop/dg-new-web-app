@@ -1,0 +1,106 @@
+# Production stack for the xneelo Cloud server (AlmaLinux 10).
+#
+# Usage:
+#   docker compose -f docker-compose.prod.yml --env-file .env up -d --build
+#
+# Topology — only the frontend is reachable from the host (via nginx):
+#   internet --> nginx (host :443) --> frontend (127.0.0.1:3000)
+#   frontend --> backend  (internal network only, never public)
+#   backend  --> db       (internal network only, never public)
+#
+# Persistent data lives on the attached storage volume (DATA_DIR), so
+# rebuilds and redeploys never lose uploaded images or the database.
+
+services:
+  db:
+    image: postgres:16-bookworm
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ${DATA_DIR}/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    # No `ports:` — the database is reachable only on the internal network.
+
+  backend:
+    build:
+      context: ./real-estate-backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 5001
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      JWT_SECRET: ${JWT_SECRET}
+      DEFAULT_ADMIN_EMAIL: ${DEFAULT_ADMIN_EMAIL}
+      DEFAULT_ADMIN_PASSWORD: ${DEFAULT_ADMIN_PASSWORD}
+      CORS_ORIGIN: ${PUBLIC_URL}
+      UPLOADS_DIR: /app/uploads
+    volumes:
+      - ${DATA_DIR}/uploads:/app/uploads
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:5001/healthz').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 25s
+    # No `ports:` — the backend is reachable only on the internal network.
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # NEXT_PUBLIC_* values are baked into the browser bundle at build time.
+        # Relative "/api" keeps every browser request same-origin (nginx -> frontend).
+        NEXT_PUBLIC_API_URL: /api
+        NEXT_PUBLIC_AUTH_API_URL: /api
+        NEXT_PUBLIC_ADMIN_API_URL: /api
+        NEXT_PUBLIC_BACKEND_URL: ""
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      NEXT_PUBLIC_API_URL: /api
+      NEXT_PUBLIC_AUTH_API_URL: /api
+      NEXT_PUBLIC_ADMIN_API_URL: /api
+      NEXT_PUBLIC_BACKEND_URL: ""
+      # Server-side proxy targets — reach the backend over the internal network.
+      API_PROXY_TARGET: http://backend:5001/api
+      API_URL: http://backend:5001/api
+      BACKEND_URL: http://backend:5001
+      UPLOADS_BASE_URL: http://backend:5001/uploads
+    ports:
+      # Bound to localhost only — nginx on the host proxies to it.
+      - "127.0.0.1:3000:3000"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 20s
+      timeout: 5s
+      retries: 10
+      start_period: 40s

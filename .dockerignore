@@ -1,0 +1,17 @@
+.git
+.next
+.next-stale-*
+.env
+.env.*
+node_modules
+npm-debug.log*
+frontend-*.log
+tsconfig.tsbuildinfo
+
+real-estate-backend/node_modules
+real-estate-backend/dist
+real-estate-backend/data
+real-estate-backend/uploads
+real-estate-backend/.env
+real-estate-backend/.env.*
+real-estate-backend/backend-*.log

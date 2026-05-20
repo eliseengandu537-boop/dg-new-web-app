@@ -1,0 +1,16 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+
+# local SQLite database (production uses PostgreSQL via DATABASE_URL)
+data/
+
+# logs
+*.log
+
+# env / secrets
+.env
+.env.*
+!.env.example

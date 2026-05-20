@@ -22,15 +22,29 @@ import { MembershipPlan } from "./models/MembershipPlan";
 import { PageView } from "./models/PageView";
 import { Property } from "./models/Property";
 import { UPLOADS_DIR } from "./utils/uploads";
+import { requireEnv } from "./config/env";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5001;
 const DEFAULT_ADMIN_EMAIL = process.env.DEFAULT_ADMIN_EMAIL || "elisee@dg-property.co.za";
-const DEFAULT_ADMIN_PASSWORD = process.env.DEFAULT_ADMIN_PASSWORD || "adminelisee";
+const DEFAULT_ADMIN_PASSWORD = requireEnv("DEFAULT_ADMIN_PASSWORD");
 
-app.use(cors());
+// Lock CORS to the configured frontend origin(s) when CORS_ORIGIN is set;
+// fall back to permissive CORS only when it is not (e.g. local dev).
+const allowedOrigins = (process.env.CORS_ORIGIN || "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+app.use(
+  cors(
+    allowedOrigins.length > 0
+      ? { origin: allowedOrigins, credentials: true }
+      : undefined
+  )
+);
 app.use(express.json());
 
 // Serve uploaded files statically

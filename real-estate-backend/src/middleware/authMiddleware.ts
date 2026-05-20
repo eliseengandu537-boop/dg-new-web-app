@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { JWT_SECRET } from "../config/env";
 
-const SECRET_KEY = process.env.JWT_SECRET || "your_secret_key";
+const SECRET_KEY = JWT_SECRET;
 
 export interface AuthUser {
   id: number;
@@ -25,6 +26,6 @@ export const authenticateUser = (req: AuthRequest, res: Response, next: NextFunc
     req.user = decoded;
     next();
   } catch (error) {
-    res.status(400).json({ error: "Invalid token" });
+    res.status(401).json({ error: "Invalid or expired token" });
   }
 };

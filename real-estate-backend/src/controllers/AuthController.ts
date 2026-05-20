@@ -3,10 +3,11 @@ import { User } from "../models/User";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { JWT_SECRET } from "../config/env";
 
 dotenv.config();
 
-const SECRET_KEY = process.env.JWT_SECRET || "your_secret_key";
+const SECRET_KEY = JWT_SECRET;
 
 // ── 1. SIGNUP ──────────────────────────────────────────────────────────────
 export const signup = async (req: Request, res: Response): Promise<void> => {
