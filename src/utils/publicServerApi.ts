@@ -4,8 +4,6 @@ import type { Broker } from "@/components/inner-pages/agent/types";
 import type { SuccessStory } from "@/components/inner-pages/success-stories/types";
 import { getServerApiRoot } from "./serverApiTargets";
 
-const PUBLIC_REVALIDATE_SECONDS = 60;
-
 export class PublicApiError extends Error {
   status: number;
 
@@ -23,8 +21,11 @@ const fetchPublicJson = async <T>(path: string): Promise<T> => {
     throw new PublicApiError("Public API is not configured.", 503);
   }
 
+  // Always fetch fresh: admin-managed content (brokers, success stories)
+  // must appear on the public site immediately, and this keeps the
+  // consuming pages dynamic so they are never frozen at build time.
   const response = await fetch(`${apiRoot}${path}`, {
-    next: { revalidate: PUBLIC_REVALIDATE_SECONDS },
+    cache: "no-store",
   });
 
   if (!response.ok) {
