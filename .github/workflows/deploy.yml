@@ -1,0 +1,52 @@
+name: Deploy to xneelo
+
+# Every push to the main branch rebuilds the live site on the VPS.
+# You can also trigger it by hand from the Actions tab ("Run workflow").
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+# Only one deploy runs at a time. If you push again while a deploy is
+# in progress, the new one waits for the current one to finish.
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build and restart on the server
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+
+    steps:
+      - name: Deploy over SSH
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_HOST: 154.65.111.207
+          DEPLOY_USER: almalinux
+        run: |
+          set -euo pipefail
+
+          # Save the private deploy key (held in the DEPLOY_SSH_KEY secret).
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+          # Trust the server's host key so SSH does not prompt.
+          ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+          echo "Connecting to $DEPLOY_HOST and rebuilding the live site..."
+
+          # Pull the latest code and rebuild/restart the containers.
+          # deploy/update.sh runs: git pull --ff-only, docker compose
+          # up -d --build, then docker image prune. Uploaded images and
+          # the database live on the storage volume and are untouched.
+          ssh -i ~/.ssh/deploy_key \
+              -o IdentitiesOnly=yes \
+              -o ServerAliveInterval=30 \
+              -o ServerAliveCountMax=40 \
+              "$DEPLOY_USER@$DEPLOY_HOST" \
+              'cd /home/almalinux/dg-property && bash deploy/update.sh'
+
+          echo "Deploy finished — the live site is now running the latest code."
