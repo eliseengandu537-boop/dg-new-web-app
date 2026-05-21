@@ -66,7 +66,7 @@ const FooterFive = () => {
                </div>
             </div>
             <div className="bottom-footer">
-               <p className="m0 text-center fs-16">Copyright @2025 HOZN.</p>
+               <p className="m0 text-center fs-16">Copyright @2026 DG Property.</p>
             </div>
          </div>
       </div>

@@ -2,7 +2,7 @@ import ListingSixteen from "@/components/inner-listing/listing-16";
 import Wrapper from "@/layouts/Wrapper";
 
 export const metadata = {
-   title: "Listing Sixteen HOZN - Real Estate React Next js ",
+   title: "Listing Sixteen DG Property ",
 };
 const index = () => {
    return (

@@ -35,10 +35,14 @@ authApi.interceptors.request.use((config) => {
 authApi.interceptors.response.use(
   (res) => res,
   (err) => {
+    // Only bounce the user to the login screen when the failed request
+    // came from a dashboard page. Public pages (e.g. property details)
+    // may make authenticated calls for logged-in extras like "saved" —
+    // a 401 there must NOT redirect an ordinary visitor to login.
     if (
       err.response?.status === 401 &&
       typeof window !== "undefined" &&
-      window.location.pathname !== "/login"
+      window.location.pathname.startsWith("/dashboard")
     ) {
       localStorage.removeItem("dg_token");
       localStorage.removeItem("dg_user");

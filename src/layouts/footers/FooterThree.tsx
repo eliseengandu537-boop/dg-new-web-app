@@ -61,7 +61,7 @@ const FooterThree = () => {
                      <li><Link href="/privacy-policy">Privacy Policy</Link></li>
                      <li><Link href="/contact">Contact Us</Link></li>
                   </ul>
-                  <p className="mb-15 text-center text-lg-start fs-16 order-md-first">Copyright @2025 HOZN.</p>
+                  <p className="mb-15 text-center text-lg-start fs-16 order-md-first">Copyright @2026 DG Property.</p>
                </div>
             </div>
          </div>

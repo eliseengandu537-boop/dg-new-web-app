@@ -81,6 +81,14 @@ const ListingDetailsSixArea = () => {
   useEffect(() => {
     if (!id) return;
 
+    // The saved/favourite status is a logged-in extra. Skip the
+    // authenticated request entirely for public visitors so it never
+    // returns a 401 (which would otherwise bounce them to login).
+    if (typeof window === "undefined" || !localStorage.getItem("dg_token")) {
+      setIsFavorite(false);
+      return;
+    }
+
     fetchSavedProperties()
       .then((response) => {
         const favorites = response.data?.properties || [];
@@ -91,6 +99,12 @@ const ListingDetailsSixArea = () => {
 
   const handleFavorite = async () => {
     if (!id || favoriteLoading) return;
+
+    // Saving a property requires an account — send guests to sign in.
+    if (typeof window !== "undefined" && !localStorage.getItem("dg_token")) {
+      window.location.href = "/login";
+      return;
+    }
 
     setFavoriteLoading(true);
     try {

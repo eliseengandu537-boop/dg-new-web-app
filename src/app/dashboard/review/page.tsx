@@ -2,7 +2,7 @@ import DashboardReview from "@/components/dashboard/review";
 import Wrapper from "@/layouts/Wrapper";
 
 export const metadata = {
-   title: "Dashboard Review HOZN - Real Estate React Next js",
+   title: "Dashboard Review DG Property",
 };
 const index = () => {
    return (

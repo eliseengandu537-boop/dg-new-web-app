@@ -4,7 +4,7 @@ import Wrapper from "@/layouts/Wrapper";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-   title: "Agent Details HOZN - Real Estate React Next js",
+   title: "Agent Details DG Property",
 };
 const index = async ({
    searchParams,
