@@ -32,7 +32,7 @@ const FooterFour = () => {
                <div className="col-lg-2 col-md-3 col-6">
                   <h6 style={{ color: "#e8b86d", fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: 20 }}>Company</h6>
                   <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-                     {[["Home","/"],["About DG Property","/about_us_02"],["Our Brokers","/agent"],["FAQ","/faq"],["Contact","/contact"]].map(([title, href], i) => (
+                     {[["Home","/"],["About DG Property","/about_us_02"],["Meet the Team","/agent"],["FAQ","/faq"],["Contact","/contact"]].map(([title, href], i) => (
                         <li key={i} style={{ marginBottom: 10 }}>
                            <Link href={href} style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.88rem", textDecoration: "none" }}>{title}</Link>
                         </li>

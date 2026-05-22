@@ -32,7 +32,7 @@ const AgentDetails = ({ id }: { id?: string }) => {
                <div style={{ display:"flex", alignItems:"center", gap:8, fontSize:"0.85rem", color:"rgba(255,255,255,0.55)" }}>
                   <Link href="/" style={{ color:"rgba(255,255,255,0.55)", textDecoration:"none" }}>Home</Link>
                   <span>/</span>
-                  <Link href="/agent" style={{ color:"rgba(255,255,255,0.55)", textDecoration:"none" }}>Our Brokers</Link>
+                  <Link href="/agent" style={{ color:"rgba(255,255,255,0.55)", textDecoration:"none" }}>Meet the Team</Link>
                   <span>/</span>
                   <span style={{ color:"#e8b86d" }}>Broker Profile</span>
                </div>

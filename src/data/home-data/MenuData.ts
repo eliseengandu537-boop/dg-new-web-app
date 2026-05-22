@@ -62,7 +62,7 @@ const menu_data: MenuItem[] = [
         link: "#",
         sub_menus: [
             { link: "/about_us_02", title: "About DG Property" },
-            { link: "/agent", title: "Our Brokers" },
+            { link: "/agent", title: "Meet the Team" },
             { link: "/our-services", title: "Our Services" },
         ],
     },

@@ -43,11 +43,8 @@ const serviceCards = [
 ];
 
 const devProjectChecklist = [
-  ["Project Conceptualisation", "Project Preparation & Management"],
-  ["SLA Management", "Marketing Strategy Management"],
-  ["Financial Viability", "Council Approvals"],
-  ["Development Master Plan", "Appointment of Consultants & Contractors"],
-  ["Health & Safety Policy Management", "Project Close-Out & Handover"],
+  ["Project Preparation & Management", "Marketing Strategy Management"],
+  ["Development Master Plan", "Project Close-Out & Handover"],
 ];
 
 const fillingStationServices = [

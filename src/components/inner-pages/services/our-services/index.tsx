@@ -26,11 +26,6 @@ const serviceCards = [
     desc: "Assisting landlords and developers with the disposal and acquisition of commercial assets.",
   },
   {
-    icon: "bi-fuel-pump",
-    title: "Filling Station Services",
-    desc: "Specialist services for petroleum and convenience-retail site development and leasing.",
-  },
-  {
     icon: "bi-lightbulb",
     title: "Alternative Income Solutions",
     desc: "Unlocking non-traditional revenue streams from your existing property portfolio.",
@@ -48,54 +43,6 @@ const devProjectChecklist = [
   ["Financial Viability", "Council Approvals"],
   ["Development Master Plan", "Appointment of Consultants & Contractors"],
   ["Health & Safety Policy Management", "Project Close-Out & Handover"],
-];
-
-const fillingStationServices = [
-  {
-    icon: "bi-search",
-    title: "Providing due diligence",
-    desc: "Specific risk analysis with consideration to local planning limitations and environmental factors.",
-  },
-  {
-    icon: "bi-bar-chart-line",
-    title: "Site feasibility study",
-    desc: "Complete detailed site-specific forecasting and estimating for the entire project process from inception to completion.",
-  },
-  {
-    icon: "bi-puzzle",
-    title: "Procurement",
-    desc: "Procure all the required service providers, vendors, suppliers, and contractors needed to complete the project via an extensive network.",
-  },
-  {
-    icon: "bi-file-earmark-text",
-    title: "Documentation management",
-    desc: "Manage all documentation from permits to working drawings, energy reports, computations, and engineering.",
-  },
-  {
-    icon: "bi-hard-hat",
-    title: "Construction management",
-    desc: "Assume responsibility for every aspect of the construction process from abolishments and demolition, to the budget, progress, and quality control.",
-  },
-  {
-    icon: "bi-gear",
-    title: "Service management",
-    desc: "Management of all service requirements and bulk works including electricity, water, gas, NBN, and telecommunications.",
-  },
-  {
-    icon: "bi-megaphone",
-    title: "Sales and marketing",
-    desc: "Consult with a chosen specialist to design and execute an innovative and effective sales and marketing strategy.",
-  },
-  {
-    icon: "bi-calculator",
-    title: "Budgets",
-    desc: "Provide input and management of budgets.",
-  },
-  {
-    icon: "bi-calendar-check",
-    title: "Timelines",
-    desc: "Provide accurate and ongoing reporting on the project timelines.",
-  },
 ];
 
 const OurServices = () => {
@@ -179,36 +126,6 @@ const OurServices = () => {
                   <h6 style={{ fontSize: 15, fontWeight: 700, color: "#0d1f2d", marginBottom: 10, lineHeight: 1.35 }}>{card.title}</h6>
                   <p style={{ fontSize: 13.5, color: "#718096", lineHeight: 1.7, marginBottom: 14, flexGrow: 1 }}>{card.desc}</p>
                   <span style={{ fontSize: 13, fontWeight: 600, color: "#888e7d", cursor: "pointer", letterSpacing: 0.2, textDecoration: "underline", textUnderlineOffset: 3 }}>View more</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── FILLING STATION SERVICES ────────────────────────────────── */}
-      <section style={{ background: "#f8f9fa", padding: "90px 0" }}>
-        <div className="container">
-          <div className="row mb-55">
-            <div className="col-lg-8">
-              <h2 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.6rem)", fontWeight: 800, color: "#0d1f2d", marginBottom: 0 }}>
-                Filling Station Services
-              </h2>
-              <div style={{ width: 60, height: 4, background: "linear-gradient(90deg, #888e7d, #f0b95e)", borderRadius: 2, marginTop: 16 }} />
-            </div>
-          </div>
-
-          <div className="row gy-5">
-            {fillingStationServices.map((item, i) => (
-              <div className="col-md-6 col-lg-4" key={i}>
-                <div style={{ display: "flex", gap: 18, alignItems: "flex-start" }}>
-                  <div style={{ width: 48, height: 48, borderRadius: 10, background: "#fff", boxShadow: "0 4px 14px rgba(0,0,0,0.08)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <i className={`bi ${item.icon}`} style={{ fontSize: 22, color: "#b5892c" }} />
-                  </div>
-                  <div>
-                    <h6 style={{ fontSize: 15, fontWeight: 700, color: "#b5892c", marginBottom: 6, lineHeight: 1.3 }}>{item.title}</h6>
-                    <p style={{ fontSize: 13.5, color: "#718096", lineHeight: 1.75, margin: 0 }}>{item.desc}</p>
-                  </div>
                 </div>
               </div>
             ))}
