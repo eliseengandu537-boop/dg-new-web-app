@@ -461,60 +461,46 @@
 
 @media screen and (max-width: 767px) and (orientation: portrait) {
     .theme-main-menu .navbar-toggler {
-        background: rgba(132, 142, 125, 0.62);
-        border: 1px solid rgba(255, 255, 255, 0.32);
-        box-shadow:
-            0 14px 34px rgba(13, 31, 45, 0.20),
-            inset 0 1px 0 rgba(255, 255, 255, 0.45);
+        background: rgba(132, 142, 125, 0.42);
+        border: 1px solid rgba(255,255,255,0.28);
+        box-shadow: 0 14px 34px rgba(13,31,45,0.16);
+        -webkit-backdrop-filter: blur(18px) saturate(145%);
+        backdrop-filter: blur(18px) saturate(145%);
     }
     .navbar-collapse,
     .white-vr .navbar-collapse {
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(252, 248, 240, 0.86) 100%);
-        border: 1px solid rgba(255, 255, 255, 0.55);
+        background: linear-gradient(180deg, rgba(255,255,255,0.64) 0%, rgba(255,255,255,0.34) 100%);
+        border: 1px solid rgba(255,255,255,0.32);
         border-left: none;
-        border-right: 1px solid rgba(232, 184, 109, 0.30);
         border-radius: 0 28px 28px 0;
-        box-shadow:
-            18px 0 42px rgba(13, 31, 45, 0.22),
-            inset 1px 0 0 rgba(255, 255, 255, 0.7),
-            inset 0 -1px 0 rgba(232, 184, 109, 0.15);
+        box-shadow: 18px 0 42px rgba(13,31,45,0.16);
+        -webkit-backdrop-filter: blur(24px) saturate(165%);
+        backdrop-filter: blur(24px) saturate(165%);
     }
     .navbar-collapse.show {
-        box-shadow:
-            22px 0 50px rgba(13, 31, 45, 0.26),
-            inset 1px 0 0 rgba(255, 255, 255, 0.75);
+        box-shadow: 20px 0 46px rgba(13,31,45,0.20);
     }
     .navbar-collapse .logo {
         margin-bottom: 5vh;
         padding: 0 16px 18px;
-        border-bottom: 1px solid rgba(232, 184, 109, 0.25);
+        border-bottom: 1px solid rgba(13,31,45,0.08);
     }
     .navbar .navbar-nav .nav-link {
         color: #0d1f2d;
         background: transparent;
-        border-top: 1px solid rgba(232, 184, 109, 0.20);
-        font-weight: 500;
-        transition: color 0.25s ease, background 0.25s ease, padding-left 0.25s ease;
-    }
-    .navbar .navbar-nav .nav-link:hover {
-        color: #c8973a;
-        background: rgba(232, 184, 109, 0.08);
-        padding-left: 24px;
+        border-top: 1px solid rgba(13,31,45,0.08);
     }
     .navbar .navbar-nav .nav-link.show,
     .navbar .navbar-nav .nav-link.active {
-        background: rgba(232, 184, 109, 0.10);
+        background: rgba(255,255,255,0.16);
     }
     .navbar .dropdown-menu {
-        background: rgba(255, 252, 245, 0.94);
-        border-top: 1px solid rgba(232, 184, 109, 0.20);
+        background: rgba(255,255,255,0.12);
+        border-top: 1px solid rgba(13,31,45,0.08);
+        -webkit-backdrop-filter: blur(18px) saturate(150%);
+        backdrop-filter: blur(18px) saturate(150%);
     }
     .navbar .dropdown-menu .dropdown-item {
         color: #0d1f2d;
-        transition: color 0.2s ease, background 0.2s ease;
-    }
-    .navbar .dropdown-menu .dropdown-item:hover {
-        color: #c8973a;
-        background: rgba(232, 184, 109, 0.08);
     }
 }
