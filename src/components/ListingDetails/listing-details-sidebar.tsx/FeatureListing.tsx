@@ -80,7 +80,7 @@ const FeatureListing = () => {
         </div>
 
         <Link
-          href="/contact"
+          href="/inquiry"
           style={{
             display: "inline-flex",
             alignItems: "center",

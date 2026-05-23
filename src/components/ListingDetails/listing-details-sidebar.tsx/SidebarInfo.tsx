@@ -172,7 +172,7 @@ const SidebarInfo = ({ agentInfo }: Props) => {
                   </Link>
                )}
                <Link
-                  href="/contact"
+                  href="/inquiry"
                   style={{
                      display: "inline-flex",
                      alignItems: "center",
@@ -215,7 +215,7 @@ const SidebarInfo = ({ agentInfo }: Props) => {
             {renderContactRow("bi-telephone", "Phone", <Link href={contactInfo.phoneHref}>{contactInfo.phoneDisplay}</Link>)}
          </div>
          <Link
-            href="/contact"
+            href="/inquiry"
             style={{
                display: "inline-flex",
                alignItems: "center",

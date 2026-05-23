@@ -23,7 +23,7 @@ const HeroBanner = () => {
                               <Image src={bannerimg} alt="" className="lazy-img" />
                               <p className="m0 pt-10 rating"><span className="fw-500 color-dark">13k rating</span> (4.7 Rating)</p>
                            </div>
-                           <Link href="/contact" className="btn-five rounded-0 md mt-20"><span>Contact us</span> <i className="bi bi-arrow-up-right"></i></Link>
+                           <Link href="/inquiry" className="btn-five rounded-0 md mt-20"><span>Send Inquiry</span> <i className="bi bi-arrow-up-right"></i></Link>
                         </div>
                      </div>
                   </div>

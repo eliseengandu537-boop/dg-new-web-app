@@ -101,7 +101,7 @@ const ServiceDetailsArea = () => {
                      <ul className="list-style-one fs-22 color-dark style-none">
                         {service_list.map((list, i) => <li key={i}>{list}</li>)}
                      </ul>
-                     <Link href="/contact" className="btn-two mt-30">Contact Us</Link>
+                     <Link href="/inquiry" className="btn-two mt-30">Send Inquiry</Link>
                      <div style={{ marginTop: 20 }}>
                         <Link href="/listing_09" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "linear-gradient(90deg, #c8973a, #e8b86d)", color: "#fff", fontWeight: 600, fontSize: 15, padding: "14px 34px", borderRadius: 50, textDecoration: "none", letterSpacing: 0.4 }}>
                            View Retail Properties <i className="bi bi-arrow-up-right"></i>
@@ -121,7 +121,7 @@ const ServiceDetailsArea = () => {
                         </div>
                         <div className="contact-banner text-center mt-45">
                            <h4 className="mb-35 text-white">Any Questions? <br />Let&apos;s talk</h4>
-                           <Link href="/contact" className="btn-two">Let&apos;s Talk</Link>
+                           <Link href="/inquiry" className="btn-two">Let&apos;s Talk</Link>
                         </div>
                      </div>
                   </div>

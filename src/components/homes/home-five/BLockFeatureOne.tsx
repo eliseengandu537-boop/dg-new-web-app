@@ -14,7 +14,7 @@ const BLockFeatureOne = () => {
                   <p className="fs-24 lh-lg mb-30 color-dark">Your leading real estate advocate, transforming houses into dreams. Trust us to expertly guide you home.  745,000 apartments &amp; home for sell, lease &amp; mortgage.</p>
                   <div className="d-inline-flex flex-wrap align-items-center">
                      <Link href="/about_us_02" className="btn-five md rounded-0 mt-20 me-5"><span>More Details</span></Link>
-                     <Link href="/contact" className="btn-three mt-20"><span>Request a Callback</span> <i className="fa-light fa-arrow-right-long"></i></Link>
+                     <Link href="/inquiry" className="btn-three mt-20"><span>Request a Callback</span> <i className="fa-light fa-arrow-right-long"></i></Link>
                   </div>
                </div>
             </div>

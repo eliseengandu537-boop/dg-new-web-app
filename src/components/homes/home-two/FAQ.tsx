@@ -16,7 +16,7 @@ const FAQ = () => {
                         If you&apos;re considering a lease, acquisition or disposal, we&apos;re happy to guide the process.
                      </p>
                   </div>
-                  <Link href="/contact"
+                  <Link href="/inquiry"
                      style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "13px 28px", background: "linear-gradient(135deg, #888e7d, #6b7263)", borderRadius: 50, color: "#fff", fontSize: 13, fontWeight: 600, textTransform: "uppercase", letterSpacing: 1, width: "fit-content" }}
                      className="tran3s">
                      Send a Query <i className="bi bi-arrow-up-right"></i>

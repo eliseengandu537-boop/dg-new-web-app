@@ -12,9 +12,9 @@ const serviceLinks: Record<string, string> = {
    "Commercial Leasing": "/service_01",
    "Investment Sales": "/service_02",
    "Retail Leasing": "/service_details",
-   "Tenant Representation": "/contact",
+   "Tenant Representation": "/inquiry",
    "Development Land": "/development-land",
-   "Portfolio Advisory": "/contact",
+   "Portfolio Advisory": "/inquiry",
 };
 
 const BLockFeatureTwo = () => {

@@ -122,7 +122,7 @@ const ServiceThree = () => {
             </div>
             <div className="col-lg-5 mt-4 mt-lg-0 text-lg-end">
               <p style={{ color: "rgba(255,255,255,0.82)", fontSize: 17, lineHeight: 1.7, marginBottom: 28 }}>Strategic asset management and development solutions for landlords and developers.</p>
-              <Link href="/contact" style={{ display: "inline-block", background: "linear-gradient(90deg, #c8973a, #e8b86d)", color: "#fff", fontWeight: 600, fontSize: 15, padding: "14px 34px", borderRadius: 50, textDecoration: "none", letterSpacing: 0.5 }}>Contact Us</Link>
+              <Link href="/inquiry" style={{ display: "inline-block", background: "linear-gradient(90deg, #c8973a, #e8b86d)", color: "#fff", fontWeight: 600, fontSize: 15, padding: "14px 34px", borderRadius: 50, textDecoration: "none", letterSpacing: 0.5 }}>Send Inquiry</Link>
             </div>
           </div>
         </div>
@@ -241,7 +241,7 @@ const ServiceThree = () => {
             Partner with DG Property to unlock the full potential of your land and development portfolio.
           </p>
           <Link
-            href="/contact"
+            href="/inquiry"
             style={{
               display: "inline-block",
               background: "linear-gradient(90deg, #888e7d 0%, #6b7263 100%)",

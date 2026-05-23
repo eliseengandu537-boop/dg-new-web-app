@@ -1,4 +1,4 @@
-import BreadcrumbOne from "@/components/common/breadcrumb/BreadcrumbOne";
+import LegalHero from "@/components/common/breadcrumb/LegalHero";
 import FancyBanner from "@/components/common/FancyBanner";
 import FooterFour from "@/layouts/footers/FooterFour";
 import HeaderOne from "@/layouts/headers/HeaderOne";
@@ -13,12 +13,9 @@ export default function TermsAndConditionsPage() {
   return (
     <Wrapper>
       <HeaderOne style={true} />
-      <BreadcrumbOne
+      <LegalHero
         title="Terms & Conditions"
-        link="#"
-        link_title="Legal"
-        sub_title="Terms & Conditions"
-        style={true}
+        description="The terms that govern your use of the De Gennaro Property website and our commercial property services."
       />
 
       <section

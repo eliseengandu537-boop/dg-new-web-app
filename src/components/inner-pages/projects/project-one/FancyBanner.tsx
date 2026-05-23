@@ -12,7 +12,7 @@ const FancyBanner = () => {
                   <div className="title-one mb-45 md-mb-30">
                      <h2>Any Inquiry? <span>Feel free<Image src={titleShape} alt="" className="lazy-img" /></span> To contact Us.</h2>
                   </div>
-                  <Link href="/contact" className="btn-five text-uppercase">SEND MESSAGE</Link>
+                  <Link href="/inquiry" className="btn-five text-uppercase">SEND MESSAGE</Link>
                </div>
             </div>
          </div>

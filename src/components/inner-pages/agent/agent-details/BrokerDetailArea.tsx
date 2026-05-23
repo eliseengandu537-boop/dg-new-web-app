@@ -100,7 +100,7 @@ const BrokerDetailArea = async ({ id }: { id?: string }) => {
                     <span style={{ fontSize:"0.9rem", fontWeight:500 }}>{broker.email}</span>
                   </a>
                 )}
-                <Link href="/contact" style={{ display:"block", textAlign:"center", padding:"12px", background:"#e8b86d", color:"#0d1f2d", fontWeight:700, fontSize:"0.8rem", letterSpacing:"0.1em", textTransform:"uppercase", borderRadius:8, textDecoration:"none" }}>
+                <Link href="/inquiry" style={{ display:"block", textAlign:"center", padding:"12px", background:"#e8b86d", color:"#0d1f2d", fontWeight:700, fontSize:"0.8rem", letterSpacing:"0.1em", textTransform:"uppercase", borderRadius:8, textDecoration:"none" }}>
                   Send a Message
                 </Link>
               </div>

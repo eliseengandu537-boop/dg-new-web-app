@@ -36,7 +36,7 @@ const BLockFeatureOne = () => {
                         <h3>Commercial property, brokered with <span>purpose<Image src={titleShape} alt="" className="lazy-img" /></span>.</h3>
                         <p className="fs-22">{desc_1}</p>
                      </div>
-                     <Link href="/contact" className="btn-two">Speak To Our Team</Link>
+                     <Link href="/inquiry" className="btn-two">Speak To Our Team</Link>
                      <div className="counter-wrapper border-top pt-40 md-pt-10 mt-65 md-mt-40">
                         <div className="row">
                            <div className="col-xxl-6 col-sm-5">

@@ -63,7 +63,7 @@ const BLockFeatureThree = () => {
                <div className="row mt-60">
                   <div className="col-lg-10 mx-auto text-center">
                      <p className="fs-20 lh-lg mb-40 color-dark">Whether you are seeking capital appreciation, stable monthly returns, or a long-term portfolio asset, DG Property has the market access and expertise to match you with the right investment opportunity.</p>
-                     <Link href="/contact" className="btn-five md rounded-0"><span>Discuss Your Investment Goals</span></Link>
+                     <Link href="/inquiry" className="btn-five md rounded-0"><span>Discuss Your Investment Goals</span></Link>
                   </div>
                </div>
             </div>

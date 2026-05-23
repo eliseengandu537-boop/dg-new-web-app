@@ -47,7 +47,7 @@ const HeroBanner = () => {
                         <p className="fs-24 text-white pt-40 pb-30 md-pb-20 pe-xl-5">Explore a vast selection of over 745,000 listings, including Property, lots, and plots.</p>
                         <div className="d-inline-flex flex-wrap align-items-center">
                            <Link href="/listing_01" className="btn-two rounded-0 border-0 mt-15 me-4"><span>Explore All</span></Link>
-                           <Link href="/contact" className="btn-eight inverse mt-15"><span>Request a Callback</span> <i className="fa-sharp fa-light fa-arrow-right-long"></i></Link>
+                           <Link href="/inquiry" className="btn-eight inverse mt-15"><span>Request a Callback</span> <i className="fa-sharp fa-light fa-arrow-right-long"></i></Link>
                         </div>
                      </div>
                   </div>

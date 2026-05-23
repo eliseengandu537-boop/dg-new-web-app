@@ -48,8 +48,8 @@ const AgentArea = async () => {
             <p style={{ color: "#5f6b76", lineHeight: 1.75, marginBottom: 20 }}>
               We could not reach the broker directory just now. Please try again shortly or use the contact page while we reconnect.
             </p>
-            <Link href="/contact" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "13px 22px", borderRadius: 999, background: "#0d1f2d", color: "#fff", fontWeight: 700, textDecoration: "none" }}>
-              Contact DG Property
+            <Link href="/inquiry" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "13px 22px", borderRadius: 999, background: "#0d1f2d", color: "#fff", fontWeight: 700, textDecoration: "none" }}>
+              Send an Inquiry
             </Link>
           </div>
         )}

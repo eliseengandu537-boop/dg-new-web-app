@@ -207,7 +207,7 @@ const SuccessStoryDetailPage = async ({ slug }: { slug: string }) => {
                     ))}
 
                     <Link
-                      href="/contact"
+                      href="/inquiry"
                       style={{
                         display: "block",
                         marginTop: 28,

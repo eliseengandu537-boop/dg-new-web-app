@@ -16,7 +16,7 @@ const FancyBanner = () => {
                         <h3>Start your Journey as <span className="fw-normal fst-italic">A Retailer broker.</span></h3>
                         <div className="d-inline-flex flex-wrap align-items-center position-relative mt-15">
                            <Link href="/agent" className="btn-eight mt-10 me-4"><span>Become an Agent</span></Link>
-                           <Link href="/contact" className="btn-two rounded-0 border-0 mt-10"><span>Contact us</span></Link>
+                           <Link href="/inquiry" className="btn-two rounded-0 border-0 mt-10"><span>Send Inquiry</span></Link>
                            <Image src={fanchyBannerShape_1} alt="" className="lazy-img shapes shape_02 wow fadeInRight" />
                         </div>
                      </div>

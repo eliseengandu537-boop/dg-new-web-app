@@ -37,7 +37,7 @@ const Agent = () => {
                         Experienced brokers across commercial leasing, investment sales and retail strategy, delivering results across South Africa.
                      </p>
                      <div style={{ display:'flex', gap:12, marginTop:32, flexWrap:'wrap' }}>
-                        <Link href="/contact" style={{ padding:'12px 28px', background:'#e8b86d', color:'#0d1f2d', fontWeight:700, fontSize:'0.82rem', letterSpacing:'0.1em', textTransform:'uppercase', borderRadius:4, textDecoration:'none' }}>Get In Touch</Link>
+                        <Link href="/inquiry" style={{ padding:'12px 28px', background:'#e8b86d', color:'#0d1f2d', fontWeight:700, fontSize:'0.82rem', letterSpacing:'0.1em', textTransform:'uppercase', borderRadius:4, textDecoration:'none' }}>Get In Touch</Link>
                         <Link href="/listing_01" style={{ padding:'12px 28px', border:'1px solid rgba(255,255,255,0.35)', color:'#fff', fontWeight:600, fontSize:'0.82rem', letterSpacing:'0.1em', textTransform:'uppercase', borderRadius:4, textDecoration:'none' }}>View Listings</Link>
                      </div>
                   </div>

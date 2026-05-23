@@ -79,8 +79,15 @@ const FooterFour = () => {
             </div>
 
             {/* Divider + bottom bar */}
-            <div style={{ borderTop: "1px solid rgba(255,255,255,0.10)", marginTop: 56, padding: "24px 0", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
-               <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.8rem", margin: 0 }}>© {new Date().getFullYear()} De Gennaro Property. All rights reserved.</p>
+            <div style={{ borderTop: "1px solid rgba(255,255,255,0.10)", marginTop: 56, padding: "24px 0", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
+               <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                  <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.8rem", margin: 0 }}>© {new Date().getFullYear()} De Gennaro Property. All rights reserved.</p>
+                  <p style={{ color: "rgba(255,255,255,0.40)", fontSize: "0.75rem", margin: 0, letterSpacing: "0.02em" }}>
+                     Registration Number: 2022/651308/07
+                     <span style={{ color: "rgba(255,255,255,0.20)", margin: "0 10px" }}>•</span>
+                     PPRA Number: F152984
+                  </p>
+               </div>
                <p style={{ color: "rgba(255,255,255,0.25)", fontSize: "0.75rem", margin: 0 }}>Johannesburg, South Africa</p>
             </div>
          </div>

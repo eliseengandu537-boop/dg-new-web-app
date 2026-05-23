@@ -16,7 +16,7 @@ const BLockFeatureTwo = () => {
                      <div className="accordion accordion-style-one top-bottom-line p0 mb-80 lg-mb-50" id="accordionOne">
                         <FaqOne />
                      </div>
-                     <Link href="/contact" className="btn-five rounded-0">Contact us</Link>
+                     <Link href="/inquiry" className="btn-five rounded-0">Send Inquiry</Link>
                   </div>
                </div>
                <div className="col-lg-6">

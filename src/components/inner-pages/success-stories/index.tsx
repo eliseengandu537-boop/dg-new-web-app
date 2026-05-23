@@ -100,7 +100,7 @@ const SuccessStories = async () => {
                 Landmark projects. Real results. Lasting impact.
               </p>
               <Link
-                href="/contact"
+                href="/inquiry"
                 style={{
                   display: "inline-block",
                   background: "linear-gradient(90deg, #888e7d 0%, #6b7263 100%)",
@@ -150,7 +150,7 @@ const SuccessStories = async () => {
               <p style={{ color: "#5f6b76", lineHeight: 1.8, marginBottom: 18 }}>
                 {error}
               </p>
-              <Link href="/contact" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "13px 24px", borderRadius: 999, background: "#0d1f2d", color: "#fff", textDecoration: "none", fontWeight: 700 }}>
+              <Link href="/inquiry" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "13px 24px", borderRadius: 999, background: "#0d1f2d", color: "#fff", textDecoration: "none", fontWeight: 700 }}>
                 Talk to Our Team
               </Link>
             </div>

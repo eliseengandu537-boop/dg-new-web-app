@@ -129,7 +129,7 @@ const NeighbourhoodSquareDetail = () => {
                 ))}
 
                 <Link
-                  href="/contact"
+                  href="/inquiry"
                   style={{
                     display: "block",
                     marginTop: 28,

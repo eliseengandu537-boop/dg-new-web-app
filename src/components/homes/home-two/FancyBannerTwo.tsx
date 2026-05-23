@@ -35,10 +35,10 @@ const FancyBannerTwo = () => {
                   </p>
                </div>
                <div className="col-lg-4 d-flex flex-column align-items-lg-end mt-40 mt-lg-0 gap-3 wow fadeInRight">
-                  <Link href="/contact"
+                  <Link href="/inquiry"
                      style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "16px 40px", background: "#f0b95e", borderRadius: 50, color: "#0d1f2d", fontSize: 14, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1 }}
                      className="tran3s">
-                     Contact DG Property <i className="bi bi-arrow-up-right"></i>
+                     Send an Inquiry <i className="bi bi-arrow-up-right"></i>
                   </Link>
                   <Link href="/listing_07"
                      style={{ display: "inline-flex", alignItems: "center", gap: 8, color: "rgba(255,255,255,0.65)", fontSize: 14, fontWeight: 500 }}

@@ -17,8 +17,8 @@ const BLockFeatureOne = () => {
                      At DG Property, our investment strategy is built on trust, discretion, and long-term partnerships. We take a personalised, relationship-driven approach with every client, focusing on understanding your goals and aligning with your broader wealth-creation journey.
                   </p>
                   <div className="d-flex flex-wrap align-items-center justify-content-center">
-                     <Link href="/contact" className="btn-five md rounded-0 mt-20 me-5"><span>Get in Touch</span></Link>
-                     <Link href="/contact" className="btn-three mt-20"><span>Request a Callback</span> <i className="fa-light fa-arrow-right-long"></i></Link>
+                     <Link href="/inquiry" className="btn-five md rounded-0 mt-20 me-5"><span>Get in Touch</span></Link>
+                     <Link href="/inquiry" className="btn-three mt-20"><span>Request a Callback</span> <i className="fa-light fa-arrow-right-long"></i></Link>
                   </div>
                   <div className="mt-25 text-center">
                      <Link href="/listing_05" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "linear-gradient(90deg, #c8973a, #e8b86d)", color: "#fff", fontWeight: 600, fontSize: 15, padding: "14px 34px", borderRadius: 50, textDecoration: "none", letterSpacing: 0.4 }}>

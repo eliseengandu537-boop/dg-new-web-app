@@ -40,7 +40,7 @@ const BlockFeatureOne = () => {
                               <li>Active in all major SA property markets</li>
                            </ul>
                            <div className="mt-60 lg-mt-40">
-                              <Link href="/contact" className="btn-two">Contact Us</Link>
+                              <Link href="/inquiry" className="btn-two">Send Inquiry</Link>
                            </div>
                         </div>
                      </div>

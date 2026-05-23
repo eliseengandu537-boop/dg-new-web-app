@@ -600,7 +600,7 @@ const CoursesPage = () => {
           <p className="mb-35" style={{ color: "rgba(255,255,255,0.7)", fontSize: "1rem" }}>
             Join Michela&apos;s programme and transform your future in commercial property.
           </p>
-          <Link href="/contact" className="btn-nine text-uppercase">
+          <Link href="/inquiry" className="btn-nine text-uppercase">
             <span>Get in touch →</span>
           </Link>
         </div>

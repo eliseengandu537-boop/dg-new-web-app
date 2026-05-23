@@ -1,4 +1,4 @@
-import BreadcrumbOne from "@/components/common/breadcrumb/BreadcrumbOne";
+import LegalHero from "@/components/common/breadcrumb/LegalHero";
 import FancyBanner from "@/components/common/FancyBanner";
 import FooterFour from "@/layouts/footers/FooterFour";
 import HeaderOne from "@/layouts/headers/HeaderOne";
@@ -12,12 +12,9 @@ export default function PrivacyPolicyPage() {
   return (
     <Wrapper>
       <HeaderOne style={true} />
-      <BreadcrumbOne
+      <LegalHero
         title="Privacy Policy"
-        link="#"
-        link_title="Legal"
-        sub_title="Privacy Policy"
-        style={true}
+        description="How De Gennaro Property collects, uses and protects your personal information in accordance with the Protection of Personal Information Act (POPIA)."
       />
 
       <section
