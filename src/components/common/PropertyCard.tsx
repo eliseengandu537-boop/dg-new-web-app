@@ -115,12 +115,7 @@ const PropertyCard = ({ item, detailsLink = "/listing_details_06" }: PropertyCar
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 13, color: "#555" }}>
             <i className="bi bi-rulers" style={{ fontSize: 13 }}></i>
-            <span>{sqft.toLocaleString("en-ZA")} sqft</span>
-          </div>
-          <span style={{ color: "#ccc", margin: "0 8px" }}>|</span>
-          <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 13, color: "#555" }}>
-            <i className="bi bi-rulers" style={{ fontSize: 13 }}></i>
-            <span>{sqm.toLocaleString("en-ZA")} sqm</span>
+            <span>{sqm.toLocaleString("en-ZA")} m²</span>
           </div>
           <span style={{ color: "#ccc", margin: "0 8px" }}>|</span>
           <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 13, color: "#555" }}>

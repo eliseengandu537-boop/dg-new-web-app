@@ -82,7 +82,7 @@ const CategoryListingArea = ({ category, listingType, detailsLink = "/listing_de
   };
 
   return (
-    <div className="property-listing-six pb-200 xl-pb-120 pt-200 xl-pt-150">
+    <div className="property-listing-six pb-200 xl-pb-120 pt-20 xl-pt-10">
       <div className="container container-large">
 
         <div className="listing-header-filter d-sm-flex justify-content-between align-items-center mb-40 lg-mb-30">

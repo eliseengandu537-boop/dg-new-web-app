@@ -542,9 +542,9 @@ const ListingDetailsSixArea = () => {
                 </div>
               </SideCard>
 
-              <SideCard title="Inspection times">
+              <SideCard title="Schedule viewing">
                 <div style={{ color: "#475569", fontSize: 14, lineHeight: 1.8, marginBottom: 10 }}>
-                  Inspections are arranged around owner access, broker availability and your preferred viewing schedule.
+                  Arrange a private viewing with one of our brokers at a time that suits your schedule. Viewings are coordinated directly with the owner and our brokerage team to ensure a seamless inspection experience.
                 </div>
                 <div style={{ color: "#64748b", fontSize: 13, marginBottom: 16 }}>
                   Weekdays and selected weekend appointments
