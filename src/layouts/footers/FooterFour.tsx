@@ -15,7 +15,7 @@ const FooterFour = () => {
                      <Image src={footerLogo} alt="DG Property" width={130} height={54} style={{ filter: "brightness(0) invert(1)", marginBottom: 24 }} />
                   </Link>
                   <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", lineHeight: 1.7, marginBottom: 20 }}>
-                     Specialist commercial real estate brokerage headquartered in Johannesburg, serving occupiers, investors and developers across South Africa.
+                     Specialist commercial property brokerage headquartered in Johannesburg.
                   </p>
                   <p style={{ color: "rgba(255,255,255,0.40)", fontSize: "0.82rem", marginBottom: 4 }}>{contactInfo.fullAddress}</p>
                   <Link href={contactInfo.emailHref} style={{ color: "#e8b86d", fontSize: "0.9rem", textDecoration: "none" }}>{contactInfo.emailDisplay}</Link>

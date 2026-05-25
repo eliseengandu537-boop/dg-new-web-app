@@ -33,7 +33,7 @@ const BlockFeatureOne = () => {
                            <div className="title-one m0">
                               <h3>18+  <span>Commercial<Image src={featureImg_5} alt="" className="lazy-img" /></span> Specialists. One Focused Team.</h3>
                            </div>
-                           <p className="fs-22 mt-45 mb-60 xl-mb-40 pe-xxl-5">DG Property is a specialist commercial real estate brokerage headquartered in Johannesburg, serving occupiers, investors and developers across South Africa.</p>
+                           <p className="fs-22 mt-45 mb-60 xl-mb-40 pe-xxl-5">DG Property is a specialist commercial property brokerage headquartered in Johannesburg.</p>
                            <ul className="list-style-one fs-22 color-dark style-none">
                               <li>R250M+ in completed transactions</li>
                               <li>Commercial, industrial and investment expertise</li>
