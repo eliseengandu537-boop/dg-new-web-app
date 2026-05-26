@@ -44,14 +44,13 @@ const PropertyCard = ({ item, detailsLink = "/listing_details_06" }: PropertyCar
     [item.suburb, item.city, item.province].filter(Boolean).join(", ") ||
     "South Africa";
 
-  // Stats
-  const sqft: number = item.property_info?.sqft || item.categoryDetails?.size || 0;
-  const sqm: number =
-    item.property_info?.sqm ??
-    item.categoryDetails?.gla ??
-    item.categoryDetails?.sqm ??
-    Math.round(sqft * 0.0929);
-  const units: number = item.property_info?.units ?? item.categoryDetails?.units ?? 0;
+  // Stats — admin saves size in m² (categoryDetails.size); static mock data uses sqft.
+  const cd = item.categoryDetails || {};
+  const sqm: number = Number(
+    cd.size ?? cd.gla ?? cd.sqm ?? item.property_info?.sqm ??
+    (item.property_info?.sqft ? Math.round(item.property_info.sqft * 0.0929) : 0)
+  ) || 0;
+  const units: number = item.property_info?.units ?? cd.units ?? 0;
 
   return (
     <div style={{

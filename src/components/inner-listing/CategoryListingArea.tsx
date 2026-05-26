@@ -15,7 +15,7 @@ interface Props {
   filters?: CommercialSearchFilters;
 }
 
-const LIMIT = 12;
+const LIMIT = 9;
 
 const CategoryListingArea = ({ category, listingType, detailsLink = "/listing_details_06", filters }: Props) => {
   const [properties, setProperties] = useState<any[]>([]);
