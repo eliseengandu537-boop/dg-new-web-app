@@ -37,6 +37,8 @@ export const fetchRecentInquiries = () => authApi.get("/admin/recent-inquiries")
 export const fetchPageViewStats = () => authApi.get("/admin/stats/pageviews");
 export const fetchPageViewTrend = (mode: "weekly" | "monthly") =>
   authApi.get("/admin/stats/pageviews/trend", { params: { mode } });
+export const fetchPageViewDaily = (days = 30) =>
+  authApi.get("/admin/stats/pageviews/daily", { params: { days } });
 
 // ── Public: record a page view (no auth) ────────────────────────────────
 export const recordPageView = (sessionId: string, path: string) =>

@@ -263,7 +263,7 @@ const InquiryForm = () => {
             <p className="dg-inquiry-form__eyebrow">Step 1</p>
             <h3>What can we help you with?</h3>
             <p className="dg-inquiry-form__lead">
-               Pick the option closest to your question. We'll only ask for the details that matter.
+               Pick the option closest to your question. We&apos;ll only ask for the details that matter.
             </p>
          </div>
 

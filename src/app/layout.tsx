@@ -1,19 +1,13 @@
-'use client'
 import "../styles/index.scss";
-import { Provider } from "react-redux";
-import store from "@/redux/store";
-import PageViewTracker from "@/components/common/PageViewTracker";
+import Providers from "./providers";
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-
-  const isDev = process.env.NODE_ENV === 'development'
-
   return (
-    <html lang="en" suppressHydrationWarning={isDev}>
+    <html lang="en">
       <head>
         <meta name="keywords" content="Real estate, Property sale, Property buy" />
         <meta name="description" content="DG Property — commercial, industrial and retail property specialists across South Africa." />
@@ -26,6 +20,9 @@ export default function RootLayout({
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         {/* For Resposive Device */}
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        {/* Speed up Google Fonts so text doesn't flash on slow mobile connections */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* For Window Tab Color */}
         {/* Chrome, Firefox OS and Opera */}
         <meta name="theme-color" content="#0D1A1C" />
@@ -38,10 +35,9 @@ export default function RootLayout({
       </head>
       <body suppressHydrationWarning={true}>
         <div className="main-page-wrapper">
-          <Provider store={store}>
-            <PageViewTracker />
+          <Providers>
             {children}
-          </Provider>
+          </Providers>
         </div>
       </body>
     </html>

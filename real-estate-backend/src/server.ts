@@ -3,7 +3,6 @@ import cors from "cors";
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 import fs from "fs";
-import { Op } from "sequelize";
 import { sequelize } from "./config/database";
 import authRoutes from "./routes/authRoutes";
 import protectedRoutes from "./routes/protectedRoutes";
@@ -19,7 +18,6 @@ import pageviewRoutes from "./routes/pageviewRoutes";
 import newsRoutes from "./routes/newsRoutes";
 import { User } from "./models/User";
 import { MembershipPlan } from "./models/MembershipPlan";
-import { PageView } from "./models/PageView";
 import { Property } from "./models/Property";
 import { UPLOADS_DIR } from "./utils/uploads";
 import { requireEnv } from "./config/env";
@@ -166,33 +164,6 @@ const backfillPropertyListingCategories = async () => {
   }
 };
 
-const dedupePageViewsByBrowser = async () => {
-  const pageViews = await PageView.findAll({
-    raw: true,
-    order: [["sessionId", "ASC"], ["createdAt", "ASC"], ["id", "ASC"]],
-  }) as Array<{ id: number; sessionId?: string | null }>;
-
-  const seenSessionIds = new Set<string>();
-  const duplicateIds: number[] = [];
-
-  for (const pageView of pageViews) {
-    const sessionId = pageView.sessionId?.trim();
-    if (!sessionId) continue;
-
-    if (seenSessionIds.has(sessionId)) {
-      duplicateIds.push(pageView.id);
-      continue;
-    }
-
-    seenSessionIds.add(sessionId);
-  }
-
-  if (duplicateIds.length > 0) {
-    await PageView.destroy({ where: { id: { [Op.in]: duplicateIds } } });
-    console.log(`Removed ${duplicateIds.length} duplicate page view records to keep one record per browser.`);
-  }
-};
-
 const ensureDefaultAdminUser = async () => {
   const hashedPassword = await bcrypt.hash(DEFAULT_ADMIN_PASSWORD, 10);
   const existingUser = await User.findOne({ where: { email: DEFAULT_ADMIN_EMAIL } });
@@ -224,7 +195,6 @@ sequelize.sync({ alter: { drop: false } }).then(async () => {
   console.log("📌 Database connected & synced!");
   await repairPropertyBrokerTable();
   await backfillPropertyListingCategories();
-  await dedupePageViewsByBrowser();
   await ensureDefaultAdminUser();
   await seedDefaultPlans();
   app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

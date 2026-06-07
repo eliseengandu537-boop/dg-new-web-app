@@ -193,20 +193,73 @@ export const getMostSavedProperties = async (_req: AuthRequest, res: Response): 
   }
 };
 
-// ── Total browser records + this week / this month ──────────────────────
+// ── Page-view totals: views + unique browsers (today / week / month) ────────
 export const getPageViewStats = async (_req: AuthRequest, res: Response): Promise<void> => {
   try {
     const now = new Date();
+    const dayStart = startOfDay(now);
     const weekStart = startOfWeekMonday(now);
     const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-    const [total, thisWeek, thisMonth] = await Promise.all([
-      PageView.count(),
-      PageView.count({ where: { createdAt: { [Op.gte]: weekStart } } }),
-      PageView.count({ where: { createdAt: { [Op.gte]: monthStart } } }),
+
+    const views = (where?: any) => PageView.count(where ? { where } : undefined);
+    const browsers = (where?: any) =>
+      PageView.count({ distinct: true, col: "sessionId", ...(where ? { where } : {}) });
+
+    const [
+      totalViews, uniqueBrowsers,
+      viewsToday, browsersToday,
+      viewsThisWeek, browsersThisWeek,
+      viewsThisMonth, browsersThisMonth,
+    ] = await Promise.all([
+      views(), browsers(),
+      views({ createdAt: { [Op.gte]: dayStart } }), browsers({ createdAt: { [Op.gte]: dayStart } }),
+      views({ createdAt: { [Op.gte]: weekStart } }), browsers({ createdAt: { [Op.gte]: weekStart } }),
+      views({ createdAt: { [Op.gte]: monthStart } }), browsers({ createdAt: { [Op.gte]: monthStart } }),
     ]);
-    res.json({ total, thisWeek, thisMonth });
+
+    res.json({
+      // legacy fields kept for compatibility (now represent views)
+      total: totalViews, thisWeek: viewsThisWeek, thisMonth: viewsThisMonth,
+      // explicit metrics
+      totalViews, uniqueBrowsers,
+      viewsToday, browsersToday,
+      viewsThisWeek, browsersThisWeek,
+      viewsThisMonth, browsersThisMonth,
+    });
   } catch {
     res.status(500).json({ error: "Failed to fetch page view stats" });
+  }
+};
+
+// ── Daily traffic: views + unique browsers per day for the last N days ──────
+export const getPageViewDaily = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const days = Math.min(Math.max(parseInt(String(req.query.days), 10) || 30, 1), 90);
+    const today = startOfDay(new Date());
+    const points: { date: string; label: string; views: number; browsers: number }[] = [];
+
+    for (let i = days - 1; i >= 0; i--) {
+      const start = new Date(today);
+      start.setDate(today.getDate() - i);
+      const end = new Date(start.getFullYear(), start.getMonth(), start.getDate() + 1);
+      const where = { createdAt: { [Op.gte]: start, [Op.lt]: end } };
+
+      const [views, browsers] = await Promise.all([
+        PageView.count({ where }),
+        PageView.count({ where, distinct: true, col: "sessionId" }),
+      ]);
+
+      points.push({
+        date: start.toISOString().slice(0, 10),
+        label: start.toLocaleDateString("en-ZA", { day: "numeric", month: "short" }),
+        views,
+        browsers,
+      });
+    }
+
+    res.json(points);
+  } catch {
+    res.status(500).json({ error: "Failed to fetch daily page views" });
   }
 };
 

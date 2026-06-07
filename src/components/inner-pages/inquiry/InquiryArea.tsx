@@ -16,7 +16,7 @@ const InquiryArea = () => {
                      <h1 className="dg-inquiry-hero__title">
                         Tell us what you need.
                         <br />
-                        We'll take it from here.
+                        We&apos;ll take it from here.
                      </h1>
                      <p className="dg-inquiry-hero__lead">
                         Leasing commercial space, exploring an investment, selling a property or just

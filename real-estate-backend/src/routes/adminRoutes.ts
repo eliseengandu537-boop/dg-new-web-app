@@ -9,6 +9,7 @@ import {
   getMostSavedProperties,
   getPageViewStats,
   getPageViewTrend,
+  getPageViewDaily,
 } from "../controllers/AdminController";
 import {
   getAllInquiries,
@@ -36,6 +37,7 @@ router.get("/stats/properties/status", getPropertyStatusChart);
 router.get("/stats/inquiries/trend", getInquiryTrendChart);
 router.get("/stats/pageviews", getPageViewStats);
 router.get("/stats/pageviews/trend", getPageViewTrend);
+router.get("/stats/pageviews/daily", getPageViewDaily);
 router.get("/recent-inquiries", getRecentInquiries);
 router.get("/most-saved-properties", getMostSavedProperties);
 

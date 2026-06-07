@@ -17,7 +17,7 @@ export const inputStyle: React.CSSProperties = {
 export const helperTextStyle: React.CSSProperties = { fontSize: 12, color: "#94a3b8", marginTop: 6, lineHeight: 1.5 };
 export const dividerStyle: React.CSSProperties = { border: "none", borderTop: "1px solid #eef2f7", margin: "22px 0 18px" };
 
-export const resultsGridStyle: React.CSSProperties = { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 4 };
+export const resultsGridStyle: React.CSSProperties = { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(135px, 1fr))", gap: 10, marginBottom: 4 };
 const resultCardStyle: React.CSSProperties = { padding: "14px 16px", borderRadius: 12, background: "#f8fafc", border: "1px solid #eef2f7" };
 const resultLabelStyle: React.CSSProperties = { fontSize: 11.5, color: "#64748b", marginBottom: 6, lineHeight: 1.4 };
 const resultValueStyle: React.CSSProperties = { fontSize: 18, fontWeight: 800, color: "#0f172a", lineHeight: 1.25 };

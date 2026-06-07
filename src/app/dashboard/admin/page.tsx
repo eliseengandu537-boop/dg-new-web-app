@@ -10,6 +10,7 @@ import {
   fetchPropertyStatusChart,
   fetchPageViewStats,
   fetchPageViewTrend,
+  fetchPageViewDaily,
   fetchRecentInquiries,
 } from "@/utils/dashboardApi";
 import dayjs from "dayjs";
@@ -30,7 +31,14 @@ interface Stats {
   totalPageViews: number;
 }
 
-interface PageViewStats { total: number; thisWeek: number; thisMonth: number; }
+interface PageViewStats {
+  total: number; thisWeek: number; thisMonth: number;
+  totalViews: number; uniqueBrowsers: number;
+  viewsToday: number; browsersToday: number;
+  viewsThisWeek: number; browsersThisWeek: number;
+  viewsThisMonth: number; browsersThisMonth: number;
+}
+interface DailyPoint { date: string; label: string; views: number; browsers: number }
 interface ChartPoint { status?: string; label?: string; fullLabel?: string; count: number }
 interface Inquiry {
   id: number; name: string; email: string; phone?: string;
@@ -47,6 +55,7 @@ export default function AdminOverviewPage() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [statusChart, setStatusChart] = useState<ChartPoint[]>([]);
   const [pageViewStats, setPageViewStats] = useState<PageViewStats | null>(null);
+  const [daily, setDaily] = useState<DailyPoint[]>([]);
   const [trendChart, setTrendChart] = useState<ChartPoint[]>([]);
   const [trendMode, setTrendMode] = useState<"weekly" | "monthly">("weekly");
   const [recentInquiries, setRecentInquiries] = useState<Inquiry[]>([]);
@@ -57,15 +66,17 @@ export default function AdminOverviewPage() {
   useEffect(() => {
     const load = async () => {
       try {
-        const [statsRes, statusRes, pvStatsRes, inquiryRes] = await Promise.all([
+        const [statsRes, statusRes, pvStatsRes, dailyRes, inquiryRes] = await Promise.all([
           fetchAdminStats(),
           fetchPropertyStatusChart(),
           fetchPageViewStats(),
+          fetchPageViewDaily(30),
           fetchRecentInquiries(),
         ]);
         setStats(statsRes.data);
         setStatusChart(statusRes.data);
         setPageViewStats(pvStatsRes.data);
+        setDaily(dailyRes.data);
         setRecentInquiries(inquiryRes.data);
       } catch (e: unknown) {
         setError(getApiErrorMessage(e, "Failed to load dashboard data."));
@@ -115,7 +126,8 @@ export default function AdminOverviewPage() {
     { title: "Total Leads", value: stats!.totalLeads, icon: "bi-funnel", color: "#ecc94b", sub: `${stats!.newLeads} new` },
     { title: "Inquiries", value: stats!.totalInquiries, icon: "bi-chat-dots", color: "#fc8181", sub: `${stats!.newInquiries} unread` },
     { title: "Investment Opps", value: stats!.investmentOpportunities, icon: "bi-graph-up-arrow", color: "#667eea" },
-    { title: "Website Viewings", value: stats!.totalPageViews, icon: "bi-eye", color: "#f6ad55", sub: `${pageViewStats?.thisWeek ?? 0} new browsers this week` },
+    { title: "Website Views", value: pageViewStats?.totalViews ?? stats!.totalPageViews, icon: "bi-eye", color: "#f6ad55", sub: `${(pageViewStats?.uniqueBrowsers ?? 0).toLocaleString("en-ZA")} unique browsers` },
+    { title: "Today", value: pageViewStats?.viewsToday ?? 0, icon: "bi-calendar-day", color: "#38b2ac", sub: `${(pageViewStats?.browsersToday ?? 0).toLocaleString("en-ZA")} browsers today` },
     { title: "Pending Viewings", value: stats!.pendingViewings, icon: "bi-calendar-check", color: "#4fd1c5" },
   ];
 
@@ -131,15 +143,15 @@ export default function AdminOverviewPage() {
   const latestTrendIndex = Math.max(trendChart.length - 1, 0);
   const trendRangeLabel = trendChart.length > 0
     ? `${trendChart[0].fullLabel || trendChart[0].label} - ${trendChart[trendChart.length - 1].fullLabel || trendChart[trendChart.length - 1].label}`
-    : "No browser data yet";
+    : "No view data yet";
   const trendDescription = trendMode === "weekly"
-    ? "New browser records for each day of the current week."
-    : "New browser records by month for the last six months.";
+    ? "Page views for each day of the current week."
+    : "Page views by month for the last six months.";
 
   const barData = {
     labels: trendChart.map((t) => t.label),
     datasets: [{
-      label: "New Browsers",
+      label: "Page views",
       data: trendChart.map((t) => t.count),
       backgroundColor: trendChart.map((_, index) => index === latestTrendIndex ? "#f6ad55" : "rgba(246, 173, 85, 0.42)"),
       hoverBackgroundColor: "#ed8936",
@@ -147,6 +159,14 @@ export default function AdminOverviewPage() {
       borderSkipped: false as const,
       maxBarThickness: trendMode === "weekly" ? 48 : 56,
     }],
+  };
+
+  const dailyData = {
+    labels: daily.map((d) => d.label),
+    datasets: [
+      { label: "Views", data: daily.map((d) => d.views), backgroundColor: "#f6ad55", borderRadius: 5, maxBarThickness: 16 },
+      { label: "Unique browsers", data: daily.map((d) => d.browsers), backgroundColor: "#4299e1", borderRadius: 5, maxBarThickness: 16 },
+    ],
   };
 
   return (
@@ -197,25 +217,25 @@ export default function AdminOverviewPage() {
                 {trendRangeLabel}
               </div>
               <div style={{ fontSize: 12, color: "#94a3b8" }}>
-                Updated from live unique browser records
+                Updated from live page-view records
               </div>
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 14, marginBottom: 22 }}>
               <div style={{ background: "#fffbf5", border: "1px solid #fde8c8", borderRadius: 14, padding: "14px 18px" }}>
                 <div style={{ fontSize: 11, color: "#a0aec0", fontWeight: 700, textTransform: "uppercase", letterSpacing: 0.8 }}>This Week</div>
-                <div style={{ fontSize: 28, fontWeight: 800, color: "#1a2332", marginTop: 6 }}>{(pageViewStats?.thisWeek ?? 0).toLocaleString("en-ZA")}</div>
-                <div style={{ fontSize: 12, color: "#94a3b8", marginTop: 4 }}>New browsers this calendar week</div>
+                <div style={{ fontSize: 28, fontWeight: 800, color: "#1a2332", marginTop: 6 }}>{(pageViewStats?.viewsThisWeek ?? 0).toLocaleString("en-ZA")}</div>
+                <div style={{ fontSize: 12, color: "#94a3b8", marginTop: 4 }}>{(pageViewStats?.browsersThisWeek ?? 0).toLocaleString("en-ZA")} unique browsers</div>
               </div>
               <div style={{ background: "#fffbf5", border: "1px solid #fde8c8", borderRadius: 14, padding: "14px 18px" }}>
                 <div style={{ fontSize: 11, color: "#a0aec0", fontWeight: 700, textTransform: "uppercase", letterSpacing: 0.8 }}>This Month</div>
-                <div style={{ fontSize: 28, fontWeight: 800, color: "#1a2332", marginTop: 6 }}>{(pageViewStats?.thisMonth ?? 0).toLocaleString("en-ZA")}</div>
-                <div style={{ fontSize: 12, color: "#94a3b8", marginTop: 4 }}>New browsers this calendar month</div>
+                <div style={{ fontSize: 28, fontWeight: 800, color: "#1a2332", marginTop: 6 }}>{(pageViewStats?.viewsThisMonth ?? 0).toLocaleString("en-ZA")}</div>
+                <div style={{ fontSize: 12, color: "#94a3b8", marginTop: 4 }}>{(pageViewStats?.browsersThisMonth ?? 0).toLocaleString("en-ZA")} unique browsers</div>
               </div>
               <div style={{ background: "#fffbf5", border: "1px solid #fde8c8", borderRadius: 14, padding: "14px 18px" }}>
                 <div style={{ fontSize: 11, color: "#a0aec0", fontWeight: 700, textTransform: "uppercase", letterSpacing: 0.8 }}>All Time</div>
-                <div style={{ fontSize: 28, fontWeight: 800, color: "#1a2332", marginTop: 6 }}>{(pageViewStats?.total ?? 0).toLocaleString("en-ZA")}</div>
-                <div style={{ fontSize: 12, color: "#94a3b8", marginTop: 4 }}>All recorded unique browsers</div>
+                <div style={{ fontSize: 28, fontWeight: 800, color: "#1a2332", marginTop: 6 }}>{(pageViewStats?.totalViews ?? 0).toLocaleString("en-ZA")}</div>
+                <div style={{ fontSize: 12, color: "#94a3b8", marginTop: 4 }}>{(pageViewStats?.uniqueBrowsers ?? 0).toLocaleString("en-ZA")} unique browsers</div>
               </div>
             </div>
 
@@ -233,7 +253,7 @@ export default function AdminOverviewPage() {
                       padding: 12,
                       callbacks: {
                         title: (items) => trendChart[items[0]?.dataIndex]?.fullLabel || items[0]?.label || "",
-                        label: (context) => `New browsers: ${Number(context.raw || 0).toLocaleString("en-ZA")}`,
+                        label: (context) => `Page views: ${Number(context.raw || 0).toLocaleString("en-ZA")}`,
                       },
                     },
                   },
@@ -272,6 +292,75 @@ export default function AdminOverviewPage() {
                 plugins: { legend: { position: "bottom", labels: { boxWidth: 12 } } },
               }}
             />
+          </div>
+        </div>
+
+        {/* Daily traffic — views & unique browsers per day */}
+        <div style={{ background: "#fff", borderRadius: 16, padding: 24, boxShadow: "0 1px 6px rgba(0,0,0,0.06)", marginBottom: 28 }}>
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16, marginBottom: 18, flexWrap: "wrap" }}>
+            <div>
+              <h3 style={{ fontSize: 22, fontWeight: 700, color: "#1a2332", margin: 0 }}>Daily traffic</h3>
+              <p style={{ margin: "6px 0 0", color: "#718096", fontSize: 13 }}>Page views and unique browsers for each of the last 30 days.</p>
+            </div>
+            <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12, fontWeight: 700, color: "#64748b" }}>
+                <span style={{ width: 10, height: 10, borderRadius: 3, background: "#f6ad55" }} /> Views
+              </span>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12, fontWeight: 700, color: "#64748b" }}>
+                <span style={{ width: 10, height: 10, borderRadius: 3, background: "#4299e1" }} /> Unique browsers
+              </span>
+            </div>
+          </div>
+
+          <div style={{ height: 300, marginBottom: 20 }}>
+            <Bar
+              data={dailyData}
+              options={{
+                maintainAspectRatio: false,
+                responsive: true,
+                plugins: {
+                  legend: { display: false },
+                  tooltip: {
+                    backgroundColor: "#1a2332",
+                    padding: 12,
+                    callbacks: {
+                      title: (items) => daily[items[0]?.dataIndex]?.date || items[0]?.label || "",
+                    },
+                  },
+                },
+                scales: {
+                  x: { grid: { display: false }, border: { display: false }, ticks: { color: "#94a3b8", font: { size: 11 }, maxRotation: 0, autoSkip: true } },
+                  y: { beginAtZero: true, ticks: { precision: 0, color: "#94a3b8", font: { size: 12 } }, border: { display: false }, grid: { color: "rgba(148,163,184,0.16)" } },
+                },
+              }}
+            />
+          </div>
+
+          <div style={{ overflowX: "auto", maxHeight: 280, overflowY: "auto", border: "1px solid #f0f4f8", borderRadius: 12 }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
+              <thead>
+                <tr style={{ background: "#f7fafc" }}>
+                  {["Date", "Views", "Unique browsers"].map((h) => (
+                    <th key={h} style={{ padding: "10px 16px", textAlign: h === "Date" ? "left" : "right", fontWeight: 600, color: "#718096", fontSize: 12, textTransform: "uppercase", letterSpacing: 0.5, position: "sticky", top: 0, background: "#f7fafc" }}>
+                      {h}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {daily.length === 0 ? (
+                  <tr><td colSpan={3} style={{ padding: "28px 16px", textAlign: "center", color: "#a0aec0" }}>No traffic recorded yet.</td></tr>
+                ) : (
+                  [...daily].reverse().map((d) => (
+                    <tr key={d.date} style={{ borderTop: "1px solid #f0f4f8" }}>
+                      <td style={{ padding: "10px 16px", color: "#2d3748", fontWeight: 500 }}>{dayjs(d.date).format("ddd, DD MMM YYYY")}</td>
+                      <td style={{ padding: "10px 16px", textAlign: "right", color: "#2d3748", fontWeight: 700 }}>{d.views.toLocaleString("en-ZA")}</td>
+                      <td style={{ padding: "10px 16px", textAlign: "right", color: "#4a5568" }}>{d.browsers.toLocaleString("en-ZA")}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
 
