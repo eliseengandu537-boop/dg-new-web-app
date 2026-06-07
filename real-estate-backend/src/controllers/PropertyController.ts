@@ -65,6 +65,33 @@ const parseFiles = (files: any) => {
   return result;
 };
 
+// Merge each unit's existing image URLs (sent in the units JSON) with any newly
+// uploaded files, which arrive under field names like `unitImage_0`, `unitImage_1`.
+const attachUnitImages = (units: any, files: any): { name: string; size: string; note: string; images: string[] }[] => {
+  if (!Array.isArray(units)) return [];
+
+  const byField: Record<string, any[]> = {};
+  if (Array.isArray(files)) {
+    for (const f of files) {
+      if (!byField[f.fieldname]) byField[f.fieldname] = [];
+      byField[f.fieldname].push(f);
+    }
+  } else if (files) {
+    Object.assign(byField, files);
+  }
+
+  return units.map((u: any, i: number) => {
+    const uploaded = (byField[`unitImage_${i}`] || []).map((f: any) => toUploadUrl("misc", f.filename));
+    const existing = Array.isArray(u?.images) ? u.images.filter((x: any) => typeof x === "string") : [];
+    return {
+      name: String(u?.name ?? ""),
+      size: String(u?.size ?? ""),
+      note: String(u?.note ?? ""),
+      images: [...existing, ...uploaded],
+    };
+  });
+};
+
 type PublicPropertyFilterMode = "contains" | "select" | "min" | "max";
 
 const CATEGORY_TO_LISTING_CATEGORY_MAP: Record<string, string> = {
@@ -519,9 +546,16 @@ export const createProperty = async (req: AuthRequest, res: Response): Promise<v
     if (typeof data.amenities === "string") {
       try { data.amenities = JSON.parse(data.amenities); } catch { data.amenities = []; }
     }
+    if (typeof data.units === "string") {
+      try { data.units = JSON.parse(data.units); } catch { data.units = []; }
+    }
 
     const files = parseFiles((req as any).files);
     Object.assign(data, files);
+
+    if (data.units !== undefined) {
+      data.units = attachUnitImages(data.units, (req as any).files);
+    }
 
     if (!data.referenceNumber) {
       data.referenceNumber = buildRefNumber();
@@ -590,6 +624,9 @@ export const updateProperty = async (req: AuthRequest, res: Response): Promise<v
     if (typeof data.amenities === "string") {
       try { data.amenities = JSON.parse(data.amenities); } catch { data.amenities = []; }
     }
+    if (typeof data.units === "string") {
+      try { data.units = JSON.parse(data.units); } catch { data.units = []; }
+    }
 
     if (!data.listingCategory) {
       data.listingCategory = deriveListingCategory(
@@ -623,6 +660,10 @@ export const updateProperty = async (req: AuthRequest, res: Response): Promise<v
     // Merge existing URLs with newly uploaded files (don't drop existing on new upload)
     if (files.gallery) data.gallery = [...existingGallery, ...files.gallery];
     if (files.floorPlans) data.floorPlans = [...existingFloorPlans, ...files.floorPlans];
+
+    if (data.units !== undefined) {
+      data.units = attachUnitImages(data.units, rawFiles);
+    }
 
     const brokerIds: number[] | undefined = data.brokerIds !== undefined
       ? (typeof data.brokerIds === "string" ? JSON.parse(data.brokerIds) : data.brokerIds)

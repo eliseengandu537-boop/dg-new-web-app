@@ -106,6 +106,16 @@ export class Property extends Model {
   }})
   floorPlans?: string[];
 
+  // Units stored as JSON array [{ name, size, note, images: [paths] }]
+  // Used by retail / commercial_office / mixed_use listings (shops/units within the property)
+  @Column({ type: DataType.TEXT, allowNull: true, get() {
+    const raw = (this as any).getDataValue("units");
+    return raw ? JSON.parse(raw) : [];
+  }, set(val: any) {
+    (this as any).setDataValue("units", val ? JSON.stringify(val) : "[]");
+  }})
+  units?: { name: string; size: string; note: string; images: string[] }[];
+
   // Nearby places stored as JSON array [{name, distance}]
   @Column({ type: DataType.TEXT, allowNull: true, get() {
     const raw = (this as any).getDataValue("nearby");

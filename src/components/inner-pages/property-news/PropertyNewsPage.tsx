@@ -23,7 +23,6 @@ export default function PropertyNewsPage() {
   const [posts, setPosts] = useState<NewsPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [selected, setSelected] = useState<NewsPost | null>(null);
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
 
@@ -155,8 +154,8 @@ export default function PropertyNewsPage() {
           <div className="row gy-4">
             {filtered.map(post => (
               <div className="col-lg-4 col-md-6" key={post.id}>
+                <Link href={`/property-news/${post.slug}`} style={{ textDecoration: "none", display: "block", height: "100%" }}>
                 <article
-                  onClick={() => setSelected(post)}
                   style={{
                     background: "#fff",
                     borderRadius: 14,
@@ -199,49 +198,13 @@ export default function PropertyNewsPage() {
                     </span>
                   </div>
                 </article>
+                </Link>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Article Detail Modal ── */}
-      {selected && (
-        <div
-          style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.65)", zIndex: 2000, overflowY: "auto", display: "flex", alignItems: "flex-start", justifyContent: "center", padding: "40px 16px 60px" }}
-          onClick={e => { if (e.target === e.currentTarget) setSelected(null); }}
-        >
-          <div style={{ background: "#fff", borderRadius: 16, width: "100%", maxWidth: 780, boxShadow: "0 24px 80px rgba(0,0,0,0.3)", overflow: "hidden" }}>
-            {/* Cover image */}
-            {selected.imageUrl && (
-              <div style={{ height: 320, overflow: "hidden" }}>
-                <img src={`${BACKEND_ROOT}${selected.imageUrl}`} alt={selected.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-              </div>
-            )}
-            <div style={{ padding: "32px 36px" }}>
-              <button onClick={() => setSelected(null)} style={{ float: "right", background: "none", border: "none", fontSize: 22, cursor: "pointer", color: "#718096", marginTop: -4 }}>×</button>
-              {selected.category && (
-                <span style={{ background: "rgba(200,151,58,0.12)", color: "#c8973a", fontSize: 11, fontWeight: 700, padding: "3px 12px", borderRadius: 20, letterSpacing: 1, textTransform: "uppercase", marginBottom: 14, display: "inline-block" }}>
-                  {selected.category}
-                </span>
-              )}
-              <h2 style={{ fontFamily: "var(--site-font-family)", fontSize: "clamp(22px,4vw,32px)", fontWeight: 700, color: "#1a2332", margin: "12px 0 8px", lineHeight: 1.25 }}>{selected.title}</h2>
-              <div style={{ fontSize: 13, color: "#a0aec0", marginBottom: 20, display: "flex", gap: 14, flexWrap: "wrap" }}>
-                {selected.author && <span><i className="bi bi-person" style={{ marginRight: 4 }} />{selected.author}</span>}
-                <span><i className="bi bi-calendar3" style={{ marginRight: 4 }} />{formatDate(selected.publishedAt || selected.createdAt)}</span>
-                {selected.tags && <span><i className="bi bi-tag" style={{ marginRight: 4 }} />{selected.tags}</span>}
-              </div>
-              <div style={{ width: 40, height: 3, background: "linear-gradient(90deg,#c8973a,#e8b86d)", borderRadius: 2, marginBottom: 20 }} />
-              {selected.summary && (
-                <p style={{ fontSize: 16, color: "#4a5568", lineHeight: 1.7, fontWeight: 500, borderLeft: "3px solid #e8b86d", paddingLeft: 16, marginBottom: 22 }}>{selected.summary}</p>
-              )}
-              {selected.body && selected.body.split("\n\n").map((para, i) => (
-                para.trim() ? <p key={i} style={{ fontSize: 15, color: "#4a5568", lineHeight: 1.8, marginBottom: 18 }}>{para}</p> : null
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }

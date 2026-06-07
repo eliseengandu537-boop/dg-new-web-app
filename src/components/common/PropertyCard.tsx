@@ -50,7 +50,19 @@ const PropertyCard = ({ item, detailsLink = "/listing_details_06" }: PropertyCar
     cd.size ?? cd.gla ?? cd.sqm ?? item.property_info?.sqm ??
     (item.property_info?.sqft ? Math.round(item.property_info.sqft * 0.0929) : 0)
   ) || 0;
-  const units: number = item.property_info?.units ?? cd.units ?? 0;
+  // Prefer the rich units array (shops/units); fall back to legacy numeric fields.
+  const units: number = Array.isArray(item.units)
+    ? item.units.length
+    : Number(item.property_info?.units ?? cd.units ?? cd.residentialUnits ?? 0) || 0;
+
+  // Price label depends on listing type — lease listings (e.g. Retail Leasing)
+  // show a monthly rental, not an asking price.
+  const priceLabel: string =
+    item.listingType === "lease"
+      ? "Monthly Rental"
+      : item.listingType === "investment"
+        ? "Investment Guide"
+        : "Asking Price";
 
   return (
     <div style={{
@@ -116,18 +128,22 @@ const PropertyCard = ({ item, detailsLink = "/listing_details_06" }: PropertyCar
             <i className="bi bi-rulers" style={{ fontSize: 13 }}></i>
             <span>{sqm.toLocaleString("en-ZA")} m²</span>
           </div>
-          <span style={{ color: "#ccc", margin: "0 8px" }}>|</span>
-          <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 13, color: "#555" }}>
-            <i className="bi bi-building" style={{ fontSize: 13 }}></i>
-            <span>{units} units</span>
-          </div>
+          {units > 0 && (
+            <>
+              <span style={{ color: "#ccc", margin: "0 8px" }}>|</span>
+              <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 13, color: "#555" }}>
+                <i className="bi bi-building" style={{ fontSize: 13 }}></i>
+                <span>{units} units</span>
+              </div>
+            </>
+          )}
         </div>
 
         {/* Price */}
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginTop: "auto" }}>
           <div>
             <div style={{ fontSize: 10, fontWeight: 700, color: "#aaa", letterSpacing: 1.2, textTransform: "uppercase", marginBottom: 3 }}>
-              Asking Price
+              {priceLabel}
             </div>
             <strong style={{ fontSize: 20, fontWeight: 800, color: "#1a1a2e" }}>
               {formatPrice(item.price, item.price_text)}

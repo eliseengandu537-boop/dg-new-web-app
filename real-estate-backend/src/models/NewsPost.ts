@@ -31,4 +31,26 @@ export class NewsPost extends Model {
 
   @Column({ type: DataType.DATE, allowNull: true })
   publishedAt?: Date;
+
+  // ── Magazine structured sections ───────────────────────────────────────
+  @Column({ type: DataType.TEXT, allowNull: true })
+  featuredStories?: string; // JSON: FeaturedStory[]
+
+  @Column({ type: DataType.TEXT, allowNull: true })
+  deals?: string; // JSON: Deal[]
+
+  @Column({ type: DataType.TEXT, allowNull: true })
+  gallery?: string; // JSON: GalleryItem[]
+
+  @Column({ type: DataType.TEXT, allowNull: true })
+  leaderboard?: string; // JSON: LeaderboardEntry[]
+
+  @Column({ type: DataType.STRING, allowNull: true })
+  breakingNewsTitle?: string;
+
+  @Column({ type: DataType.TEXT, allowNull: true })
+  breakingNewsDesc?: string;
+
+  @Column({ type: DataType.STRING, allowNull: true })
+  breakingNewsUrl?: string;
 }

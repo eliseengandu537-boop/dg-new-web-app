@@ -13,7 +13,9 @@ import {
   CATEGORY_AMENITIES,
   COMMERCIAL_CATEGORY_FIELDS,
   COMMERCIAL_CATEGORY_OPTIONS,
+  categorySupportsUnits,
 } from "@/data/commercialPropertyConfig";
+import { UnitsBuilder, type UnitDraft, buildUnitsFormData } from "@/components/dashboard/admin/UnitsBuilder";
 
 interface Broker { id: number; fullName: string; position?: string; photo?: string; isActive?: boolean }
 
@@ -35,6 +37,9 @@ export default function AddPropertyPage() {
 
   // Category-specific fields
   const [catDetails, setCatDetails] = useState<Record<string, string>>({});
+
+  // Units / shops (retail, commercial office, mixed-use)
+  const [units, setUnits] = useState<UnitDraft[]>([]);
 
   // Media
   const [featuredImageFile, setFeaturedImageFile] = useState<File | null>(null);
@@ -104,6 +109,7 @@ export default function AddPropertyPage() {
       setCategory(nextCategory);
       setCatDetails({});
       setSelectedAmenities([]);
+      setUnits([]);
     }
 
     setForm((prev) => ({
@@ -131,6 +137,7 @@ export default function AddPropertyPage() {
       fd.append("categoryDetails", JSON.stringify(catDetails));
       fd.append("nearby", JSON.stringify(nearby.filter((n) => n.name)));
       fd.append("amenities", JSON.stringify(selectedAmenities));
+      if (categorySupportsUnits(category)) buildUnitsFormData(fd, units);
       if (selectedBrokers.length > 0) fd.append("brokerIds", JSON.stringify(selectedBrokers));
       if (featuredImageFile) fd.append("featuredImage", featuredImageFile);
       galleryFiles.forEach((f) => fd.append("gallery", f));
@@ -210,6 +217,7 @@ export default function AddPropertyPage() {
                     setCategory(e.target.value);
                     setCatDetails({});
                     setSelectedAmenities([]);
+                    setUnits([]);
                   }}
                   style={inputStyle}
                 >
@@ -301,6 +309,13 @@ export default function AddPropertyPage() {
                     </div>
                   ))}
                 </Grid2>
+              </>
+            )}
+
+            {categorySupportsUnits(category) && (
+              <>
+                <SubHeading>Units / Shops</SubHeading>
+                <UnitsBuilder units={units} setUnits={setUnits} />
               </>
             )}
 

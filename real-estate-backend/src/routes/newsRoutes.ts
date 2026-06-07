@@ -9,7 +9,7 @@ import {
 } from "../controllers/NewsController";
 import { authenticateUser } from "../middleware/authMiddleware";
 import { requireAdmin } from "../middleware/roleMiddleware";
-import { uploadNewsImage } from "../middleware/uploadMiddleware";
+import { uploadNewsFiles } from "../middleware/uploadMiddleware";
 
 const router = Router();
 
@@ -19,8 +19,8 @@ router.get("/public/:slug", getPublicNewsBySlug);
 
 // Admin
 router.get("/", authenticateUser, requireAdmin, getAllNews);
-router.post("/", authenticateUser, requireAdmin, uploadNewsImage, createNews);
-router.put("/:id", authenticateUser, requireAdmin, uploadNewsImage, updateNews);
+router.post("/", authenticateUser, requireAdmin, uploadNewsFiles, createNews);
+router.put("/:id", authenticateUser, requireAdmin, uploadNewsFiles, updateNews);
 router.delete("/:id", authenticateUser, requireAdmin, deleteNews);
 
 export default router;

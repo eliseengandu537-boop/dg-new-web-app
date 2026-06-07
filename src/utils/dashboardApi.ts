@@ -94,6 +94,9 @@ export const convertLeadToClient = (id: number) =>
   authApi.post(`/admin/leads/${id}/convert-client`);
 export const submitBondLead = (data: Record<string, any>) =>
   axios.post(`${API_ROOT}/client/leads/capture`, data);
+// Generic public lead capture (bond / ROI / yield / valuation calculators)
+export const submitCalculatorLead = (data: Record<string, any>) =>
+  axios.post(`${API_ROOT}/client/leads/capture`, data);
 
 // ── Public: Inquiries (no auth) ─────────────────────────────────────────
 export const submitPublicInquiry = (data: Record<string, any>) =>

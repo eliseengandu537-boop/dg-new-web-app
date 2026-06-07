@@ -14,7 +14,9 @@ import {
   COMMERCIAL_CATEGORY_OPTIONS,
   COMMERCIAL_CATEGORY_FIELDS,
   deriveListingCategory,
+  categorySupportsUnits,
 } from "@/data/commercialPropertyConfig";
+import { UnitsBuilder, type UnitDraft, buildUnitsFormData, unitsToDrafts } from "@/components/dashboard/admin/UnitsBuilder";
 
 interface Broker { id: number; fullName: string; position?: string; photo?: string; isActive: boolean }
 interface SubmittedByUser { id: number; name: string; email: string; avatar?: string; jobTitle?: string; company?: string }
@@ -31,6 +33,7 @@ export default function EditPropertyPage() {
   const [submittedByUser, setSubmittedByUser] = useState<SubmittedByUser | null>(null);
   const [category, setCategory] = useState("");
   const [catDetails, setCatDetails] = useState<Record<string, string>>({});
+  const [units, setUnits] = useState<UnitDraft[]>([]);
   const [form, setForm] = useState<Record<string, any>>({});
   const [existingGallery, setExistingGallery] = useState<string[]>([]);
   const [galleryFiles, setGalleryFiles] = useState<File[]>([]);
@@ -87,6 +90,7 @@ export default function EditPropertyPage() {
           isFeatured: p.isFeatured || false,
         });
         setCatDetails(p.categoryDetails || {});
+        setUnits(unitsToDrafts(p.units));
         setExistingGallery(p.gallery || []);
         setExistingFloorPlans(p.floorPlans || []);
         setFeaturedPreview(p.featuredImage || "");
@@ -129,6 +133,7 @@ export default function EditPropertyPage() {
       fd.append("categoryDetails", JSON.stringify(catDetails));
       fd.append("nearby", JSON.stringify(nearby.filter((n) => n.name)));
       fd.append("amenities", JSON.stringify(selectedAmenities));
+      if (categorySupportsUnits(category)) buildUnitsFormData(fd, units);
       fd.append("gallery", JSON.stringify(existingGallery));
       fd.append("floorPlans", JSON.stringify(existingFloorPlans));
       fd.append("brokerIds", JSON.stringify(selectedBrokers));
@@ -184,6 +189,7 @@ export default function EditPropertyPage() {
                     setCategory(nextCategory);
                     setCatDetails({});
                     setSelectedAmenities([]);
+                    setUnits([]);
                   }
 
                   setForm({
@@ -213,6 +219,7 @@ export default function EditPropertyPage() {
                   setCategory(e.target.value);
                   setCatDetails({});
                   setSelectedAmenities([]);
+                  setUnits([]);
                 }}
                 style={inp}
               >
@@ -335,6 +342,14 @@ export default function EditPropertyPage() {
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Units / Shops */}
+        {categorySupportsUnits(category) && (
+          <div style={{ background: "#fff", borderRadius: 12, padding: "24px 28px", boxShadow: "0 1px 6px rgba(0,0,0,0.06)", marginBottom: 20 }}>
+            <h2 style={sectionTitle}>Units / Shops</h2>
+            <UnitsBuilder units={units} setUnits={setUnits} />
           </div>
         )}
 

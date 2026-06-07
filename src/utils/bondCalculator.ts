@@ -88,3 +88,52 @@ export const calculateBondResults = ({
     totalPayable: roundMoney(totalPayable),
   };
 };
+
+export const formatPercent = (value: number) =>
+  `${(Number.isFinite(value) ? value : 0).toLocaleString("en-ZA", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`;
+
+// ── Property ROI ───────────────────────────────────────────────────────────
+export interface RoiInput {
+  purchasePrice: number;
+  annualGrossIncome: number;
+  annualExpenses: number;
+  cashInvested: number; // total cash put in (deposit + costs); falls back to purchase price
+}
+
+export interface RoiResult {
+  netOperatingIncome: number; // NOI
+  capRate: number;            // NOI / purchase price
+  roi: number;                // NOI / cash invested
+}
+
+export const calculateRoi = ({ purchasePrice, annualGrossIncome, annualExpenses, cashInvested }: RoiInput): RoiResult => {
+  const noi = annualGrossIncome - annualExpenses;
+  const base = cashInvested > 0 ? cashInvested : purchasePrice;
+  return {
+    netOperatingIncome: roundMoney(noi),
+    capRate: purchasePrice > 0 ? roundMoney((noi / purchasePrice) * 100) : 0,
+    roi: base > 0 ? roundMoney((noi / base) * 100) : 0,
+  };
+};
+
+// ── Rental yield ─────────────────────────────────────────────────────────────
+export interface RentalYieldInput {
+  propertyValue: number;
+  monthlyRental: number;
+  annualExpenses: number;
+}
+
+export interface RentalYieldResult {
+  annualRentalIncome: number;
+  grossYield: number;
+  netYield: number;
+}
+
+export const calculateRentalYield = ({ propertyValue, monthlyRental, annualExpenses }: RentalYieldInput): RentalYieldResult => {
+  const annualRent = monthlyRental * 12;
+  return {
+    annualRentalIncome: roundMoney(annualRent),
+    grossYield: propertyValue > 0 ? roundMoney((annualRent / propertyValue) * 100) : 0,
+    netYield: propertyValue > 0 ? roundMoney(((annualRent - annualExpenses) / propertyValue) * 100) : 0,
+  };
+};

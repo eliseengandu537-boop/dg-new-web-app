@@ -412,7 +412,6 @@ export const COMMERCIAL_CATEGORY_FIELDS: Record<string, CommercialFieldDefinitio
     { key: "area", label: "Area", placeholder: "e.g. Rosebank" },
     { key: "size", label: "Size", type: "number", unit: "m²" },
     { key: "commercialArea", label: "Commercial Area", type: "number", unit: "m²" },
-    { key: "residentialUnits", label: "Residential Units", type: "number" },
     { key: "parkingBays", label: "Parking Bays", type: "number" },
     { key: "buildingCondition", label: "Building Condition", type: "select", options: BUILDING_CONDITION_OPTIONS },
   ],
@@ -452,6 +451,20 @@ export const COMMERCIAL_CATEGORY_FIELDS: Record<string, CommercialFieldDefinitio
     { key: "cStoreTurnover", label: "C-Store Turnover", type: "number", unit: "R" },
   ],
 };
+
+// Property types that support the multi-unit builder (each unit: name, size, note, pictures).
+// The card shows the unit count; the detail page lists each unit with expandable pictures.
+export const CATEGORIES_WITH_UNITS = ["retail", "commercial_office", "mixed_use"] as const;
+
+export const categorySupportsUnits = (category?: string) =>
+  !!category && (CATEGORIES_WITH_UNITS as readonly string[]).includes(category);
+
+export interface PropertyUnit {
+  name: string;
+  size: string;
+  note: string;
+  images: string[];
+}
 
 export const COMMERCIAL_SEARCH_FIELDS: Record<string, CommercialFieldDefinition[]> = {
   investment: [

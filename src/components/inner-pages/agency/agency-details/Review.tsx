@@ -13,6 +13,7 @@ const Review = ({ propertyId, style }: { propertyId?: number, style?: any }) => 
       setLoading(true);
       fetchAllReviews(propertyId ? { propertyId } : undefined)
          .then(res => setReviews(res.data?.reviews || []))
+         .catch(() => setReviews([]))
          .finally(() => setLoading(false));
    }, [propertyId]);
 

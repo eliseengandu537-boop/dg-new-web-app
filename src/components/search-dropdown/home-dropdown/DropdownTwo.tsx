@@ -416,9 +416,8 @@ const DropdownTwo = () => {
           gap: 8px;
           padding: 6px;
           border-radius: 999px;
-          background: rgba(255, 255, 255, 0.12);
+          background: rgba(15, 23, 42, 0.35);
           border: 1px solid rgba(255, 255, 255, 0.18);
-          backdrop-filter: blur(12px);
           margin-bottom: 14px;
         }
 
@@ -446,11 +445,10 @@ const DropdownTwo = () => {
         }
 
         .hero-search-card {
-          background: rgba(255, 255, 255, 0.97);
-          border: 1px solid rgba(224, 229, 221, 0.94);
-          border-radius: 24px;
-          box-shadow: 0 30px 70px rgba(5, 18, 33, 0.28);
-          backdrop-filter: blur(18px);
+          background: #ffffff;
+          border: 1px solid #e0e5dd;
+          border-radius: 20px;
+          box-shadow: 0 14px 34px rgba(5, 18, 33, 0.16);
           padding: 18px;
         }
 
@@ -463,12 +461,14 @@ const DropdownTwo = () => {
 
         .hero-search-grid {
           display: grid;
-          grid-template-columns: minmax(170px, 0.95fr) minmax(220px, 1.1fr) minmax(240px, 1.3fr) minmax(190px, 0.95fr);
+          grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.1fr) minmax(0, 1.3fr) minmax(0, 0.95fr);
           gap: 14px;
+          min-width: 0;
         }
 
         .hero-search-field {
           position: relative;
+          min-width: 0;
         }
 
         .hero-search-field label {
@@ -486,16 +486,15 @@ const DropdownTwo = () => {
           display: flex;
           align-items: center;
           min-height: 74px;
-          border-radius: 18px;
+          border-radius: 14px;
           border: 1px solid #dbe3da;
           background: #ffffff;
-          transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+          transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .hero-field-shell:focus-within {
           border-color: #7c876a;
-          box-shadow: 0 0 0 4px rgba(124, 135, 106, 0.14);
-          transform: translateY(-1px);
+          box-shadow: 0 0 0 3px rgba(124, 135, 106, 0.14);
         }
 
         .hero-field-shell--select {
@@ -511,7 +510,10 @@ const DropdownTwo = () => {
         }
 
         .hero-field-chevron {
-          margin-left: auto;
+          position: absolute;
+          right: 16px;
+          top: 50%;
+          transform: translateY(-50%);
           color: #7b8667;
           font-size: 14px;
           pointer-events: none;
@@ -537,8 +539,9 @@ const DropdownTwo = () => {
 
         .hero-field-control--select {
           appearance: none;
+          -webkit-appearance: none;
           cursor: pointer;
-          padding-right: 24px;
+          padding-right: 42px;
         }
 
         .hero-search-submit {
@@ -548,22 +551,19 @@ const DropdownTwo = () => {
           gap: 10px;
           min-height: 74px;
           border: none;
-          border-radius: 18px;
+          border-radius: 14px;
           background: linear-gradient(135deg, #818b70 0%, #5f6854 100%);
           color: #ffffff;
           font-size: 15px;
           font-weight: 800;
           letter-spacing: 0.03em;
           padding: 0 28px;
-          box-shadow: 0 18px 30px rgba(95, 104, 84, 0.28);
-          transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+          transition: opacity 0.2s ease;
         }
 
         .hero-search-submit:hover,
         .hero-search-submit:focus-visible {
-          transform: translateY(-1px);
-          box-shadow: 0 22px 36px rgba(95, 104, 84, 0.34);
-          opacity: 0.96;
+          opacity: 0.92;
         }
 
         .hero-search-meta {

@@ -76,3 +76,10 @@ export const uploadNewsImage = multer({
   fileFilter: imageFilter,
   limits: { fileSize: 10 * 1024 * 1024 },
 }).single("image");
+
+// Accepts cover image + per-story images (storyImage_N) + gallery images (galleryImage_N)
+export const uploadNewsFiles = multer({
+  storage: createStorage("news"),
+  fileFilter: imageFilter,
+  limits: { fileSize: 10 * 1024 * 1024 },
+}).any();

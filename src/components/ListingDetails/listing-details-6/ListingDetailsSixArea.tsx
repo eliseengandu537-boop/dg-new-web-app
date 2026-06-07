@@ -12,7 +12,7 @@ import { API_ROOT } from "@/utils/api";
 import { fetchSavedProperties, removePropertyFromFavorites, savePropertyToFavorites } from "@/utils/dashboardApi";
 import { resolveMediaUrl } from "@/utils/publicMedia";
 import MediaGallery from "./MediaGallery";
-import MortgageCalculator from "../listing-details-sidebar.tsx/MortgageCalculator";
+import FinanceTools from "../finance/FinanceTools";
 import ScheduleForm from "../listing-details-sidebar.tsx/ScheduleForm";
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -37,11 +37,6 @@ const LISTING_TYPE_ACCENTS: Record<string, { background: string; border: string;
   investment: { background: "#eef4fb", border: "#d5e3f4", color: "#285d96" },
 };
 
-interface AgentInfo {
-  type: "client" | "broker";
-  planName: string;
-  data: any;
-}
 
 const formatValue = (value: unknown) => {
   if (typeof value === "boolean") return value ? "Yes" : "No";
@@ -64,6 +59,7 @@ const ListingDetailsSixArea = () => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [favoriteLoading, setFavoriteLoading] = useState(false);
   const [shareState, setShareState] = useState("");
+  const [openUnit, setOpenUnit] = useState<number | null>(null);
 
   useEffect(() => {
     if (!id) {
@@ -189,44 +185,63 @@ const ListingDetailsSixArea = () => {
     .map((item: string) => resolveMediaUrl(item))
     .filter((item: string) => Boolean(item));
 
-  const agentInfo: AgentInfo | null =
-    property.agentInfo ||
-    (property.assignedBroker
-      ? { type: "broker", planName: "", data: property.assignedBroker }
-      : property.brokers?.[0]
-        ? { type: "broker", planName: "", data: property.brokers[0] }
-        : null);
+  // Retail listings call their units "Shop"; everything else uses "Unit".
+  const unitWord = property.category === "retail" ? "Shop" : "Unit";
+  const units: { name: string; size: string; note: string; images: string[] }[] =
+    (Array.isArray(property.units) ? property.units : []).map((u: any, i: number) => {
+      const rawName = (u?.name || "").trim();
+      // If the admin left it blank or typed only a number, prefix the word ("Shop 1").
+      const name = !rawName
+        ? `${unitWord} ${i + 1}`
+        : /^\d+$/.test(rawName)
+          ? `${unitWord} ${rawName}`
+          : rawName;
+      return {
+        name,
+        size: u?.size != null ? String(u.size).trim() : "",
+        note: (u?.note || "").trim(),
+        images: (Array.isArray(u?.images) ? u.images : [])
+          .map((img: string) => resolveMediaUrl(img))
+          .filter(Boolean),
+      };
+    });
 
-  const agent = agentInfo?.data;
-  const isClientAgent = agentInfo?.type === "client";
-  const agentName = agent
-    ? isClientAgent
-      ? (agent.name || `${agent.firstName || ""} ${agent.lastName || ""}`.trim() || "Property Owner")
-      : (agent.fullName || "DG Property Broker")
-    : "DG Property Broker";
-  const agentRole = agent
-    ? isClientAgent
-      ? (agent.jobTitle || agent.company || "Property Owner")
-      : (agent.position || agent.designation || "Commercial Property Broker")
-    : "Commercial Property Broker";
-  const agentAddress = agent
-    ? isClientAgent
-      ? (agent.address || areaAddress)
-      : (agent.officeLocation || areaAddress)
-    : areaAddress;
-  const agentPhone = agent
-    ? isClientAgent
-      ? (agent.phoneNumber || agent.whatsapp || "")
-      : (agent.phone || "")
-    : "";
-  const agentEmail = agent
-    ? isClientAgent
-      ? (agent.email || "")
-      : (agent.email || "")
-    : "";
-  const agentAvatar = agent
-    ? resolveMediaUrl(isClientAgent ? agent.avatar : agent.photo)
-    : "";
+  // Normalise a client or broker record into a single display shape.
+  const toAgentDisplay = (type: "client" | "broker", data: any) => ({
+    id: data?.id,
+    name: type === "client"
+      ? (data.name || `${data.firstName || ""} ${data.lastName || ""}`.trim() || "Property Owner")
+      : (data.fullName || "DG Property Broker"),
+    role: type === "client"
+      ? (data.jobTitle || data.company || "Property Owner")
+      : (data.position || data.designation || "Commercial Property Broker"),
+    address: type === "client"
+      ? (data.address || areaAddress)
+      : (data.officeLocation || areaAddress),
+    phone: type === "client" ? (data.phoneNumber || data.whatsapp || "") : (data.phone || ""),
+    email: data.email || "",
+    avatar: resolveMediaUrl(type === "client" ? data.avatar : data.photo),
+  });
+
+  // Build the list of agents to show. Paid client-owned listings show the
+  // client; otherwise show every broker linked to the listing (deduped).
+  let agents: ReturnType<typeof toAgentDisplay>[];
+  if (property.agentInfo?.type === "client" && property.agentInfo.data) {
+    agents = [toAgentDisplay("client", property.agentInfo.data)];
+  } else {
+    const brokerRecords: any[] = [];
+    if (property.assignedBroker) brokerRecords.push(property.assignedBroker);
+    (property.brokers || []).forEach((b: any) => {
+      if (!brokerRecords.some((x) => x.id === b.id)) brokerRecords.push(b);
+    });
+    agents = brokerRecords.map((b) => toAgentDisplay("broker", b));
+  }
+  if (agents.length === 0) {
+    agents = [{
+      id: undefined, name: "DG Property Broker", role: "Commercial Property Broker",
+      address: areaAddress, phone: "", email: "", avatar: "",
+    }];
+  }
 
   const videoLink: string = property.virtualTourLink || "";
   const videoIdMatch = videoLink.match(/(?:v=|youtu\.be\/)([A-Za-z0-9_-]{11})/);
@@ -351,7 +366,7 @@ const ListingDetailsSixArea = () => {
               {shareState && <div style={{ color: "#2563eb", fontSize: 12, marginTop: 12 }}>{shareState}</div>}
             </div>
 
-            <SectionCard title="Property information" subtitle="A closer look at the opportunity, location and commercial fundamentals of this listing.">
+            <SectionCard title="Property information">
               <p style={{ color: "#475569", fontSize: 16, lineHeight: 1.95, margin: 0 }}>
                 {property.description || "A well-positioned commercial opportunity with strong access, visibility and long-term value for the right tenant or investor."}
               </p>
@@ -363,6 +378,68 @@ const ListingDetailsSixArea = () => {
                   {filledFields.map((field) => (
                     <DetailCard key={field.key} label={field.label} value={formatValue(field.value)} />
                   ))}
+                </div>
+              </SectionCard>
+            )}
+
+            {units.length > 0 && (
+              <SectionCard title={`Units available (${units.length})`} subtitle="Click a unit to view its size, notes and pictures.">
+                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                  {units.map((unit, index) => {
+                    const isOpen = openUnit === index;
+                    const hasImages = unit.images.length > 0;
+                    return (
+                      <div key={index} style={{ border: "1px solid #dbe4ee", borderRadius: 16, overflow: "hidden", background: "#fff" }}>
+                        <button
+                          type="button"
+                          onClick={() => setOpenUnit(isOpen ? null : index)}
+                          style={{
+                            width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
+                            gap: 16, padding: "16px 20px", background: isOpen ? "#f8fafc" : "#fff",
+                            border: "none", cursor: "pointer", textAlign: "left",
+                          }}
+                        >
+                          <div style={{ display: "flex", alignItems: "baseline", gap: 16, flexWrap: "wrap" }}>
+                            <span style={{ color: "#0f172a", fontSize: 17, fontWeight: 700 }}>{unit.name}</span>
+                            {unit.size && (
+                              <span style={{ color: "#475569", fontSize: 15, fontWeight: 600 }}>{unit.size} m²</span>
+                            )}
+                            {unit.note && (
+                              <span style={{ color: "#64748b", fontSize: 14 }}>{unit.note}</span>
+                            )}
+                          </div>
+                          <span style={{ display: "flex", alignItems: "center", gap: 8, color: "#0f172a", fontSize: 13, fontWeight: 600, flexShrink: 0 }}>
+                            {hasImages ? `${unit.images.length} photo${unit.images.length > 1 ? "s" : ""}` : "No photos"}
+                            <i className={`bi ${isOpen ? "bi-chevron-up" : "bi-chevron-down"}`} />
+                          </span>
+                        </button>
+                        {isOpen && hasImages && (
+                          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: 12, padding: "0 20px 20px" }}>
+                            {unit.images.map((img, imgIndex) => (
+                              <a
+                                key={imgIndex}
+                                href={img}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{ display: "block", borderRadius: 12, overflow: "hidden", border: "1px solid #e2e8f0" }}
+                              >
+                                <img
+                                  src={img}
+                                  alt={`${unit.name} photo ${imgIndex + 1}`}
+                                  style={{ width: "100%", height: 130, objectFit: "cover", display: "block" }}
+                                />
+                              </a>
+                            ))}
+                          </div>
+                        )}
+                        {isOpen && !hasImages && (
+                          <div style={{ padding: "0 20px 20px", color: "#94a3b8", fontSize: 14 }}>
+                            No pictures added for this unit yet.
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </SectionCard>
             )}
@@ -449,13 +526,7 @@ const ListingDetailsSixArea = () => {
                     <ScheduleForm propertyId={property.id} propertyTitle={property.title} />
                   </div>
                   <div className="col-lg-5">
-                    <div style={calculatorCardStyle}>
-                      <div style={{ color: "#94a3b8", fontSize: 11, fontWeight: 700, letterSpacing: 1.1, textTransform: "uppercase", marginBottom: 8 }}>
-                        Finance
-                      </div>
-                      <h4 style={{ color: "#0f172a", fontSize: 24, marginBottom: 16 }}>Bond calculator</h4>
-                      <MortgageCalculator sourceContext={property.title} />
-                    </div>
+                    <FinanceTools property={property} categoryLabel={categoryLabel} />
                   </div>
                 </div>
               </SectionCard>
@@ -493,53 +564,60 @@ const ListingDetailsSixArea = () => {
 
           <div className="col-xl-4">
             <div style={sidebarGridStyle}>
-              <SideCard title="Agent details">
-                <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
-                  {agentAvatar ? (
-                    <img
-                      src={agentAvatar}
-                      alt={agentName}
-                      style={{ width: 74, height: 74, borderRadius: 18, objectFit: "cover", display: "block", flexShrink: 0 }}
-                    />
-                  ) : (
-                    <div
-                      style={{
-                        width: 74,
-                        height: 74,
-                        borderRadius: 18,
-                        background: "#eff4f8",
-                        color: "#64748b",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: 24,
-                        fontWeight: 700,
-                        flexShrink: 0,
-                      }}
-                    >
-                      {agentName[0]?.toUpperCase() || "D"}
+              <SideCard title={agents.length > 1 ? "Agent details" : "Agent details"}>
+                {agents.map((agent, agentIndex) => (
+                  <div
+                    key={agent.id ?? agentIndex}
+                    style={agentIndex > 0 ? { marginTop: 20, paddingTop: 20, borderTop: "1px solid #eef2f7" } : undefined}
+                  >
+                    <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
+                      {agent.avatar ? (
+                        <img
+                          src={agent.avatar}
+                          alt={agent.name}
+                          style={{ width: 74, height: 74, borderRadius: 18, objectFit: "cover", display: "block", flexShrink: 0 }}
+                        />
+                      ) : (
+                        <div
+                          style={{
+                            width: 74,
+                            height: 74,
+                            borderRadius: 18,
+                            background: "#eff4f8",
+                            color: "#64748b",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: 24,
+                            fontWeight: 700,
+                            flexShrink: 0,
+                          }}
+                        >
+                          {agent.name[0]?.toUpperCase() || "D"}
+                        </div>
+                      )}
+
+                      <div>
+                        <div style={{ color: "#0f172a", fontSize: 18, fontWeight: 700, marginBottom: 4 }}>{agent.name}</div>
+                        <div style={{ color: "#64748b", fontSize: 14, marginBottom: 8 }}>{agent.role}</div>
+                        <div style={{ color: "#64748b", fontSize: 13, lineHeight: 1.7 }}>{agent.address}</div>
+                      </div>
                     </div>
-                  )}
 
-                  <div>
-                    <div style={{ color: "#0f172a", fontSize: 18, fontWeight: 700, marginBottom: 4 }}>{agentName}</div>
-                    <div style={{ color: "#64748b", fontSize: 14, marginBottom: 8 }}>{agentRole}</div>
-                    <div style={{ color: "#64748b", fontSize: 13, lineHeight: 1.7 }}>{agentAddress}</div>
+                    {(agent.phone || agent.email) && (
+                      <div style={{ display: "grid", gap: 8, marginTop: 16 }}>
+                        {agent.phone && <MetaText icon="bi-telephone" text={agent.phone} />}
+                        {agent.email && <MetaText icon="bi-envelope" text={agent.email} />}
+                      </div>
+                    )}
+
+                    <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 18 }}>
+                      <a href={agent.phone ? `tel:${agent.phone}` : "#property-enquiry"} style={sideButtonStyle}>
+                        <i className="bi bi-telephone"></i> Contact {agent.name.split(" ")[0] || "Agent"}
+                      </a>
+                    </div>
                   </div>
-                </div>
-
-                {(agentPhone || agentEmail) && (
-                  <div style={{ display: "grid", gap: 8, marginTop: 16 }}>
-                    {agentPhone && <MetaText icon="bi-telephone" text={agentPhone} />}
-                    {agentEmail && <MetaText icon="bi-envelope" text={agentEmail} />}
-                  </div>
-                )}
-
-                <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 18 }}>
-                  <a href={agentPhone ? `tel:${agentPhone}` : "#property-enquiry"} style={sideButtonStyle}>
-                    <i className="bi bi-telephone"></i> Contact Agent
-                  </a>
-                </div>
+                ))}
               </SideCard>
 
               <SideCard title="Schedule viewing">
@@ -803,14 +881,6 @@ const sectionCardStyle: CSSProperties = {
   padding: "26px 26px 28px",
   boxShadow: "0 18px 40px rgba(15,23,42,0.04)",
   marginBottom: 24,
-};
-
-const calculatorCardStyle: CSSProperties = {
-  borderRadius: 18,
-  padding: 20,
-  background: "#f8fbff",
-  border: "1px solid #dbe4ee",
-  height: "100%",
 };
 
 const replyCardStyle: CSSProperties = {
