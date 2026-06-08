@@ -393,7 +393,6 @@ const DropdownTwo = () => {
         </form>
 
         <div className="hero-search-meta">
-          <p>Live search across published admin and broker listings only.</p>
           {hasActiveFilters && (
             <button type="button" className="hero-search-reset" onClick={clearFilters}>
               Clear filters
