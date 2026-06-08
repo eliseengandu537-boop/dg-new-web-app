@@ -1,13 +1,16 @@
+import Link from "next/link";
+
 interface Props {
   title: string;
   value: string | number;
   icon: string;
   color: string;
   sub?: string;
+  href?: string;
 }
 
-export default function StatsCard({ title, value, icon, color, sub }: Props) {
-  return (
+export default function StatsCard({ title, value, icon, color, sub, href }: Props) {
+  const card = (
     <div
       style={{
         background: "#fff",
@@ -19,6 +22,19 @@ export default function StatsCard({ title, value, icon, color, sub }: Props) {
         boxShadow: "0 1px 6px rgba(0,0,0,0.06)",
         border: "1px solid #f0f4f8",
         minWidth: 0,
+        cursor: href ? "pointer" : "default",
+        transition: "box-shadow 0.15s, transform 0.15s",
+        height: "100%",
+      }}
+      onMouseEnter={(e) => {
+        if (!href) return;
+        e.currentTarget.style.boxShadow = "0 4px 14px rgba(0,0,0,0.10)";
+        e.currentTarget.style.transform = "translateY(-2px)";
+      }}
+      onMouseLeave={(e) => {
+        if (!href) return;
+        e.currentTarget.style.boxShadow = "0 1px 6px rgba(0,0,0,0.06)";
+        e.currentTarget.style.transform = "none";
       }}
     >
       <div
@@ -44,4 +60,14 @@ export default function StatsCard({ title, value, icon, color, sub }: Props) {
       </div>
     </div>
   );
+
+  if (href) {
+    return (
+      <Link href={href} style={{ textDecoration: "none", color: "inherit", display: "block" }}>
+        {card}
+      </Link>
+    );
+  }
+
+  return card;
 }

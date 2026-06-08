@@ -52,13 +52,13 @@ export default function BondLeadsPage() {
   const [convertingLeadId, setConvertingLeadId] = useState<number | null>(null);
 
   useEffect(() => {
-    fetchAllLeads({ leadType: "bond_calculator", limit: 500 })
+    fetchAllLeads({ limit: 500 })
       .then((response) => {
         const list = Array.isArray(response.data) ? response.data : (response.data.leads || []);
         setLeads(list);
       })
       .catch(() => {
-        setActionMessage({ type: "error", text: "Failed to load bond leads." });
+        setActionMessage({ type: "error", text: "Failed to load leads." });
       })
       .finally(() => setLoading(false));
   }, []);
@@ -184,20 +184,20 @@ export default function BondLeadsPage() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `bond-leads-${dayjs().format("YYYYMMDD-HHmm")}.csv`;
+    link.download = `leads-${dayjs().format("YYYYMMDD-HHmm")}.csv`;
     link.click();
     URL.revokeObjectURL(url);
   };
 
   return (
     <>
-      <AdminHeader title="Bond Leads" onMenuToggle={() => {}} />
+      <AdminHeader title="Leads" onMenuToggle={() => {}} />
       <main style={{ padding: "24px clamp(16px, 3vw, 28px)", flex: 1 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, flexWrap: "wrap", marginBottom: 20 }}>
           <div>
-            <h2 style={{ fontSize: 20, fontWeight: 700, color: "#1a2332", margin: 0 }}>Bond Leads</h2>
+            <h2 style={{ fontSize: 20, fontWeight: 700, color: "#1a2332", margin: 0 }}>Leads</h2>
             <p style={{ color: "#718096", fontSize: 14, margin: "4px 0 0" }}>
-              {filteredLeads.length} of {leads.length} bond leads
+              {filteredLeads.length} of {leads.length} leads
             </p>
           </div>
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
@@ -259,9 +259,9 @@ export default function BondLeadsPage() {
         </div>
 
         {loading ? (
-          <div style={loadingStateStyle}>Loading bond leads...</div>
+          <div style={loadingStateStyle}>Loading leads...</div>
         ) : filteredLeads.length === 0 ? (
-          <div style={emptyStateStyle}>No bond leads found for the current filters.</div>
+          <div style={emptyStateStyle}>No leads found for the current filters.</div>
         ) : (
           <div style={tableWrapStyle}>
             <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14, minWidth: 1280 }}>

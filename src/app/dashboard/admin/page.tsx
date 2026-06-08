@@ -123,7 +123,7 @@ export default function AdminOverviewPage() {
     { title: "Properties Sold", value: stats!.soldProperties, icon: "bi-house-check", color: "#805ad5" },
     { title: "Properties Leased", value: stats!.leasedProperties, icon: "bi-key", color: "#ed8936" },
     { title: "Total Brokers", value: stats!.totalBrokers, icon: "bi-person-badge", color: "#6dbf8b", sub: `${stats!.activeBrokers} active` },
-    { title: "Total Leads", value: stats!.totalLeads, icon: "bi-funnel", color: "#ecc94b", sub: `${stats!.newLeads} new` },
+    { title: "Total Leads", value: stats!.totalLeads, icon: "bi-funnel", color: "#ecc94b", sub: `${stats!.newLeads} new`, href: "/dashboard/admin/leads" },
     { title: "Inquiries", value: stats!.totalInquiries, icon: "bi-chat-dots", color: "#fc8181", sub: `${stats!.newInquiries} unread` },
     { title: "Investment Opps", value: stats!.investmentOpportunities, icon: "bi-graph-up-arrow", color: "#667eea" },
     { title: "Website Views", value: pageViewStats?.totalViews ?? stats!.totalPageViews, icon: "bi-eye", color: "#f6ad55", sub: `${(pageViewStats?.uniqueBrowsers ?? 0).toLocaleString("en-ZA")} unique browsers` },
