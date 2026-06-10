@@ -255,7 +255,7 @@ const ListingDetailsSixArea = () => {
 
   const topMetrics = (
     filledFields.length > 0
-      ? filledFields.slice(0, 4).map((field) => ({
+      ? filledFields.map((field) => ({
         icon: "bi-building",
         label: field.label,
         value: formatValue(field.value),
@@ -379,15 +379,6 @@ const ListingDetailsSixArea = () => {
               </p>
             </SectionCard>
 
-            {filledFields.length > 0 && (
-              <SectionCard title="Property features" subtitle="Core details and commercial specifications for this property.">
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14 }}>
-                  {filledFields.map((field) => (
-                    <DetailCard key={field.key} label={field.label} value={formatValue(field.value)} />
-                  ))}
-                </div>
-              </SectionCard>
-            )}
 
             {units.length > 0 && (
               <SectionCard title={`Units available (${units.length})`} subtitle="Click a unit to view its size, notes and pictures.">
