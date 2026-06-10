@@ -29,6 +29,9 @@ export const metadata: Metadata = {
     icon: "/assets/images/fav-icon/dgicon.png",
     apple: "/assets/images/fav-icon/dgicon.png",
   },
+  verification: {
+    google: "n-dobwuDD5g5R_5axXOWyxvXMZy_3mKTEpE-HleZ2a0",
+  },
 };
 
 export const viewport: Viewport = {
