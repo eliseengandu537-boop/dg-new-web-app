@@ -3,7 +3,7 @@ export interface SelectOption {
   text: string;
 }
 
-export type CommercialFieldType = "text" | "number" | "select";
+export type CommercialFieldType = "text" | "number" | "select" | "heading";
 
 export interface CommercialFieldDefinition {
   key: string;
@@ -352,6 +352,25 @@ export const COMMERCIAL_CATEGORY_FIELDS: Record<string, CommercialFieldDefinitio
     { key: "floors", label: "Number of Floors", type: "number" },
     { key: "parkingBays", label: "Parking Bays", type: "number" },
     { key: "rentalPerM2", label: "Rental", type: "number", unit: "R/m²" },
+    // ── Rental Rates ────────────────────────────────────────────────────────
+    { key: "_rentalRates", label: "Rental Rates", type: "heading" },
+    { key: "grossRental", label: "Gross Rental", type: "number", unit: "R/m²" },
+    { key: "netRental", label: "Net Rental", type: "number", unit: "R/m²" },
+    { key: "operatingCostPerM2", label: "Operating Cost", type: "number", unit: "R/m²" },
+    { key: "ratesAndTaxesPerM2", label: "Rates and Taxes", type: "number", unit: "R/m²" },
+    { key: "balconiesRate", label: "Balconies", type: "number", unit: "R/m²" },
+    { key: "storeRoomsRate", label: "Store Rooms", type: "number", unit: "R/m²" },
+    // ── Escalations ─────────────────────────────────────────────────────────
+    { key: "_escalations", label: "Escalations", type: "heading" },
+    { key: "escalationNetParking", label: "Net Rental & Parking", type: "number", unit: "%" },
+    { key: "escalationOpCosts", label: "Operating Costs", type: "number", unit: "%" },
+    { key: "escalationRatesTaxes", label: "Rates & Taxes", placeholder: "e.g. Based on actuals" },
+    // ── Basement Parking ────────────────────────────────────────────────────
+    { key: "_basementParking", label: "Basement Parking", type: "heading" },
+    { key: "parkingBasementBay", label: "Basement Bay", type: "number", unit: "R/bay/month" },
+    { key: "parkingCoveredBay", label: "Covered Bay", type: "number", unit: "R/bay/month" },
+    { key: "parkingOpenBay", label: "Open Bay", type: "number", unit: "R/bay/month" },
+    { key: "parkingRatio", label: "Parking Ratio", placeholder: "e.g. 4 bays per 100 m²" },
   ],
   retail: [
     { key: "size", label: "GLA", type: "number", unit: "m²" },

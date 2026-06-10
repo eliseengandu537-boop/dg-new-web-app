@@ -321,26 +321,35 @@ export default function EditPropertyPage() {
           <div style={{ background: "#fff", borderRadius: 12, padding: "24px 28px", boxShadow: "0 1px 6px rgba(0,0,0,0.06)", marginBottom: 20 }}>
             <h2 style={sectionTitle}>Category Details</h2>
             <div style={grid2}>
-              {COMMERCIAL_CATEGORY_FIELDS[category].map((f) => (
-                <div key={f.key}>
-                  <label style={lbl}>{f.label}{f.unit ? ` (${f.unit})` : ""}</label>
-                  {f.type === "select" ? (
-                    <select value={catDetails[f.key] || ""} onChange={(e) => setCatDetails({ ...catDetails, [f.key]: e.target.value })} style={inp}>
-                      {(f.options || []).map((option) => (
-                        <option key={option.value || option.text} value={option.value}>{option.text}</option>
-                      ))}
-                    </select>
-                  ) : (
-                    <input
-                      type={f.type === "number" ? "number" : "text"}
-                      placeholder={f.placeholder || ""}
-                      value={catDetails[f.key] || ""}
-                      onChange={(e) => setCatDetails({ ...catDetails, [f.key]: e.target.value })}
-                      style={inp}
-                    />
-                  )}
-                </div>
-              ))}
+              {COMMERCIAL_CATEGORY_FIELDS[category].map((f) => {
+                if (f.type === "heading") {
+                  return (
+                    <div key={f.key} style={{ gridColumn: "1 / -1", borderTop: "1px solid #e2e8f0", paddingTop: 14, marginTop: 8 }}>
+                      <h4 style={{ fontSize: 12, fontWeight: 700, color: "#4a5568", textTransform: "uppercase", letterSpacing: 0.8, margin: 0 }}>{f.label}</h4>
+                    </div>
+                  );
+                }
+                return (
+                  <div key={f.key}>
+                    <label style={lbl}>{f.label}{f.unit ? ` (${f.unit})` : ""}</label>
+                    {f.type === "select" ? (
+                      <select value={catDetails[f.key] || ""} onChange={(e) => setCatDetails({ ...catDetails, [f.key]: e.target.value })} style={inp}>
+                        {(f.options || []).map((option) => (
+                          <option key={option.value || option.text} value={option.value}>{option.text}</option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input
+                        type={f.type === "number" ? "number" : "text"}
+                        placeholder={f.placeholder || ""}
+                        value={catDetails[f.key] || ""}
+                        onChange={(e) => setCatDetails({ ...catDetails, [f.key]: e.target.value })}
+                        style={inp}
+                      />
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
