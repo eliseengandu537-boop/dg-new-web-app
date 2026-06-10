@@ -4,8 +4,10 @@ import { getAllPublicProperties, propertyPath } from "@/utils/serverProperties";
 // Tells Google which pages on the current site are the real, live pages.
 const BASE_URL = "https://dg-property.co.za";
 
-// Regenerate hourly so newly published properties enter the sitemap automatically.
-export const revalidate = 3600;
+// Always build from the live backend on request. (Static/ISR caching froze this
+// at the build-time version — when the backend isn't reachable — so the sitemap
+// would list only the static pages and none of the properties.)
+export const dynamic = "force-dynamic";
 
 const PATHS = [
   "",
