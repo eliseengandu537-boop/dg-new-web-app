@@ -55,6 +55,25 @@ const PropertyCard = ({ item, detailsLink = "/listing_details_06" }: PropertyCar
     ? item.units.length
     : Number(item.property_info?.units ?? cd.units ?? cd.residentialUnits ?? 0) || 0;
 
+  // Retail leasing offers shops of varying sizes, so show the span
+  // (smallest–largest) of the individual unit sizes rather than one GLA figure.
+  const isRetailLease = item.category === "retail" && item.listingType === "lease";
+  const unitSizes: number[] = Array.isArray(item.units)
+    ? item.units
+        .map((u: any) => Number(String(u?.size ?? "").replace(/[^\d.]/g, "")))
+        .filter((n: number) => n > 0)
+    : [];
+  const sizeLabel: string =
+    isRetailLease && unitSizes.length > 0
+      ? (() => {
+          const min = Math.round(Math.min(...unitSizes));
+          const max = Math.round(Math.max(...unitSizes));
+          return min === max
+            ? `${min.toLocaleString("en-ZA")} m²`
+            : `${min.toLocaleString("en-ZA")}–${max.toLocaleString("en-ZA")} m²`;
+        })()
+      : `${sqm.toLocaleString("en-ZA")} m²`;
+
   // Price label depends on listing type — lease listings (e.g. Retail Leasing)
   // show a monthly rental, not an asking price.
   const priceLabel: string =
@@ -126,7 +145,7 @@ const PropertyCard = ({ item, detailsLink = "/listing_details_06" }: PropertyCar
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 13, color: "#555" }}>
             <i className="bi bi-rulers" style={{ fontSize: 13 }}></i>
-            <span>{sqm.toLocaleString("en-ZA")} m²</span>
+            <span>{sizeLabel}</span>
           </div>
           {units > 0 && (
             <>

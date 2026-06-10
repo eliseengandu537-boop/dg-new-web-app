@@ -168,8 +168,14 @@ const ListingDetailsSixArea = () => {
   const listingLabel = LISTING_TYPE_LABELS[listingType] || listingType;
   const categoryLabel = CATEGORY_LABELS[property.category] || property.category || "Commercial Property";
   const categoryDetails = property.categoryDetails || {};
+  // Retail leasing is multi-shop, so a single total GLA figure ("size") is
+  // misleading — hide it here; per-shop sizes appear under "Units available".
+  const isRetailLease = property.category === "retail" && property.listingType === "lease";
   const filledFields = Object.entries(categoryDetails)
-    .filter(([, value]) => value !== undefined && value !== null && value !== "")
+    .filter(([key, value]) =>
+      value !== undefined && value !== null && value !== "" &&
+      !(isRetailLease && key === "size")
+    )
     .map(([key, value]) => ({
       key,
       value,
@@ -292,6 +298,7 @@ const ListingDetailsSixArea = () => {
               featuredImage={property.featuredImage}
               gallery={property.gallery || []}
               title={property.title}
+              singleImage={property.category === "investment" || listingType === "investment"}
             />
 
             <div style={heroInfoCardStyle}>

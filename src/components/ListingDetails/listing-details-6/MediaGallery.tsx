@@ -5,9 +5,10 @@ interface Props {
   featuredImage?: string;
   gallery?: string[];
   title?: string;
+  singleImage?: boolean;
 }
 
-const MediaGallery = ({ featuredImage, gallery = [], title = "" }: Props) => {
+const MediaGallery = ({ featuredImage, gallery = [], title = "", singleImage = false }: Props) => {
   const allImages: string[] = [];
   if (featuredImage) allImages.push(resolveMediaUrl(featuredImage));
 
@@ -45,6 +46,46 @@ const MediaGallery = ({ featuredImage, gallery = [], title = "" }: Props) => {
   }
 
   const mainImage = allImages[0];
+
+  // Investment listings show a single image only — no side thumbnails,
+  // "more photos soon" placeholders or "see all photos" affordance.
+  if (singleImage) {
+    return (
+      <div style={{ marginBottom: 24 }}>
+        <Fancybox options={{ Carousel: { infinite: true } }}>
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 22,
+              padding: 10,
+              border: "1px solid #dbe4ee",
+              boxShadow: "0 18px 44px rgba(15,23,42,0.06)",
+            }}
+          >
+            <a
+              href={mainImage}
+              data-fancybox="property-gallery"
+              style={{
+                position: "relative",
+                display: "block",
+                minHeight: 430,
+                borderRadius: 18,
+                overflow: "hidden",
+                background: "#e2e8f0",
+              }}
+            >
+              <img
+                src={mainImage}
+                alt={title}
+                style={{ width: "100%", height: "100%", minHeight: 430, objectFit: "cover", display: "block" }}
+              />
+            </a>
+          </div>
+        </Fancybox>
+      </div>
+    );
+  }
+
   const sideImages = allImages.slice(1, 3);
   const hiddenImages = allImages.slice(3);
   const secondaryCount = Math.max(allImages.length - 2, 0);
