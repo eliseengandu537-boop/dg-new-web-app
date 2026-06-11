@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { resolveMediaUrl } from "@/utils/publicMedia";
 import { getPublicBrokerById } from "@/utils/publicServerApi";
+import BrokerListings from "./BrokerListings";
 
 const BrokerDetailArea = async ({ id }: { id?: string }) => {
   const broker = id ? await getPublicBrokerById(id).catch(() => null) : null;
@@ -169,6 +170,9 @@ const BrokerDetailArea = async ({ id }: { id?: string }) => {
                 </div>
               </div>
             )}
+
+            {/* Current listings — fetched live and auto-refreshed. */}
+            <BrokerListings brokerId={broker.id} brokerName={broker.fullName} />
 
             <Link href="/agent" style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"12px 24px", border:"2px solid #0d1f2d", color:"#0d1f2d", fontWeight:700, fontSize:"0.82rem", letterSpacing:"0.1em", textTransform:"uppercase", borderRadius:6, textDecoration:"none" }}>
               <i className="bi bi-arrow-left" />

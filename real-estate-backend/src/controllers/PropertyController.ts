@@ -381,6 +381,7 @@ export const getPublicProperties = async (req: Request, res: Response): Promise<
       officeGla, loadingDock, rollerShutters, zoning, heightToEaves,
       cranes, litersPump, netIncome, landBusinessOption, leaseTerm,
       oilCompany, cStoreTurnover,
+      brokerId,
       page = "1", limit = "12",
     } = req.query;
 
@@ -444,9 +445,19 @@ export const getPublicProperties = async (req: Request, res: Response): Promise<
       order: [["isFeatured", "DESC"], ["createdAt", "DESC"]],
     });
 
+    // Optional: only this broker's listings (linked via PropertyBroker or as the
+    // assigned broker). Powers the "Current Listings" section on broker profiles.
+    const brokerIdNum = brokerId ? parseInt(brokerId as string, 10) : undefined;
+    const matchesBroker = (property: any): boolean => {
+      if (!brokerIdNum) return true;
+      if (property.assignedBrokerId === brokerIdNum) return true;
+      return (property.brokers || []).some((b: any) => b.id === brokerIdNum);
+    };
+
     const filteredProperties = properties.filter((property) =>
       matchesKeywordSearch(property, search) &&
-      matchesAdvancedPublicFilters(property, advancedFilters)
+      matchesAdvancedPublicFilters(property, advancedFilters) &&
+      matchesBroker(property)
     );
 
     const total = filteredProperties.length;
