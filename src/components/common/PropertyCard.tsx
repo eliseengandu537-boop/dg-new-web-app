@@ -55,16 +55,20 @@ const PropertyCard = ({ item, detailsLink = "/listing_details_06" }: PropertyCar
     ? item.units.length
     : Number(item.property_info?.units ?? cd.units ?? cd.residentialUnits ?? 0) || 0;
 
-  // Retail leasing offers shops of varying sizes, so show the span
-  // (smallest–largest) of the individual unit sizes rather than one GLA figure.
-  const isRetailLease = item.category === "retail" && item.listingType === "lease";
+  // Retail leasing and commercial listings offer multiple units of varying
+  // sizes, so show the span (smallest–largest) of the individual unit sizes
+  // rather than a single GLA/size figure.
+  const showsUnitRange =
+    (item.category === "retail" && item.listingType === "lease") ||
+    item.category === "commercial_office" ||
+    item.listingCategory === "commercial";
   const unitSizes: number[] = Array.isArray(item.units)
     ? item.units
         .map((u: any) => Number(String(u?.size ?? "").replace(/[^\d.]/g, "")))
         .filter((n: number) => n > 0)
     : [];
   const sizeLabel: string =
-    isRetailLease && unitSizes.length > 0
+    showsUnitRange && unitSizes.length > 0
       ? (() => {
           const min = Math.round(Math.min(...unitSizes));
           const max = Math.round(Math.max(...unitSizes));
