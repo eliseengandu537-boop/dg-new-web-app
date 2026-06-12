@@ -9,6 +9,7 @@ import Review from "@/components/inner-pages/agency/agency-details/Review";
 import { COMMERCIAL_FIELD_LABELS } from "@/data/commercialPropertyConfig";
 import NiceSelect from "@/ui/NiceSelect";
 import { API_ROOT } from "@/utils/api";
+import { getPriceDisplay } from "@/utils/pricing";
 import { fetchSavedProperties, removePropertyFromFavorites, savePropertyToFavorites } from "@/utils/dashboardApi";
 import { resolveMediaUrl } from "@/utils/publicMedia";
 import MediaGallery from "./MediaGallery";
@@ -253,12 +254,8 @@ const ListingDetailsSixArea = () => {
   const videoIdMatch = videoLink.match(/(?:v=|youtu\.be\/)([A-Za-z0-9_-]{11})/);
   const videoId = videoIdMatch ? videoIdMatch[1] : null;
 
-  const priceLabel =
-    listingType === "lease"
-      ? "Monthly Rental"
-      : listingType === "investment"
-        ? "Investment guide"
-        : "Asking price";
+  // "To Let" shows "Rental" with an indicative figure instead of "Price on Request".
+  const pricing = getPriceDisplay(property);
   const heroLead =
     property.referenceNumber
       ? `Reference: ${property.referenceNumber}`
@@ -321,10 +318,10 @@ const ListingDetailsSixArea = () => {
 
                 <div style={pricePanelStyle}>
                   <div style={{ color: "#64748b", fontSize: 11, fontWeight: 700, letterSpacing: 1.1, textTransform: "uppercase", marginBottom: 8 }}>
-                    {priceLabel}
+                    {pricing.label}
                   </div>
                   <div style={{ color: "#0f172a", fontSize: "clamp(2rem, 3vw, 2.5rem)", fontWeight: 700, lineHeight: 1 }}>
-                    {property.price ? `R ${Number(property.price).toLocaleString("en-ZA")}` : "Price on Request"}
+                    {pricing.value}
                   </div>
                 </div>
               </div>

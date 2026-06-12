@@ -3,18 +3,13 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { fetchPublicProperties } from "@/utils/dashboardApi";
+import { getPriceDisplay } from "@/utils/pricing";
 
 // Re-fetch the broker's listings on this interval so the profile stays current
 // as properties are added, edited or sold — no page reload needed.
 const REFRESH_MS = 60000;
 // Small page size so a broker with many listings is browsed via next/previous.
 const PER_PAGE = 6;
-
-const formatPrice = (price?: number, priceText?: string): string => {
-  if (!price) return "Price on Request";
-  const amount = `R ${Math.round(price).toLocaleString("en-ZA")}`;
-  return priceText ? `${amount}/m²` : amount;
-};
 
 const CompactCard = ({ item }: { item: any }) => {
   const link = `/listing_details_06?id=${item.id}`;
@@ -105,7 +100,7 @@ const CompactCard = ({ item }: { item: any }) => {
           {address}
         </p>
         <p style={{ fontSize: 14, fontWeight: 800, color: "#0d1f2d", margin: 0 }}>
-          {formatPrice(item.price, item.price_text)}
+          {getPriceDisplay(item).value}
         </p>
       </div>
     </Link>

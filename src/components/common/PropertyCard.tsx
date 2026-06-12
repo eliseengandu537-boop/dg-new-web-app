@@ -1,16 +1,11 @@
 "use client"
 import Image, { StaticImageData } from "next/image"
 import Link from "next/link"
+import { getPriceDisplay } from "@/utils/pricing"
 
 interface PropertyCardProps {
   item: any;
   detailsLink?: string;
-}
-
-function formatPrice(price: number, priceText?: string): string {
-  if (!price) return "Price on Request";
-  const formatted = Math.round(price).toLocaleString("en-ZA");
-  return priceText ? `R ${formatted}/m²` : `R ${formatted}`;
 }
 
 function getBadgeColors(tag: string): { bg: string; color: string } {
@@ -78,14 +73,9 @@ const PropertyCard = ({ item, detailsLink = "/listing_details_06" }: PropertyCar
         })()
       : `${sqm.toLocaleString("en-ZA")} m²`;
 
-  // Price label depends on listing type — lease listings (e.g. Retail Leasing)
-  // show a monthly rental, not an asking price.
-  const priceLabel: string =
-    item.listingType === "lease"
-      ? "Monthly Rental"
-      : item.listingType === "investment"
-        ? "Investment Guide"
-        : "Asking Price";
+  // Price label + value. "To Let" listings show "Rental" with an indicative
+  // figure (never "Price on Request").
+  const pricing = getPriceDisplay(item);
 
   return (
     <div style={{
@@ -166,10 +156,10 @@ const PropertyCard = ({ item, detailsLink = "/listing_details_06" }: PropertyCar
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginTop: "auto" }}>
           <div>
             <div style={{ fontSize: 10, fontWeight: 700, color: "#aaa", letterSpacing: 1.2, textTransform: "uppercase", marginBottom: 3 }}>
-              {priceLabel}
+              {pricing.label}
             </div>
             <strong style={{ fontSize: 20, fontWeight: 800, color: "#1a1a2e" }}>
-              {formatPrice(item.price, item.price_text)}
+              {pricing.value}
             </strong>
           </div>
           <Link href={itemLink} style={{
