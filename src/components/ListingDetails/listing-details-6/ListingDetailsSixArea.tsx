@@ -253,18 +253,27 @@ const ListingDetailsSixArea = () => {
   const videoIdMatch = videoLink.match(/(?:v=|youtu\.be\/)([A-Za-z0-9_-]{11})/);
   const videoId = videoIdMatch ? videoIdMatch[1] : null;
 
+  // Hero chips: show only a handful of the most important fields so the bar stays clean.
+  const HERO_CHIP_KEYS = ["size", "vacantArea", "parkingRatio", "area", "suburb", "gla"];
+  const heroChipFields = filledFields.filter((f) => HERO_CHIP_KEYS.includes(f.key)).slice(0, 4);
   const topMetrics = (
-    filledFields.length > 0
-      ? filledFields.map((field) => ({
+    heroChipFields.length > 0
+      ? heroChipFields.map((field) => ({
         icon: "bi-building",
         label: field.label,
         value: formatValue(field.value),
       }))
-      : [
-        { icon: "bi-house", label: "Listing", value: listingLabel },
-        { icon: "bi-buildings", label: "Category", value: categoryLabel },
-        { icon: "bi-upc-scan", label: "Reference", value: property.referenceNumber || "Pending" },
-      ]
+      : filledFields.length > 0
+        ? filledFields.slice(0, 4).map((field) => ({
+          icon: "bi-building",
+          label: field.label,
+          value: formatValue(field.value),
+        }))
+        : [
+          { icon: "bi-house", label: "Listing", value: listingLabel },
+          { icon: "bi-buildings", label: "Category", value: categoryLabel },
+          { icon: "bi-upc-scan", label: "Reference", value: property.referenceNumber || "Pending" },
+        ]
   );
 
   const priceLabel =
@@ -378,6 +387,27 @@ const ListingDetailsSixArea = () => {
                 {property.description || "A well-positioned commercial opportunity with strong access, visibility and long-term value for the right tenant or investor."}
               </p>
             </SectionCard>
+
+            {filledFields.length > 0 && (
+              <SectionCard title="Property details">
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 12 }}>
+                  {filledFields.map((field) => (
+                    <div key={field.key} style={{
+                      display: "flex", flexDirection: "column", gap: 4,
+                      padding: "14px 16px", borderRadius: 12,
+                      background: "#f8fafc", border: "1px solid #e2e8f0",
+                    }}>
+                      <span style={{ color: "#94a3b8", fontSize: 10, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase" }}>
+                        {field.label}
+                      </span>
+                      <span style={{ color: "#0f172a", fontSize: 15, fontWeight: 700 }}>
+                        {formatValue(field.value)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </SectionCard>
+            )}
 
 
             {units.length > 0 && (
