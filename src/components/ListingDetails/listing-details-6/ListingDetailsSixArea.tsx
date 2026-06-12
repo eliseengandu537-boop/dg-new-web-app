@@ -382,20 +382,23 @@ const ListingDetailsSixArea = () => {
               {shareState && <div style={{ color: "#2563eb", fontSize: 12, marginTop: 12 }}>{shareState}</div>}
             </div>
 
-            <SectionCard title="Property information">
-              <p style={{ color: "#475569", fontSize: 16, lineHeight: 1.95, margin: 0 }}>
-                {property.description || "A well-positioned commercial opportunity with strong access, visibility and long-term value for the right tenant or investor."}
-              </p>
-            </SectionCard>
-
             {filledFields.length > 0 && (
               <SectionCard title="Property details">
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 12 }}>
-                  {filledFields.map((field) => (
+                <div style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
+                  gap: "0",
+                  border: "1px solid #e2e8f0",
+                  borderRadius: 12,
+                  overflow: "hidden",
+                }}>
+                  {filledFields.map((field, i) => (
                     <div key={field.key} style={{
                       display: "flex", flexDirection: "column", gap: 4,
-                      padding: "14px 16px", borderRadius: 12,
-                      background: "#f8fafc", border: "1px solid #e2e8f0",
+                      padding: "14px 18px",
+                      borderRight: "1px solid #e2e8f0",
+                      borderBottom: "1px solid #e2e8f0",
+                      background: i % 2 === 0 ? "#ffffff" : "#f8fafc",
                     }}>
                       <span style={{ color: "#94a3b8", fontSize: 10, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase" }}>
                         {field.label}
@@ -408,6 +411,12 @@ const ListingDetailsSixArea = () => {
                 </div>
               </SectionCard>
             )}
+
+            <SectionCard title="Property information">
+              <p style={{ color: "#475569", fontSize: 16, lineHeight: 1.95, margin: 0 }}>
+                {property.description || "A well-positioned commercial opportunity with strong access, visibility and long-term value for the right tenant or investor."}
+              </p>
+            </SectionCard>
 
 
             {units.length > 0 && (
