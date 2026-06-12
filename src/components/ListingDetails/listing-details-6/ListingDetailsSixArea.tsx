@@ -253,29 +253,6 @@ const ListingDetailsSixArea = () => {
   const videoIdMatch = videoLink.match(/(?:v=|youtu\.be\/)([A-Za-z0-9_-]{11})/);
   const videoId = videoIdMatch ? videoIdMatch[1] : null;
 
-  // Hero chips: show only a handful of the most important fields so the bar stays clean.
-  const HERO_CHIP_KEYS = ["size", "vacantArea", "parkingRatio", "area", "suburb", "gla"];
-  const heroChipFields = filledFields.filter((f) => HERO_CHIP_KEYS.includes(f.key)).slice(0, 4);
-  const topMetrics = (
-    heroChipFields.length > 0
-      ? heroChipFields.map((field) => ({
-        icon: "bi-building",
-        label: field.label,
-        value: formatValue(field.value),
-      }))
-      : filledFields.length > 0
-        ? filledFields.slice(0, 4).map((field) => ({
-          icon: "bi-building",
-          label: field.label,
-          value: formatValue(field.value),
-        }))
-        : [
-          { icon: "bi-house", label: "Listing", value: listingLabel },
-          { icon: "bi-buildings", label: "Category", value: categoryLabel },
-          { icon: "bi-upc-scan", label: "Reference", value: property.referenceNumber || "Pending" },
-        ]
-  );
-
   const priceLabel =
     listingType === "lease"
       ? "Monthly Rental"
@@ -352,18 +329,36 @@ const ListingDetailsSixArea = () => {
                 </div>
               </div>
 
-              <div style={heroActionRowStyle}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 12, flex: "1 1 520px" }}>
-                  {topMetrics.map((metric, index) => (
-                    <MetricChip
-                      key={`${metric.label}-${metric.value}-${index}`}
-                      icon={metric.icon}
-                      label={metric.label}
-                      value={metric.value}
-                    />
+              {filledFields.length > 0 && (
+                <div style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(190px, 1fr))",
+                  gap: "0",
+                  border: "1px solid #e2e8f0",
+                  borderRadius: 12,
+                  overflow: "hidden",
+                  marginTop: 22,
+                }}>
+                  {filledFields.map((field, i) => (
+                    <div key={field.key} style={{
+                      display: "flex", flexDirection: "column", gap: 4,
+                      padding: "14px 18px",
+                      borderRight: "1px solid #e2e8f0",
+                      borderBottom: "1px solid #e2e8f0",
+                      background: "#ffffff",
+                    }}>
+                      <span style={{ color: "#94a3b8", fontSize: 10, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase" }}>
+                        {field.label}
+                      </span>
+                      <span style={{ color: "#0f172a", fontSize: 15, fontWeight: 700 }}>
+                        {formatValue(field.value)}
+                      </span>
+                    </div>
                   ))}
                 </div>
+              )}
 
+              <div style={{ ...heroActionRowStyle, justifyContent: "flex-end" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
                   <button onClick={handleFavorite} disabled={favoriteLoading} style={ghostActionButtonStyle}>
                     <i className={isFavorite ? "fa-solid fa-heart" : "fa-regular fa-heart"} style={{ color: isFavorite ? "#2563eb" : "#334155" }}></i>
@@ -381,36 +376,6 @@ const ListingDetailsSixArea = () => {
 
               {shareState && <div style={{ color: "#2563eb", fontSize: 12, marginTop: 12 }}>{shareState}</div>}
             </div>
-
-            {filledFields.length > 0 && (
-              <SectionCard title="Property details">
-                <div style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
-                  gap: "0",
-                  border: "1px solid #e2e8f0",
-                  borderRadius: 12,
-                  overflow: "hidden",
-                }}>
-                  {filledFields.map((field, i) => (
-                    <div key={field.key} style={{
-                      display: "flex", flexDirection: "column", gap: 4,
-                      padding: "14px 18px",
-                      borderRight: "1px solid #e2e8f0",
-                      borderBottom: "1px solid #e2e8f0",
-                      background: i % 2 === 0 ? "#ffffff" : "#f8fafc",
-                    }}>
-                      <span style={{ color: "#94a3b8", fontSize: 10, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase" }}>
-                        {field.label}
-                      </span>
-                      <span style={{ color: "#0f172a", fontSize: 15, fontWeight: 700 }}>
-                        {formatValue(field.value)}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </SectionCard>
-            )}
 
             <SectionCard title="Property information">
               <p style={{ color: "#475569", fontSize: 16, lineHeight: 1.95, margin: 0 }}>
