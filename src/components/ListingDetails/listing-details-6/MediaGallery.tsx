@@ -68,16 +68,17 @@ const MediaGallery = ({ featuredImage, gallery = [], title = "", singleImage = f
               style={{
                 position: "relative",
                 display: "block",
-                minHeight: 430,
                 borderRadius: 18,
                 overflow: "hidden",
                 background: "#e2e8f0",
               }}
             >
+              {/* Show the whole image at its natural shape (no cropping), so
+                  confidential/marketing artwork stays fully readable on mobile. */}
               <img
                 src={mainImage}
                 alt={title}
-                style={{ width: "100%", height: "100%", minHeight: 430, objectFit: "cover", display: "block" }}
+                style={{ width: "100%", height: "auto", display: "block" }}
               />
             </a>
           </div>

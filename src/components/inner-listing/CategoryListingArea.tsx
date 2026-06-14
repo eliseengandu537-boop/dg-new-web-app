@@ -1,5 +1,6 @@
 "use client"
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef, Suspense } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import NiceSelect from "@/ui/NiceSelect";
 import ReactPaginate from "react-paginate";
@@ -17,11 +18,14 @@ interface Props {
 
 const LIMIT = 9;
 
-const CategoryListingArea = ({ category, listingType, detailsLink = "/listing_details_06", filters }: Props) => {
+const CategoryListingAreaInner = ({ category, listingType, detailsLink = "/listing_details_06", filters }: Props) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const [properties, setProperties] = useState<any[]>([]);
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [sortOrder, setSortOrder] = useState("newest");
   const serializedFilters = JSON.stringify(filters || {});
@@ -35,8 +39,25 @@ const CategoryListingArea = ({ category, listingType, detailsLink = "/listing_de
     [activeFilters]
   );
 
+  // The current page lives in the URL (?page=N). That way it survives opening a
+  // property and pressing back, and each page change adds a browser-history step.
+  const currentPage = Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1);
+
+  // A new search/filter returns to page 1. Skip the first render so a restored
+  // ?page=2 (e.g. after pressing back from a property) isn't wiped on mount.
+  const isFirstRender = useRef(true);
   useEffect(() => {
-    setCurrentPage(1);
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    const params = new URLSearchParams(Array.from(searchParams.entries()));
+    if (params.has("page")) {
+      params.delete("page");
+      const qs = params.toString();
+      router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [serializedFilters]);
 
   useEffect(() => {
@@ -77,7 +98,10 @@ const CategoryListingArea = ({ category, listingType, detailsLink = "/listing_de
   const end = Math.min(currentPage * LIMIT, total);
 
   const handlePageClick = (event: { selected: number }) => {
-    setCurrentPage(event.selected + 1);
+    const next = event.selected + 1;
+    const params = new URLSearchParams(Array.from(searchParams.entries()));
+    params.set("page", String(next));
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -144,6 +168,7 @@ const CategoryListingArea = ({ category, listingType, detailsLink = "/listing_de
             onPageChange={handlePageClick}
             pageRangeDisplayed={5}
             pageCount={totalPages}
+            forcePage={Math.min(currentPage, totalPages) - 1}
             previousLabel={<Image src={icon} alt="" className="ms-2" />}
             renderOnZeroPageCount={null}
             className="pagination-one square d-flex align-items-center justify-content-center style-none pt-30"
@@ -154,5 +179,21 @@ const CategoryListingArea = ({ category, listingType, detailsLink = "/listing_de
     </div>
   );
 };
+
+const CategoryListingArea = (props: Props) => (
+  <Suspense
+    fallback={
+      <div className="property-listing-six pb-200 xl-pb-120 pt-20 xl-pt-10">
+        <div className="container container-large">
+          <div className="text-center py-5">
+            <div className="spinner-border" role="status" />
+          </div>
+        </div>
+      </div>
+    }
+  >
+    <CategoryListingAreaInner {...props} />
+  </Suspense>
+);
 
 export default CategoryListingArea;
