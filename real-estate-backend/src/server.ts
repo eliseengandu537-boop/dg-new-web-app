@@ -16,6 +16,7 @@ import reviewRoutes from "./routes/reviewRoutes";
 import successStoryRoutes from "./routes/successStoryRoutes";
 import pageviewRoutes from "./routes/pageviewRoutes";
 import newsRoutes from "./routes/newsRoutes";
+import featuredSlideRoutes from "./routes/featuredSlideRoutes";
 import { User } from "./models/User";
 import { MembershipPlan } from "./models/MembershipPlan";
 import { Property } from "./models/Property";
@@ -67,6 +68,7 @@ app.use("/api/reviews", reviewRoutes);
 app.use("/api/success-stories", successStoryRoutes);
 app.use("/api/pageviews", pageviewRoutes);
 app.use("/api/news", newsRoutes);
+app.use("/api/featured-slides", featuredSlideRoutes);
 
 const repairPropertyBrokerTable = async () => {
   const dialect = sequelize.getDialect();

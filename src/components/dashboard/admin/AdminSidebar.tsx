@@ -41,6 +41,7 @@ const navGroups = [
   {
     label: "Content",
     items: [
+      { href: "/dashboard/admin/featured-slides", label: "Featured Slides", icon: "bi-images" },
       { href: "/dashboard/admin/success-stories", label: "Success Stories", icon: "bi-trophy" },
       { href: "/dashboard/admin/news", label: "Property News", icon: "bi-newspaper" },
     ],

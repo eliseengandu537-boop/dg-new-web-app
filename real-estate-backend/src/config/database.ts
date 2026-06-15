@@ -15,6 +15,7 @@ import { Review } from "../models/Review";
 import { SuccessStory } from "../models/SuccessStory";
 import { PageView } from "../models/PageView";
 import { NewsPost } from "../models/NewsPost";
+import { FeaturedSlide } from "../models/FeaturedSlide";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -36,6 +37,7 @@ const ALL_MODELS = [
   SuccessStory,
   PageView,
   NewsPost,
+  FeaturedSlide,
 ];
 
 const databaseUrl = process.env.DATABASE_URL;

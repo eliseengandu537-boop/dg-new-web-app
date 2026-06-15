@@ -71,6 +71,12 @@ export const uploadStoryFiles = multer({
   { name: "brochure", maxCount: 1 },
 ]);
 
+export const uploadFeaturedSlideImage = multer({
+  storage: createStorage("slides"),
+  fileFilter: imageFilter,
+  limits: { fileSize: 10 * 1024 * 1024 },
+}).single("image");
+
 export const uploadNewsImage = multer({
   storage: createStorage("news"),
   fileFilter: imageFilter,

@@ -196,6 +196,18 @@ export const updateSuccessStory = (id: number, data: FormData) =>
 export const deleteSuccessStory = (id: number) =>
   authApi.delete(`/success-stories/${id}`);
 
+// ── Featured Slides (home-page slideshow) ────────────────────────────────────
+export const fetchPublicFeaturedSlides = () =>
+  axios.get(`${API_ROOT}/featured-slides/public`);
+export const fetchAllFeaturedSlides = () =>
+  authApi.get("/featured-slides");
+export const createFeaturedSlide = (data: FormData) =>
+  uploadWithAuth("post", "/featured-slides", data);
+export const updateFeaturedSlide = (id: number, data: FormData) =>
+  uploadWithAuth("put", `/featured-slides/${id}`, data);
+export const deleteFeaturedSlide = (id: number) =>
+  authApi.delete(`/featured-slides/${id}`);
+
 // ── News / Property News ───────────────────────────────────────────────────
 export const fetchPublicNews = () =>
   axios.get(`${API_ROOT}/news/public`);

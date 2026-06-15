@@ -2,55 +2,39 @@
 
 import { useEffect, useState } from "react"
 import Image from "next/image"
-import Fancybox from "@/components/common/Fancybox"
 import Link from "next/link"
 import { contactInfo } from "@/data/contact-info"
-import { fetchPublicProperties } from "@/utils/dashboardApi"
+import { fetchPublicFeaturedSlides } from "@/utils/dashboardApi"
+import { resolveMediaUrl } from "@/utils/publicMedia"
 
 import offcanvasLogo from "@/assets/images/assets/logodg.png"
 
-interface FeaturedProperty {
+interface Slide {
    id: number
-   title: string
-   listingType?: string
-   price?: number
-   featuredImage?: string | null
-   gallery?: string[]
-   suburb?: string
-   city?: string
-   province?: string
-   address?: string
+   title?: string
+   subtitle?: string
+   status?: string
+   imageUrl?: string
+   linkUrl?: string
 }
 
-const getListingTag = (listingType?: string) => {
-   if (listingType === "lease") return "TO LET"
-   if (listingType === "investment") return "INVESTMENT"
-   return "FOR SALE"
+const statusLabel = (status?: string) => {
+   if (!status) return ""
+   return status.charAt(0).toUpperCase() + status.slice(1)
 }
-
-const formatPrice = (price?: number, listingType?: string) => {
-   if (!price) return "Price on request"
-   const formatted = `R ${Math.round(price).toLocaleString("en-ZA")}`
-   return listingType === "lease" ? `${formatted}/m²` : formatted
-}
-
-const getLocationLabel = (property: FeaturedProperty) =>
-   property.address ||
-   [property.suburb, property.city, property.province].filter(Boolean).join(", ") ||
-   "South Africa"
 
 const Offcanvas = ({ offCanvas, setOffCanvas }: any) => {
-   const [featuredListings, setFeaturedListings] = useState<FeaturedProperty[]>([])
+   const [slides, setSlides] = useState<Slide[]>([])
    const [loading, setLoading] = useState(true)
 
    useEffect(() => {
       setLoading(true)
-      fetchPublicProperties({ featured: true, limit: 4, page: 1 })
+      fetchPublicFeaturedSlides()
          .then((res) => {
-            setFeaturedListings(res.data?.properties || [])
+            setSlides(Array.isArray(res.data) ? res.data.filter((s: Slide) => s.imageUrl) : [])
          })
          .catch(() => {
-            setFeaturedListings([])
+            setSlides([])
          })
          .finally(() => {
             setLoading(false)
@@ -72,78 +56,69 @@ const Offcanvas = ({ offCanvas, setOffCanvas }: any) => {
             <div className="wrapper mt-60">
                <div className="d-flex flex-column h-100">
                   <div className="property-block">
-                     <h4 className="title pb-25">Featured Listing </h4>
+                     <h4 className="title pb-25">Recent Deals</h4>
                      <div className="row">
                         {loading ? (
                            <div className="col-12">
                               <div className="text-center py-4">
                                  <div className="spinner-border" role="status" />
-                                 <p className="pt-15 m0">Loading featured listings...</p>
+                                 <p className="pt-15 m0">Loading recent deals...</p>
                               </div>
                            </div>
-                        ) : featuredListings.length === 0 ? (
+                        ) : slides.length === 0 ? (
                            <div className="col-12">
                               <div className="text-center py-4 px-3" style={{ background: "#f7f7f7", borderRadius: 16 }}>
-                                 <p className="m0 fw-500 color-dark">No featured listings available.</p>
-                                 <p className="m0 pt-10">Published properties marked as featured in the admin dashboard will show here.</p>
+                                 <p className="m0 fw-500 color-dark">No recent deals available.</p>
+                                 <p className="m0 pt-10">Featured slides added in the admin dashboard will show here.</p>
                               </div>
                            </div>
                         ) : (
-                           featuredListings.map((item) => {
-                              const galleryImages = [item.featuredImage, ...(item.gallery || [])].filter(Boolean) as string[]
+                           slides.map((slide) => {
+                              const badge = statusLabel(slide.status)
+                              const card = (
+                                 <div style={{ position: "relative", borderRadius: 14, overflow: "hidden", background: "#0d1f2d", boxShadow: "0 6px 24px rgba(0,0,0,0.12)" }}>
+                                    <div style={{ position: "relative", width: "100%", paddingTop: "125%" }}>
+                                       {/* eslint-disable-next-line @next/next/no-img-element */}
+                                       <img
+                                          src={resolveMediaUrl(slide.imageUrl)}
+                                          alt={slide.title || "Recent deal"}
+                                          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain" }}
+                                       />
+                                       {badge && (
+                                          <span
+                                             style={{
+                                                position: "absolute", top: 14, left: 14,
+                                                padding: "5px 14px", borderRadius: 6,
+                                                fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase",
+                                                color: "#fff",
+                                                background: slide.status === "leased" ? "#6b46c1" : "#2f855a",
+                                             }}
+                                          >
+                                             {badge}
+                                          </span>
+                                       )}
+                                       {(slide.title || slide.subtitle) && (
+                                          <div
+                                             style={{
+                                                position: "absolute", left: 0, right: 0, bottom: 0,
+                                                padding: "50px 18px 16px",
+                                                background: "linear-gradient(to top, rgba(13,31,45,0.85), rgba(13,31,45,0))",
+                                                color: "#fff",
+                                             }}
+                                          >
+                                             {slide.title && <div style={{ fontSize: 17, fontWeight: 700, lineHeight: 1.2 }}>{slide.title}</div>}
+                                             {slide.subtitle && <div style={{ fontSize: 13, color: "#e0e6eb", marginTop: 4 }}>{slide.subtitle}</div>}
+                                          </div>
+                                       )}
+                                    </div>
+                                 </div>
+                              )
 
                               return (
-                                 <div key={item.id} className="col-12">
-                                    <div className="listing-card-one shadow-none style-two mb-40">
-                                       <div className="img-gallery">
-                                          <div className="position-relative overflow-hidden">
-                                             <div className="tag bg-white text-dark fw-500">{getListingTag(item.listingType)}</div>
-                                             {item.featuredImage ? (
-                                                <Link href={`/listing_details_06?id=${item.id}`} className="d-block">
-                                                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                   <img
-                                                      src={item.featuredImage}
-                                                      className="w-100"
-                                                      alt={item.title}
-                                                      style={{ display: "block", aspectRatio: "1.45 / 1", objectFit: "cover" }}
-                                                   />
-                                                </Link>
-                                             ) : (
-                                                <Link
-                                                   href={`/listing_details_06?id=${item.id}`}
-                                                   className="d-flex align-items-center justify-content-center"
-                                                   style={{ background: "#e8edf2", aspectRatio: "1.45 / 1" }}
-                                                >
-                                                   <i className="bi bi-building" style={{ fontSize: 42, color: "#a0aec0" }}></i>
-                                                </Link>
-                                             )}
-
-                                             {galleryImages.length > 0 && (
-                                                <div className="img-slider-btn">
-                                                   {String(galleryImages.length).padStart(2, "0")} <i className="fa-regular fa-image"></i>
-                                                   <Fancybox
-                                                      options={{
-                                                         Carousel: {
-                                                            infinite: true,
-                                                         },
-                                                      }}
-                                                   >
-                                                      {galleryImages.map((image, index) => (
-                                                         <a key={index} className="d-block" data-fancybox={`offcanvas-gallery-${item.id}`} href={image}></a>
-                                                      ))}
-                                                   </Fancybox>
-                                                </div>
-                                             )}
-                                          </div>
-                                       </div>
-                                       <div className="property-info d-flex justify-content-between align-items-end pt-30">
-                                          <div>
-                                             <strong className="price fw-500 color-dark fs-3">{formatPrice(item.price, item.listingType)}</strong>
-                                             <div className="address pt-5 m0">{getLocationLabel(item)}</div>
-                                          </div>
-                                          <Link href={`/listing_details_06?id=${item.id}`} className="btn-four mb-5"><i className="bi bi-arrow-up-right"></i></Link>
-                                       </div>
-                                    </div>
+                                 <div key={slide.id} className="col-12 mb-40">
+                                    {slide.linkUrl ? (
+                                       <Link href={slide.linkUrl} className="d-block" onClick={() => setOffCanvas(false)}>{card}</Link>
+                                    ) : card}
                                  </div>
                               )
                            })
