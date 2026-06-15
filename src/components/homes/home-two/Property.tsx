@@ -102,6 +102,14 @@ const Property = () => {
          })
    }, [])
 
+   // Nudge react-slick to start autoplaying once the slides have rendered
+   // (autoplay can fail to kick off when slides load asynchronously).
+   useEffect(() => {
+      if (loading || slides.length === 0) return
+      const timer = setTimeout(() => sliderRef.current?.slickPlay(), 100)
+      return () => clearTimeout(timer)
+   }, [loading, slides.length])
+
    // Nothing to show and not loading — hide the whole section.
    if (!loading && slides.length === 0) return null
 
