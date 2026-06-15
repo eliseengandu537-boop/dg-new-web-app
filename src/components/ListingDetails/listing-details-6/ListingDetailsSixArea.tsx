@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import axios from "axios";
 import AgencyFormOne from "@/components/forms/AgencyFormOne";
 import Review from "@/components/inner-pages/agency/agency-details/Review";
@@ -52,7 +52,18 @@ const formatValue = (value: unknown) => {
 
 const ListingDetailsSixArea = () => {
   const params = useSearchParams();
+  const router = useRouter();
   const id = params.get("id");
+
+  // Return to wherever the visitor came from (e.g. the listing on page 2),
+  // falling back to all listings if they arrived here directly.
+  const handleBack = () => {
+    if (typeof window !== "undefined" && window.history.length > 1) {
+      router.back();
+    } else {
+      router.push("/listing_07");
+    }
+  };
 
   const [property, setProperty] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -265,10 +276,10 @@ const ListingDetailsSixArea = () => {
     <div style={pageShellStyle}>
       <div className="container" style={{ paddingTop: 158, paddingBottom: 120 }}>
         <div style={breadcrumbStyle}>
-          <Link href="/listing_07" style={breadcrumbLinkStyle}>
+          <button type="button" onClick={handleBack} style={{ ...breadcrumbLinkStyle, background: "none", border: "none", padding: 0, cursor: "pointer" }}>
             <i className="bi bi-arrow-left" style={{ fontSize: 14 }}></i>
-            Property details
-          </Link>
+            Back
+          </button>
           <span>/</span>
           <Link href="/home-two" style={{ ...breadcrumbLinkStyle, color: "#64748b", fontWeight: 500 }}>
             Home
