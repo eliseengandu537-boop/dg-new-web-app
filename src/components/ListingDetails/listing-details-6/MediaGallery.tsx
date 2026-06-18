@@ -219,9 +219,12 @@ const MediaGallery = ({ featuredImage, gallery = [], title = "", singleImage = f
             </div>
           </div>
 
+          {/* A trigger (not data-fancybox) so it opens the existing gallery
+              instead of adding a second slide for the featured image. */}
           <a
             href={mainImage}
-            data-fancybox="property-gallery"
+            data-fancybox-trigger="property-gallery"
+            data-fancybox-index="0"
             style={{
               position: "absolute",
               top: 22,
