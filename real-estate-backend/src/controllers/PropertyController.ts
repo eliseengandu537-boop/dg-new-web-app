@@ -250,8 +250,12 @@ const matchesLeaseRateRange = (property: Property, min: any, max: any) => {
 // otherwise derive the capital value from Net Income ÷ Net Yield (standard
 // cap-rate maths) so income-and-yield listings still match a chosen budget.
 const getInvestmentValue = (property: Property): number => {
-  const direct = parseComparableNumber(property.price);
-  if (direct && direct > 0) return direct;
+  // `price` is a capital value only when the asset is being sold. For a leased
+  // investment `price` is a monthly rent, so fall back to income/yield instead.
+  if (String(property.listingType) === "sale") {
+    const direct = parseComparableNumber(property.price);
+    if (direct && direct > 0) return direct;
+  }
 
   const cd = property.categoryDetails || {};
   const netIncome = parseComparableNumber(cd.netIncome);
@@ -442,8 +446,21 @@ export const getPublicProperties = async (req: Request, res: Response): Promise<
     } = req.query;
 
     const where: any = { status: "published" };
-    if (category) where.category = category;
-    if (listingType) where.listingType = listingType;
+
+    const isLease = String(listingType) === "lease";
+    const isInvestment = String(listingType) === "investment";
+
+    // Investments are identified by their category, not their listing type:
+    // an investment property is transacted as a sale (or lease), so filtering
+    // by listingType="investment" matches nothing. The For Sale / To Let tabs
+    // filter by listingType as normal.
+    if (isInvestment) {
+      where.category = "investment";
+    } else {
+      if (category) where.category = category;
+      if (listingType) where.listingType = listingType;
+    }
+
     const featuredFilter = parseBooleanQuery(featured);
     if (featuredFilter !== undefined) where.isFeatured = featuredFilter;
     if (city) where.city = { [Op.like]: `%${city}%` };
@@ -454,8 +471,6 @@ export const getPublicProperties = async (req: Request, res: Response): Promise<
     // rates (matchesLeaseRateRange) and investment ranges are capital values
     // that may be derived from income/yield (matchesInvestmentBudgetRange) —
     // both are applied in JS below rather than against the price column.
-    const isLease = String(listingType) === "lease";
-    const isInvestment = String(listingType) === "investment";
     if ((priceMin || priceMax) && !isLease && !isInvestment) {
       where.price = {};
       if (priceMin) where.price[Op.gte] = parseFloat(priceMin as string);
@@ -554,14 +569,20 @@ export const getPublicPropertySuggestions = async (req: Request, res: Response):
 
     const where: any = { status: "published" };
 
-    if (category) where.category = category;
-    if (listingType) where.listingType = listingType;
+    const isLease = String(listingType) === "lease";
+    const isInvestment = String(listingType) === "investment";
+
+    // Investments are identified by category, not listing type (see getPublicProperties).
+    if (isInvestment) {
+      where.category = "investment";
+    } else {
+      if (category) where.category = category;
+      if (listingType) where.listingType = listingType;
+    }
 
     // Lease ranges (per-m² rate) and investment ranges (capital value, possibly
     // derived from income/yield) aren't simple price-column comparisons — they
     // are applied in JS below, so skip the SQL price filter for those types.
-    const isLease = String(listingType) === "lease";
-    const isInvestment = String(listingType) === "investment";
     if ((priceMin || priceMax) && !isLease && !isInvestment) {
       where.price = {};
       if (priceMin) where.price[Op.gte] = parseFloat(priceMin as string);
