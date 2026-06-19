@@ -292,7 +292,11 @@ const ListingDetailsSixArea = () => {
               featuredImage={property.featuredImage}
               gallery={property.gallery || []}
               title={property.title}
-              singleImage={property.category === "investment" || listingType === "investment"}
+              singleImage={
+                property.category === "investment" ||
+                listingType === "investment" ||
+                property.category === "fuel_station"
+              }
             />
 
             <div style={heroInfoCardStyle}>
