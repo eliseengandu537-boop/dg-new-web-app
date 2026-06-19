@@ -246,6 +246,35 @@ const matchesLeaseRateRange = (property: Property, min: any, max: any) => {
   return true;
 };
 
+// Investment budget bands are in whole rands. Use the headline price when set,
+// otherwise derive the capital value from Net Income ÷ Net Yield (standard
+// cap-rate maths) so income-and-yield listings still match a chosen budget.
+const getInvestmentValue = (property: Property): number => {
+  const direct = parseComparableNumber(property.price);
+  if (direct && direct > 0) return direct;
+
+  const cd = property.categoryDetails || {};
+  const netIncome = parseComparableNumber(cd.netIncome);
+  const yieldPct = parseComparableNumber(cd.yield);
+  if (netIncome && netIncome > 0 && yieldPct && yieldPct > 0) {
+    return netIncome / (yieldPct / 100);
+  }
+  return 0;
+};
+
+const matchesInvestmentBudgetRange = (property: Property, min: any, max: any) => {
+  const minValue = parseComparableNumber(min);
+  const maxValue = parseComparableNumber(max);
+  if (minValue === null && maxValue === null) return true;
+
+  // No determinable value can't satisfy a chosen budget band.
+  const value = getInvestmentValue(property);
+  if (!value) return false;
+  if (minValue !== null && value < minValue) return false;
+  if (maxValue !== null && value > maxValue) return false;
+  return true;
+};
+
 const getLocationSearchValue = (property: Property) =>
   [property.address, property.suburb, property.city, property.province]
     .filter(Boolean)
@@ -421,10 +450,13 @@ export const getPublicProperties = async (req: Request, res: Response): Promise<
     if (province) where.province = { [Op.like]: `%${province}%` };
     if (suburb) where.suburb = { [Op.like]: `%${suburb}%` };
 
-    // Sale/investment ranges filter the asking price directly. Lease ranges are
-    // per-m² rates, applied against the rental rate below (matchesLeaseRateRange).
+    // Sale ranges filter the asking price directly. Lease ranges are per-m²
+    // rates (matchesLeaseRateRange) and investment ranges are capital values
+    // that may be derived from income/yield (matchesInvestmentBudgetRange) —
+    // both are applied in JS below rather than against the price column.
     const isLease = String(listingType) === "lease";
-    if ((priceMin || priceMax) && !isLease) {
+    const isInvestment = String(listingType) === "investment";
+    if ((priceMin || priceMax) && !isLease && !isInvestment) {
       where.price = {};
       if (priceMin) where.price[Op.gte] = parseFloat(priceMin as string);
       if (priceMax) where.price[Op.lte] = parseFloat(priceMax as string);
@@ -489,6 +521,7 @@ export const getPublicProperties = async (req: Request, res: Response): Promise<
       matchesKeywordSearch(property, search) &&
       matchesAdvancedPublicFilters(property, advancedFilters) &&
       (!isLease || matchesLeaseRateRange(property, priceMin, priceMax)) &&
+      (!isInvestment || matchesInvestmentBudgetRange(property, priceMin, priceMax)) &&
       matchesBroker(property)
     );
 
@@ -524,9 +557,12 @@ export const getPublicPropertySuggestions = async (req: Request, res: Response):
     if (category) where.category = category;
     if (listingType) where.listingType = listingType;
 
-    // Lease ranges are per-m² and apply to the rental rate, not the price column.
+    // Lease ranges (per-m² rate) and investment ranges (capital value, possibly
+    // derived from income/yield) aren't simple price-column comparisons — they
+    // are applied in JS below, so skip the SQL price filter for those types.
     const isLease = String(listingType) === "lease";
-    if ((priceMin || priceMax) && !isLease) {
+    const isInvestment = String(listingType) === "investment";
+    if ((priceMin || priceMax) && !isLease && !isInvestment) {
       where.price = {};
       if (priceMin) where.price[Op.gte] = parseFloat(priceMin as string);
       if (priceMax) where.price[Op.lte] = parseFloat(priceMax as string);
@@ -541,6 +577,7 @@ export const getPublicPropertySuggestions = async (req: Request, res: Response):
     const suggestionField = field === "location" ? "location" : "search";
     const matchedProperties = properties.filter((property) =>
       (!isLease || matchesLeaseRateRange(property, priceMin, priceMax)) &&
+      (!isInvestment || matchesInvestmentBudgetRange(property, priceMin, priceMax)) &&
       (suggestionField === "location"
         ? matchesContainsFilter(getLocationSearchValue(property), term)
         : matchesKeywordSearch(property, term) || matchesContainsFilter(getLocationSearchValue(property), term))
