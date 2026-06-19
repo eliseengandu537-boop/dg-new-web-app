@@ -219,6 +219,33 @@ const matchesMaxFilter = (propertyValue: any, filterValue: any) => {
   return actual !== null && actual <= expected;
 };
 
+// "To Let" price ranges (e.g. R30–R150 / m²) are expressed per square metre,
+// but a lease listing's `price` column holds a monthly figure (or is empty).
+// The real per-m² rental rate lives in categoryDetails, so lease ranges must be
+// matched against that rate — never the price column.
+const getLeaseRatePerM2 = (property: Property): number => {
+  const cd = property.categoryDetails || {};
+  const rate =
+    parseComparableNumber(cd.grossRental) ??
+    parseComparableNumber(cd.rentalPerM2) ??
+    parseComparableNumber(cd.rentalRatePerM2) ??
+    parseComparableNumber(cd.netRental);
+  return rate ?? 0;
+};
+
+const matchesLeaseRateRange = (property: Property, min: any, max: any) => {
+  const minRate = parseComparableNumber(min);
+  const maxRate = parseComparableNumber(max);
+  if (minRate === null && maxRate === null) return true;
+
+  // A lease with no rate on record can't satisfy a chosen rate band.
+  const rate = getLeaseRatePerM2(property);
+  if (!rate) return false;
+  if (minRate !== null && rate < minRate) return false;
+  if (maxRate !== null && rate > maxRate) return false;
+  return true;
+};
+
 const getLocationSearchValue = (property: Property) =>
   [property.address, property.suburb, property.city, property.province]
     .filter(Boolean)
@@ -393,7 +420,11 @@ export const getPublicProperties = async (req: Request, res: Response): Promise<
     if (city) where.city = { [Op.like]: `%${city}%` };
     if (province) where.province = { [Op.like]: `%${province}%` };
     if (suburb) where.suburb = { [Op.like]: `%${suburb}%` };
-    if (priceMin || priceMax) {
+
+    // Sale/investment ranges filter the asking price directly. Lease ranges are
+    // per-m² rates, applied against the rental rate below (matchesLeaseRateRange).
+    const isLease = String(listingType) === "lease";
+    if ((priceMin || priceMax) && !isLease) {
       where.price = {};
       if (priceMin) where.price[Op.gte] = parseFloat(priceMin as string);
       if (priceMax) where.price[Op.lte] = parseFloat(priceMax as string);
@@ -457,6 +488,7 @@ export const getPublicProperties = async (req: Request, res: Response): Promise<
     const filteredProperties = properties.filter((property) =>
       matchesKeywordSearch(property, search) &&
       matchesAdvancedPublicFilters(property, advancedFilters) &&
+      (!isLease || matchesLeaseRateRange(property, priceMin, priceMax)) &&
       matchesBroker(property)
     );
 
@@ -491,7 +523,10 @@ export const getPublicPropertySuggestions = async (req: Request, res: Response):
 
     if (category) where.category = category;
     if (listingType) where.listingType = listingType;
-    if (priceMin || priceMax) {
+
+    // Lease ranges are per-m² and apply to the rental rate, not the price column.
+    const isLease = String(listingType) === "lease";
+    if ((priceMin || priceMax) && !isLease) {
       where.price = {};
       if (priceMin) where.price[Op.gte] = parseFloat(priceMin as string);
       if (priceMax) where.price[Op.lte] = parseFloat(priceMax as string);
@@ -505,9 +540,10 @@ export const getPublicPropertySuggestions = async (req: Request, res: Response):
 
     const suggestionField = field === "location" ? "location" : "search";
     const matchedProperties = properties.filter((property) =>
-      suggestionField === "location"
+      (!isLease || matchesLeaseRateRange(property, priceMin, priceMax)) &&
+      (suggestionField === "location"
         ? matchesContainsFilter(getLocationSearchValue(property), term)
-        : matchesKeywordSearch(property, term) || matchesContainsFilter(getLocationSearchValue(property), term)
+        : matchesKeywordSearch(property, term) || matchesContainsFilter(getLocationSearchValue(property), term))
     );
 
     res.json({
