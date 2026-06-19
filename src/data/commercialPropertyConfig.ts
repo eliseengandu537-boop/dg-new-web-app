@@ -163,7 +163,7 @@ export const COMMERCIAL_PRICE_RANGE_OPTIONS_BY_LISTING_TYPE: Record<string, Sele
   ],
   investment: [
     { value: "", text: "Any Investment Budget" },
-    { value: "investment-up-to-r5m", text: "Up to R5,000,000" },
+    { value: "investment-up-to-r5m", text: "R0 - R5,000,000" },
     { value: "investment-r5m-to-r20m", text: "R5,000,000 - R20,000,000" },
     { value: "investment-r20m-plus", text: "R20,000,000+" },
   ],
