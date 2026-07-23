@@ -30,11 +30,11 @@ const Agent = () => {
                   <div className="col-lg-7">
                      <p style={{ fontSize:'0.72rem', fontWeight:700, letterSpacing:'0.22em', textTransform:'uppercase', color:'#e8b86d', marginBottom:16 }}>De Gennaro Property</p>
                      <h1 style={{ fontSize:'clamp(2rem,4.5vw,3.4rem)', fontWeight:700, color:'#fff', lineHeight:1.15, marginBottom:20, fontFamily:'var(--site-font-family)' }}>
-                        Meet Our Commercial<br />Property Specialists.
+                        Meet the Team<br />Behind DG Property.
                      </h1>
                      <div style={{ width:48, height:3, background:'#e8b86d', borderRadius:2, marginBottom:24 }} />
                      <p style={{ fontSize:'1rem', color:'rgba(255,255,255,0.70)', maxWidth:480, lineHeight:1.75 }}>
-                        Experienced brokers across commercial leasing, investment sales and retail strategy, delivering results across South Africa.
+                        Leadership, operations and commercial property expertise working together to deliver outstanding results across South Africa.
                      </p>
                      <div style={{ display:'flex', gap:12, marginTop:32, flexWrap:'wrap' }}>
                         <Link href="/inquiry" style={{ padding:'12px 28px', background:'#e8b86d', color:'#0d1f2d', fontWeight:700, fontSize:'0.82rem', letterSpacing:'0.1em', textTransform:'uppercase', borderRadius:4, textDecoration:'none' }}>Get In Touch</Link>

@@ -4,7 +4,8 @@ import Wrapper from "@/layouts/Wrapper";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-   title: "Agent DG Property",
+   title: "Meet the Team | DG Property",
+   description: "Meet the management team and commercial property brokers behind DG Property.",
 };
 const index = () => {
    return (
