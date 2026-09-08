@@ -1,7 +1,7 @@
 "use client"
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import DropdownTwo from "@/components/search-dropdown/home-dropdown/DropdownTwo";
 
 const HERO_SLIDES = [
@@ -12,10 +12,41 @@ const HERO_SLIDES = [
    "/assets/images/assets/back3.jpg",
 ];
 
+const SLIDE_DURATION_MS = 4000;
+const FADE_DURATION_MS = 1800;
+
 const HeroBanner = () => {
    const [activeSlide, setActiveSlide] = useState(0);
+   const [previousSlide, setPreviousSlide] = useState<number | null>(null);
+   const [readySlides, setReadySlides] = useState(() => HERO_SLIDES.map(() => false));
+   const imageRefs = useRef<Array<HTMLImageElement | null>>([]);
    const [isPaused, setIsPaused] = useState(false);
    const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+   const markReady = useCallback((index: number) => {
+      setReadySlides(current => current[index]
+         ? current
+         : current.map((ready, slideIndex) => slideIndex === index || ready));
+   }, []);
+
+   // Cached images may have completed before React attaches the load handler.
+   useEffect(() => {
+      let cancelled = false;
+      imageRefs.current.forEach((image, index) => {
+         if (!image?.complete || !image.naturalWidth) return;
+         void image.decode().then(() => {
+            if (!cancelled) markReady(index);
+         }).catch(() => {});
+      });
+      return () => { cancelled = true; };
+   }, [markReady]);
+
+   const showSlide = useCallback((index: number) => {
+      if (index === activeSlide || previousSlide !== null || !readySlides[index]) return;
+      // Keep the outgoing photo fully opaque beneath the incoming photo.
+      setPreviousSlide(prefersReducedMotion ? null : activeSlide);
+      setActiveSlide(index);
+   }, [activeSlide, previousSlide, readySlides, prefersReducedMotion]);
 
    useEffect(() => {
       const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -27,33 +58,67 @@ const HeroBanner = () => {
    }, []);
 
    useEffect(() => {
-      if (isPaused || prefersReducedMotion) return;
+      if (previousSlide === null) return;
+      const timeoutId = window.setTimeout(() => setPreviousSlide(null), FADE_DURATION_MS);
+      return () => window.clearTimeout(timeoutId);
+   }, [previousSlide]);
 
+   useEffect(() => {
+      if (isPaused || prefersReducedMotion || previousSlide !== null) return;
       const intervalId = window.setInterval(() => {
-         setActiveSlide((prev) => (prev + 1) % HERO_SLIDES.length);
-      }, 4000);
+         // A slow or failed image must neither blank the hero nor stop ready slides.
+         for (let offset = 1; offset < HERO_SLIDES.length; offset += 1) {
+            const nextSlide = (activeSlide + offset) % HERO_SLIDES.length;
+            if (readySlides[nextSlide]) {
+               showSlide(nextSlide);
+               break;
+            }
+         }
+      }, SLIDE_DURATION_MS);
       return () => window.clearInterval(intervalId);
-   }, [isPaused, prefersReducedMotion]);
+   }, [activeSlide, isPaused, prefersReducedMotion, previousSlide, readySlides, showSlide]);
 
    return (
       <>
          {/* ── HERO ──────────────────────────────────────────────────── */}
-         <div className="dg-home-hero" style={{ position: "relative", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+         <div className="dg-home-hero" style={{ position: "relative", minHeight: "min(88vh, 820px)", display: "flex", flexDirection: "column" }}>
 
             {/* Background slideshow */}
-            <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 0 }}>
-               <Image
-                  key={HERO_SLIDES[activeSlide]}
-                  src={HERO_SLIDES[activeSlide]}
-                  alt=""
-                  fill
-                  priority={activeSlide === 0}
-                  sizes="100vw"
-                  quality={76}
-                  aria-hidden="true"
-                  className="dg-home-hero-image"
-                  style={{ objectFit: "cover", objectPosition: "center" }}
-               />
+            <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 0, background: "#0d1f2d" }}>
+               {HERO_SLIDES.map((slide, index) => (
+                  <div
+                     key={slide}
+                     className={`dg-home-hero-slide ${activeSlide === index ? "is-active" : previousSlide === index ? "is-previous" : ""}`}
+                     style={{
+                        // Inline layer styles also apply before client hydration.
+                        position: "absolute",
+                        inset: 0,
+                        zIndex: activeSlide === index ? 2 : previousSlide === index ? 1 : 0,
+                        opacity: activeSlide === index || previousSlide === index ? 1 : 0,
+                        transitionProperty: "opacity",
+                        transitionTimingFunction: "ease-in-out",
+                        transitionDuration: activeSlide === index && !prefersReducedMotion ? `${FADE_DURATION_MS}ms` : "0ms",
+                     }}
+                     aria-hidden="true"
+                  >
+                     <Image
+                        ref={image => { imageRefs.current[index] = image; }}
+                        src={slide}
+                        alt=""
+                        fill
+                        priority={index === 0}
+                        loading={index === 0 ? undefined : "eager"}
+                        fetchPriority={index === 0 ? "high" : "auto"}
+                        sizes="100vw"
+                        quality={76}
+                        onLoad={event => {
+                           if (event.currentTarget.naturalWidth > 0) markReady(index);
+                        }}
+                        className="dg-home-hero-image"
+                        style={{ objectFit: "cover", objectPosition: "center" }}
+                     />
+                  </div>
+               ))}
             </div>
 
             {/* Deep gradient overlay */}
@@ -76,8 +141,8 @@ const HeroBanner = () => {
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
-                  paddingTop: 160,
-                  paddingBottom: 40,
+                  paddingTop: 140,
+                  paddingBottom: 32,
                }}
             >
                <div className="row">
@@ -89,13 +154,13 @@ const HeroBanner = () => {
                            display: "inline-block",
                            background: "rgba(255,255,255,0.10)",
                            color: "#f0b95e",
-                           fontSize: 11,
+                           fontSize: 10,
                            fontWeight: 700,
-                           letterSpacing: 3,
+                           letterSpacing: 2.6,
                            textTransform: "uppercase",
-                           padding: "7px 18px",
+                           padding: "6px 15px",
                            borderRadius: 4,
-                           marginBottom: 28,
+                           marginBottom: 20,
                            border: "1px solid rgba(240,185,94,0.40)",
                         }}
                      >
@@ -107,9 +172,9 @@ const HeroBanner = () => {
                         className="font-garamond"
                         style={{
                            color: "#ffffff",
-                           fontSize: "clamp(2.8rem, 6vw, 5rem)",
+                           fontSize: "clamp(2.8rem, 7vw, 6rem)",
                            fontWeight: 800,
-                           lineHeight: 1.05,
+                           lineHeight: 1.02,
                            letterSpacing: "-0.5px",
                            marginBottom: 0,
                         }}
@@ -123,11 +188,11 @@ const HeroBanner = () => {
                      {/* Divider */}
                      <div
                         style={{
-                           width: 70,
-                           height: 3,
+                           width: 60,
+                           height: 2,
                            background: "linear-gradient(90deg, #f0b95e, #888e7d)",
                            borderRadius: 2,
-                           margin: "28px 0",
+                           margin: "20px 0",
                         }}
                      />
 
@@ -135,17 +200,17 @@ const HeroBanner = () => {
                      <p
                         style={{
                            color: "rgba(255,255,255,0.85)",
-                           fontSize: "clamp(15px, 2vw, 18px)",
-                           lineHeight: 1.75,
-                           maxWidth: 520,
-                           marginBottom: 42,
+                           fontSize: "clamp(14px, 1.5vw, 17px)",
+                           lineHeight: 1.65,
+                           maxWidth: 500,
+                           marginBottom: 30,
                         }}
                      >
                         Discover premium commercial property opportunities across South Africa, with expert services in leasing, investment sales, and development all under one roof.
                      </p>
 
                      {/* CTAs */}
-                     <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 20, marginBottom: 60 }}>
+                     <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 16, marginBottom: 42 }}>
                         <Link
                            href="/properties"
                            style={{
@@ -155,8 +220,8 @@ const HeroBanner = () => {
                               background: "linear-gradient(90deg, #888e7d 0%, #6b7263 100%)",
                               color: "#fff",
                               fontWeight: 700,
-                              fontSize: 15,
-                              padding: "15px 32px",
+                              fontSize: 14,
+                              padding: "13px 26px",
                               borderRadius: 50,
                               textDecoration: "none",
                               letterSpacing: 0.4,
@@ -175,14 +240,15 @@ const HeroBanner = () => {
                </div>
             </div>
 
-            {/* Slide indicators */}
+            {/* Slide controls are hidden; automatic background rotation stays active. */}
             <div
+               hidden
                style={{
                   position: "absolute",
-                  bottom: 32,
-                  right: 40,
+                  bottom: 24,
+                  right: 28,
                   zIndex: 3,
-                  display: "flex",
+                  display: "none",
                   alignItems: "center",
                   gap: 8,
                }}
@@ -212,7 +278,8 @@ const HeroBanner = () => {
                   <button
                      key={i}
                      type="button"
-                     onClick={() => setActiveSlide(i)}
+                     onClick={() => showSlide(i)}
+                     disabled={!readySlides[i] || previousSlide !== null}
                      aria-label={`Show background image ${i + 1} of ${HERO_SLIDES.length}`}
                      aria-current={activeSlide === i ? "true" : undefined}
                      style={{
@@ -231,29 +298,14 @@ const HeroBanner = () => {
          </div>
 
          <style jsx>{`
-            .dg-home-hero-image {
-               animation: hero-image-fade 0.75s ease-out both;
-            }
-
-            @keyframes hero-image-fade {
-               from { opacity: 0.35; transform: scale(1.01); }
-               to { opacity: 1; transform: scale(1); }
-            }
-
             @media (max-width: 767px) {
                .dg-home-hero {
                   min-height: auto !important;
                }
 
                .dg-home-hero-content {
-                  padding-top: 138px !important;
-                  padding-bottom: 48px !important;
-               }
-            }
-
-            @media (prefers-reduced-motion: reduce) {
-               .dg-home-hero-image {
-                  animation: none;
+                  padding-top: 118px !important;
+                  padding-bottom: 38px !important;
                }
             }
          `}</style>
