@@ -435,7 +435,16 @@
     }
     .navbar-collapse.show {transform: translateX(0); box-shadow: 15px 0 25px rgba(35,35,35,0.09);}
     .theme-main-menu .navbar .mega-dropdown {position: relative;}
-    .navbar .navbar-nav .nav-link {margin: 0; padding: 15px 12px; border-top: 1px dashed rgba($color: #000, $alpha: 0.1);}
+    .navbar .navbar-nav .nav-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        width: 100%;
+        margin: 0;
+        padding: 15px 12px;
+        border-top: 1px dashed rgba($color: #000, $alpha: 0.1);
+    }
     .white-vr .navbar .navbar-nav .nav-link {border-top: 1px dashed rgba($color: #fff, $alpha: 0.15);}
     .navbar .dropdown-menu .dropdown-item {padding: 0 10px; line-height: 46px; font-size: 0.9em;}
     .navbar .dropdown-menu {
@@ -451,10 +460,14 @@
     .navbar [class*=mega-dropdown] .menu-column .mega-menu-title {padding-left: 10px; margin-top: 15px;}
     .navbar [class*=mega-dropdown] .menu-column .mega-menu-title:before {left: 10px;}
     .navbar .dropdown-toggle::after {
-        position: absolute;
-        right: 15px;
-        top:calc(50% - 2px);
+        // Keep arrows in one right-aligned column, clear of the button labels.
+        position: static;
+        flex-shrink: 0;
+        margin-left: auto;
+        line-height: 1;
+        transition: transform 0.2s ease;
     }
+    .navbar .show.dropdown-toggle::after {transform: rotate(180deg);}
     .dashboard-menu .nav-link::before {right: auto; left: 0; top:-2px;}
   }
   /*(max-width: 991px)*/
