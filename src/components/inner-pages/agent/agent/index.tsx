@@ -28,22 +28,29 @@ const Agent = () => {
             <div className="container" style={{ position:'relative', zIndex:2, padding:'170px 0 92px' }}>
                <div className="row align-items-center">
                   <div className="col-lg-7">
+                     <nav aria-label="Breadcrumb" style={{ marginBottom: 18 }}>
+                        <ol style={{ listStyle:'none', padding:0, margin:0, display:'flex', gap:8, flexWrap:'wrap', fontSize:14 }}>
+                           <li><Link href="/" style={{ color:'rgba(255,255,255,0.68)', textDecoration:'none' }}>Home</Link></li>
+                           <li aria-hidden="true" style={{ color:'rgba(255,255,255,0.42)' }}>/</li>
+                           <li aria-current="page" style={{ color:'#fff' }}>Our Team</li>
+                        </ol>
+                     </nav>
                      <p style={{ fontSize:'0.72rem', fontWeight:700, letterSpacing:'0.22em', textTransform:'uppercase', color:'#e8b86d', marginBottom:16 }}>De Gennaro Property</p>
                      <h1 style={{ fontSize:'clamp(2rem,4.5vw,3.4rem)', fontWeight:700, color:'#fff', lineHeight:1.15, marginBottom:20, fontFamily:'var(--site-font-family)' }}>
                         Meet the Team<br />Behind DG Property.
                      </h1>
                      <div style={{ width:48, height:3, background:'#e8b86d', borderRadius:2, marginBottom:24 }} />
                      <p style={{ fontSize:'1rem', color:'rgba(255,255,255,0.70)', maxWidth:480, lineHeight:1.75 }}>
-                        Leadership, operations and commercial property expertise working together to deliver outstanding results across South Africa.
+                        Leadership, operations and commercial property experience working together across South Africa.
                      </p>
                      <div style={{ display:'flex', gap:12, marginTop:32, flexWrap:'wrap' }}>
                         <Link href="/inquiry" style={{ padding:'12px 28px', background:'#e8b86d', color:'#0d1f2d', fontWeight:700, fontSize:'0.82rem', letterSpacing:'0.1em', textTransform:'uppercase', borderRadius:4, textDecoration:'none' }}>Get In Touch</Link>
-                        <Link href="/listing_01" style={{ padding:'12px 28px', border:'1px solid rgba(255,255,255,0.35)', color:'#fff', fontWeight:600, fontSize:'0.82rem', letterSpacing:'0.1em', textTransform:'uppercase', borderRadius:4, textDecoration:'none' }}>View Listings</Link>
+                        <Link href="/properties" style={{ padding:'12px 28px', border:'1px solid rgba(255,255,255,0.35)', color:'#fff', fontWeight:600, fontSize:'0.82rem', letterSpacing:'0.1em', textTransform:'uppercase', borderRadius:4, textDecoration:'none' }}>View Listings</Link>
                      </div>
                   </div>
                   <div className="col-lg-5 d-none d-lg-flex justify-content-end">
                      <div style={{ display:'flex', flexDirection:'column', gap:16, alignItems:'flex-end' }}>
-                        {[['18+','Years Combined Experience'],['R250M+','Transactions Completed'],['3','Specialist Divisions']].map(([num,label],i) => (
+                        {[['Leasing','Commercial Property'],['Sales','Investment Property'],['Advisory','Development Property']].map(([num,label],i) => (
                            <div key={i} style={{ background:'rgba(255,255,255,0.08)', backdropFilter:'blur(10px)', border:'1px solid rgba(255,255,255,0.15)', borderRadius:12, padding:'18px 28px', textAlign:'right', minWidth:220 }}>
                               <div style={{ fontSize:'1.8rem', fontWeight:700, color:'#e8b86d', lineHeight:1 }}>{num}</div>
                               <div style={{ fontSize:'0.8rem', color:'rgba(255,255,255,0.60)', marginTop:4 }}>{label}</div>

@@ -6,6 +6,7 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { submitPublicInquiry } from "@/utils/dashboardApi";
+import Link from "next/link";
 
 type InquiryTypeId =
    | "lease-commercial"
@@ -131,6 +132,7 @@ type FormValues = {
    listingReference?: string;
    preferredDate?: string;
    message: string;
+   privacyAccepted: boolean;
 };
 
 const buildSchema = () =>
@@ -162,6 +164,7 @@ const buildSchema = () =>
       askingPrice: yup.string().trim(),
       listingReference: yup.string().trim(),
       preferredDate: yup.string().trim(),
+      privacyAccepted: yup.boolean().oneOf([true], "Please confirm that you have read the privacy notice.").required(),
    });
 
 const fieldKey = (k: keyof FormValues) => k;
@@ -211,6 +214,7 @@ const InquiryForm = () => {
          email: "",
          phone: "",
          message: "",
+         privacyAccepted: false,
       },
    });
 
@@ -309,20 +313,20 @@ const InquiryForm = () => {
          <div className="dg-inquiry-grid">
             <div className="dg-field">
                <label htmlFor="fullName">Full name *</label>
-               <input id="fullName" type="text" placeholder="e.g. Jane Smith" {...register("fullName")} />
-               {errors.fullName && <p className="dg-inquiry-error">{errors.fullName.message}</p>}
+               <input id="fullName" type="text" autoComplete="name" aria-invalid={Boolean(errors.fullName)} aria-describedby={errors.fullName ? "fullName-error" : undefined} placeholder="e.g. Jane Smith" {...register("fullName")} />
+               {errors.fullName && <p id="fullName-error" role="alert" className="dg-inquiry-error">{errors.fullName.message}</p>}
             </div>
 
             <div className="dg-field">
                <label htmlFor="email">Email *</label>
-               <input id="email" type="email" placeholder="you@example.com" {...register("email")} />
-               {errors.email && <p className="dg-inquiry-error">{errors.email.message}</p>}
+               <input id="email" type="email" autoComplete="email" aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? "email-error" : undefined} placeholder="you@example.com" {...register("email")} />
+               {errors.email && <p id="email-error" role="alert" className="dg-inquiry-error">{errors.email.message}</p>}
             </div>
 
             <div className="dg-field">
                <label htmlFor="phone">Phone *</label>
-               <input id="phone" type="tel" placeholder="+27 ..." {...register("phone")} />
-               {errors.phone && <p className="dg-inquiry-error">{errors.phone.message}</p>}
+               <input id="phone" type="tel" autoComplete="tel" aria-invalid={Boolean(errors.phone)} aria-describedby={errors.phone ? "phone-error" : undefined} placeholder="+27 ..." {...register("phone")} />
+               {errors.phone && <p id="phone-error" role="alert" className="dg-inquiry-error">{errors.phone.message}</p>}
             </div>
          </div>
 
@@ -464,10 +468,22 @@ const InquiryForm = () => {
             <textarea
                id="message"
                rows={5}
+               aria-invalid={Boolean(errors.message)}
+               aria-describedby={errors.message ? "inquiry-message-error" : undefined}
                placeholder="Share anything else that would help us prepare for the conversation..."
                {...register("message")}
             />
-            {errors.message && <p className="dg-inquiry-error">{errors.message.message}</p>}
+            {errors.message && <p id="inquiry-message-error" role="alert" className="dg-inquiry-error">{errors.message.message}</p>}
+         </div>
+
+         <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 10, alignItems: "start", margin: "22px 0" }}>
+            <input id="inquiry-privacy" type="checkbox" {...register("privacyAccepted")} aria-invalid={Boolean(errors.privacyAccepted)} aria-describedby={errors.privacyAccepted ? "inquiry-privacy-error" : undefined} style={{ width: 20, height: 20, marginTop: 3 }} />
+            <div>
+               <label htmlFor="inquiry-privacy" style={{ color: "#334155", fontSize: 14, lineHeight: 1.6 }}>
+                  I understand that DG Property will use these details to respond to my property enquiry, as explained in the <Link href="/privacy-policy" style={{ textDecoration: "underline" }}>Privacy Policy</Link>.*
+               </label>
+               {errors.privacyAccepted && <p id="inquiry-privacy-error" role="alert" className="dg-inquiry-error">{errors.privacyAccepted.message}</p>}
+            </div>
          </div>
 
          <button type="submit" className="dg-inquiry-submit" disabled={isSubmitting}>

@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { submitPublicInquiry } from "@/utils/dashboardApi";
+import Link from "next/link";
 
 interface Props {
   propertyId?: number;
@@ -39,6 +40,7 @@ const ScheduleForm = ({ propertyId, propertyTitle }: Props) => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [submissionState, setSubmissionState] = useState<SubmissionState>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -54,8 +56,8 @@ const ScheduleForm = ({ propertyId, propertyTitle }: Props) => {
     event.preventDefault();
     resetFeedback();
 
-    if (!name.trim() || !email.trim()) {
-      setSubmissionState({ type: "error", message: "Please enter your name and email address." });
+    if (!name.trim() || !email.trim() || !privacyAccepted) {
+      setSubmissionState({ type: "error", message: "Please enter your name and email, and confirm the privacy notice." });
       return;
     }
 
@@ -79,6 +81,7 @@ const ScheduleForm = ({ propertyId, propertyTitle }: Props) => {
       setEmail("");
       setPhone("");
       setMessage("");
+      setPrivacyAccepted(false);
     } catch {
       setSubmissionState({
         type: "error",
@@ -92,9 +95,12 @@ const ScheduleForm = ({ propertyId, propertyTitle }: Props) => {
   return (
     <form onSubmit={handleSubmit}>
       <div style={{ marginBottom: 18 }}>
-        <label style={labelStyle}>Your Name</label>
+        <label htmlFor="property-enquiry-name" style={labelStyle}>Your Name *</label>
         <input
+          id="property-enquiry-name"
           type="text"
+          autoComplete="name"
+          required
           value={name}
           onChange={(event) => {
             resetFeedback();
@@ -106,9 +112,12 @@ const ScheduleForm = ({ propertyId, propertyTitle }: Props) => {
       </div>
 
       <div style={{ marginBottom: 18 }}>
-        <label style={labelStyle}>Your Email</label>
+        <label htmlFor="property-enquiry-email" style={labelStyle}>Your Email *</label>
         <input
+          id="property-enquiry-email"
           type="email"
+          autoComplete="email"
+          required
           value={email}
           onChange={(event) => {
             resetFeedback();
@@ -120,9 +129,11 @@ const ScheduleForm = ({ propertyId, propertyTitle }: Props) => {
       </div>
 
       <div style={{ marginBottom: 18 }}>
-        <label style={labelStyle}>Phone Number</label>
+        <label htmlFor="property-enquiry-phone" style={labelStyle}>Phone Number</label>
         <input
+          id="property-enquiry-phone"
           type="tel"
+          autoComplete="tel"
           value={phone}
           onChange={(event) => {
             resetFeedback();
@@ -134,8 +145,9 @@ const ScheduleForm = ({ propertyId, propertyTitle }: Props) => {
       </div>
 
       <div style={{ marginBottom: 18 }}>
-        <label style={labelStyle}>Message</label>
+        <label htmlFor="property-enquiry-message" style={labelStyle}>Message</label>
         <textarea
+          id="property-enquiry-message"
           value={message}
           onChange={(event) => {
             resetFeedback();
@@ -147,8 +159,17 @@ const ScheduleForm = ({ propertyId, propertyTitle }: Props) => {
         />
       </div>
 
+      <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 10, alignItems: "start", marginBottom: 18 }}>
+        <input id="property-enquiry-privacy" type="checkbox" required checked={privacyAccepted} onChange={(event) => { resetFeedback(); setPrivacyAccepted(event.target.checked); }} style={{ width: 20, height: 20, marginTop: 3 }} />
+        <label htmlFor="property-enquiry-privacy" style={{ color: "#334155", fontSize: 13, lineHeight: 1.6 }}>
+          I understand that DG Property will use these details to respond to this enquiry, as explained in the <Link href="/privacy-policy" style={{ textDecoration: "underline" }}>Privacy Policy</Link>.*
+        </label>
+      </div>
+
       {submissionState && (
         <div
+          role={submissionState.type === "error" ? "alert" : "status"}
+          aria-live="polite"
           style={{
             marginBottom: 16,
             padding: "12px 14px",

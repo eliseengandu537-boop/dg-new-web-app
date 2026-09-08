@@ -2,12 +2,9 @@
 
 import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import Link from "next/link";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import axios from "axios";
-import AgencyFormOne from "@/components/forms/AgencyFormOne";
-import Review from "@/components/inner-pages/agency/agency-details/Review";
 import { COMMERCIAL_FIELD_LABELS } from "@/data/commercialPropertyConfig";
-import NiceSelect from "@/ui/NiceSelect";
 import { API_ROOT } from "@/utils/api";
 import { getPriceDisplay } from "@/utils/pricing";
 import { fetchSavedProperties, removePropertyFromFavorites, savePropertyToFavorites } from "@/utils/dashboardApi";
@@ -52,22 +49,13 @@ const formatValue = (value: unknown) => {
 
 const ListingDetailsSixArea = () => {
   const params = useSearchParams();
-  const router = useRouter();
   const id = params.get("id");
-
-  // Return to wherever the visitor came from (e.g. the listing on page 2),
-  // falling back to all listings if they arrived here directly.
-  const handleBack = () => {
-    if (typeof window !== "undefined" && window.history.length > 1) {
-      router.back();
-    } else {
-      router.push("/listing_07");
-    }
-  };
 
   const [property, setProperty] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [loadError, setLoadError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
   const [favoriteLoading, setFavoriteLoading] = useState(false);
   const [shareState, setShareState] = useState("");
@@ -80,11 +68,21 @@ const ListingDetailsSixArea = () => {
       return;
     }
 
+    setLoading(true);
+    setNotFound(false);
+    setLoadError(false);
+    setProperty(null);
     axios.get(`${API_ROOT}/properties/public/${id}`)
       .then((response) => setProperty(response.data.property || response.data))
-      .catch(() => setNotFound(true))
+      .catch((error) => {
+        if (axios.isAxiosError(error) && error.response?.status === 404) {
+          setNotFound(true);
+        } else {
+          setLoadError(true);
+        }
+      })
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, retryCount]);
 
   useEffect(() => {
     if (!id) return;
@@ -164,12 +162,27 @@ const ListingDetailsSixArea = () => {
     );
   }
 
+  if (loadError) {
+    return (
+      <div style={pageShellStyle} role="alert">
+        <div className="container" style={{ paddingTop: 190, paddingBottom: 120, textAlign: "center" }}>
+          <h4 style={{ color: "#0f172a", marginBottom: 16 }}>This property is temporarily unavailable</h4>
+          <p style={{ color: "#64748b", marginBottom: 24 }}>Please try again or browse our other listings.</p>
+          <div className="d-flex flex-wrap justify-content-center gap-3">
+            <button type="button" className="btn-nine" onClick={() => setRetryCount((count) => count + 1)}>Try again</button>
+            <Link href="/properties" className="btn-eight">Browse All Listings</Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (notFound || !property) {
     return (
       <div style={pageShellStyle}>
         <div className="container" style={{ paddingTop: 190, paddingBottom: 120, textAlign: "center" }}>
           <h4 style={{ color: "#0f172a", marginBottom: 16 }}>Property not found</h4>
-          <Link href="/listing_07" className="btn-nine mt-20">Browse All Listings</Link>
+          <Link href="/properties" className="btn-nine mt-20">Browse All Listings</Link>
         </div>
       </div>
     );
@@ -275,16 +288,13 @@ const ListingDetailsSixArea = () => {
   return (
     <div style={pageShellStyle}>
       <div className="container" style={{ paddingTop: 158, paddingBottom: 120 }}>
-        <div style={breadcrumbStyle}>
-          <button type="button" onClick={handleBack} style={{ ...breadcrumbLinkStyle, background: "none", border: "none", padding: 0, cursor: "pointer" }}>
-            <i className="bi bi-arrow-left" style={{ fontSize: 14 }}></i>
-            Back
-          </button>
-          <span>/</span>
-          <Link href="/home-two" style={{ ...breadcrumbLinkStyle, color: "#64748b", fontWeight: 500 }}>
-            Home
-          </Link>
-        </div>
+        <nav aria-label="Breadcrumb" style={breadcrumbStyle}>
+          <Link href="/" style={{ ...breadcrumbLinkStyle, color: "#64748b", fontWeight: 500 }}>Home</Link>
+          <span aria-hidden="true">/</span>
+          <Link href="/properties" style={{ ...breadcrumbLinkStyle, color: "#64748b", fontWeight: 500 }}>Properties</Link>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">{property.title}</span>
+        </nav>
 
         <div className="row gx-4 gy-4 align-items-start">
           <div className="col-xl-8">
@@ -546,34 +556,6 @@ const ListingDetailsSixArea = () => {
               </SectionCard>
             </div>
 
-            <SectionCard title="Reviews" subtitle="Feedback and engagement from people who have viewed or interacted with this listing.">
-              <div className="position-relative z-1">
-                <div className="d-sm-flex justify-content-between align-items-center mb-20" style={{ gap: 12 }}>
-                  <p style={{ color: "#64748b", fontSize: 15, margin: 0 }}>
-                    Sort reviews to quickly scan the latest property feedback.
-                  </p>
-                  <NiceSelect
-                    className="nice-select rounded-0"
-                    options={[
-                      { value: "01", text: "Newest" },
-                      { value: "02", text: "Best Seller" },
-                      { value: "03", text: "Best Match" },
-                    ]}
-                    defaultCurrent={0}
-                    onChange={() => {}}
-                    name=""
-                    placeholder=""
-                  />
-                </div>
-                <Review propertyId={property.id} />
-              </div>
-            </SectionCard>
-
-            <SectionCard title="Leave a reply" subtitle="Share your thoughts or ask a question if you have viewed this property.">
-              <div style={replyCardStyle}>
-                <AgencyFormOne />
-              </div>
-            </SectionCard>
           </div>
 
           <div className="col-xl-4">
@@ -895,13 +877,6 @@ const sectionCardStyle: CSSProperties = {
   padding: "26px 26px 28px",
   boxShadow: "0 18px 40px rgba(15,23,42,0.04)",
   marginBottom: 24,
-};
-
-const replyCardStyle: CSSProperties = {
-  borderRadius: 20,
-  background: "#f8fbff",
-  padding: 22,
-  border: "1px solid #dbe4ee",
 };
 
 const sidebarGridStyle: CSSProperties = {

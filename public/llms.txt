@@ -1,0 +1,35 @@
+# DG Property
+
+> De Gennaro Property is a South African commercial property brokerage specialising in commercial leasing, investment sales, retail leasing, development land and fuel-station opportunities.
+
+Canonical website: https://dg-property.co.za
+Primary location: Bedfordview, Johannesburg, Gauteng, South Africa
+Contact: hello@dg-property.co.za | 087 630 2532
+
+## Main pages
+
+- Home: https://dg-property.co.za/
+- Property listings: https://dg-property.co.za/properties
+- Commercial property to let: https://dg-property.co.za/commercial-for-lease
+- Retail properties: https://dg-property.co.za/retail-properties
+- Industrial and warehouse property: https://dg-property.co.za/industrial-warehouse
+- Investment properties: https://dg-property.co.za/investment
+- Development land: https://dg-property.co.za/development-land
+- Fuel stations: https://dg-property.co.za/fuel-station
+- Services: https://dg-property.co.za/our-services
+- Investment sales: https://dg-property.co.za/investment-sales
+- Retail leasing: https://dg-property.co.za/retail-leasing
+- Development leasing: https://dg-property.co.za/development-leasing
+- Team: https://dg-property.co.za/agent
+- Property news: https://dg-property.co.za/property-news
+- Success stories: https://dg-property.co.za/success-stories
+- Courses: https://dg-property.co.za/courses
+- Contact: https://dg-property.co.za/contact
+- FAQ: https://dg-property.co.za/faq
+
+## Crawling
+
+- Sitemap: https://dg-property.co.za/sitemap.xml
+- Robots: https://dg-property.co.za/robots.txt
+- Public pages may be crawled and summarised with attribution to DG Property.
+- Dashboard, login and API routes are private and must not be indexed.

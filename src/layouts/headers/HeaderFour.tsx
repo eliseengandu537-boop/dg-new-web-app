@@ -28,7 +28,7 @@ const HeaderFour = () => {
                      <div className="right-widget ms-auto me-3 me-lg-0 order-lg-3">
                         <ul className="d-flex align-items-center style-none">
                            <li>
-                              <a onClick={() => setIsSearch(true)} style={{ cursor: "pointer", color: sticky ? undefined : "#fff" }} className="search-btn-one rounded-circle tran3s d-flex align-items-center justify-content-center"><i className="bi bi-search"></i></a>
+                              <button onClick={() => setIsSearch(true)} type="button" aria-label="Search properties" style={{ cursor: "pointer", color: sticky ? undefined : "#fff", border: 0 }} className="search-btn-one rounded-circle tran3s d-flex align-items-center justify-content-center"><i className="bi bi-search" aria-hidden="true"></i></button>
                            </li>
                         </ul>
                      </div>

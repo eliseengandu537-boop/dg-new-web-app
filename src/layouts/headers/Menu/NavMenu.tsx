@@ -33,15 +33,31 @@ const NavMenu = ({ textColor }: { textColor?: string }) => {
                     key={menu.id}
                     className={`nav-item dropdown ${menu.class_name} ${menu.title === "Home" ? "no-dropdown" : ""}`}
                 >
-                    <Link
-                        href={menu.link}
-                        className={`nav-link ${menu.has_dropdown && menu.title !== "Home" ? "dropdown-toggle" : ""} 
-                        ${pathname === menu.link ? "active" : ""} ${navTitle === menu.title ? "show" : ""}`}
-                        onClick={() => menu.title !== "Home" && openMobileMenu(menu.title)}
-                        style={textColor ? { color: textColor } : {}}
-                    >
-                        {menu.title}
-                    </Link>
+                    {menu.has_dropdown ? (
+                        <button
+                            type="button"
+                            className={`nav-link dropdown-toggle ${menu.sub_menus?.some((item: any) => pathname === item.link) ? "active" : ""} ${navTitle === menu.title ? "show" : ""}`}
+                            onClick={() => openMobileMenu(menu.title)}
+                            aria-expanded={navTitle === menu.title}
+                            aria-haspopup="true"
+                            style={{
+                                ...(textColor ? { color: textColor } : {}),
+                                background: "transparent",
+                                border: 0,
+                                textAlign: "left",
+                            }}
+                        >
+                            {menu.title}
+                        </button>
+                    ) : (
+                        <Link
+                            href={menu.link}
+                            className={`nav-link ${pathname === menu.link ? "active" : ""}`}
+                            style={textColor ? { color: textColor } : {}}
+                        >
+                            {menu.title}
+                        </Link>
+                    )}
                     {menu.has_dropdown && menu.title !== "Home" && (
                         <ul className={`dropdown-menu ${navTitle === menu.title ? "show" : ""}`}>
                             {menu.sub_menus &&

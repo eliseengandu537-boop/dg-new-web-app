@@ -1,14 +1,171 @@
 @import "~bootstrap/scss/bootstrap";
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
 @import "react-toastify/dist/ReactToastify.css";
-@import 'node_modules/react-modal-video/scss/modal-video.scss';
 @import "slick-carousel/slick/slick.css";
 
 :root {
-  --site-font-family: 'Monstraart', 'Montserrat', sans-serif;
+  --site-font-family: 'Gordita', Arial, sans-serif;
+}
+
+:focus-visible {
+  outline: 3px solid #d59a3a !important;
+  outline-offset: 3px !important;
+}
+
+.dg-cookie-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(5, 16, 25, 0.58);
+}
+
+.dg-cookie-panel {
+  width: min(1060px, 100%);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 28px;
+  padding: clamp(24px, 4vw, 38px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 22px;
+  background: #102435;
+  color: #fff;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+}
+
+.dg-cookie-panel h2 { color: #fff; font-size: clamp(1.35rem, 3vw, 2rem); margin: 0 0 10px; }
+.dg-cookie-panel p { color: #e7edf1; font-size: 0.94rem; line-height: 1.65; margin: 0; }
+.dg-cookie-panel a { color: #ffd28c; font-size: 0.9rem; margin-top: 10px; text-decoration: underline; }
+.dg-cookie-eyebrow { color: #ffd28c !important; font-size: 0.72rem !important; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.dg-cookie-actions { display: grid; gap: 10px; min-width: min(285px, 100%); }
+.dg-cookie-actions button { min-height: 48px; padding: 11px 18px; border: 2px solid transparent; border-radius: 999px; font-size: 0.84rem; font-weight: 700; line-height: 1.35; }
+.dg-cookie-primary { background: #f0b95e; color: #142230; }
+.dg-cookie-secondary { border-color: #dbe5ec !important; background: transparent; color: #fff; }
+.dg-footer-separator { margin: 0 9px; }
+.dg-cookie-settings { display: inline; margin: 0; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.dg-cookie-settings:hover { background: transparent; color: #ffd28c; }
+
+.dg-whatsapp-support {
+  position: fixed;
+  z-index: 99998;
+  right: 18px;
+  bottom: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #087c41;
+  color: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .28);
+  transition: transform .2s ease, background-color .2s ease, box-shadow .2s ease;
+}
+
+.dg-whatsapp-support:hover {
+  transform: translateY(-2px);
+  background: #066936;
+  color: #fff;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, .34);
+}
+
+.dg-whatsapp-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 31px;
+}
+
+.modal-video { position: fixed; inset: 0; z-index: 1000001; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(0,0,0,.9); }
+.modal-video-body { width: min(960px, 100%); }
+.modal-video-inner { position: relative; }
+.modal-video-movie-wrap { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; }
+.modal-video-movie-wrap iframe { width: 100%; height: 100%; border: 0; }
+.modal-video-close-btn { position: absolute; top: -48px; right: 0; width: 42px; height: 42px; border: 2px solid #fff; border-radius: 50%; background: #102435; color: #fff; }
+.modal-video-close-btn::before, .modal-video-close-btn::after { content: ""; position: absolute; left: 10px; right: 10px; top: 18px; height: 2px; background: currentColor; transform: rotate(45deg); }
+.modal-video-close-btn::after { transform: rotate(-45deg); }
+
+@media (max-width: 767px) {
+  .dg-cookie-panel { grid-template-columns: 1fr; gap: 20px; max-height: calc(100vh - 24px); overflow-y: auto; }
+  .dg-cookie-actions { width: 100%; }
+  .dg-whatsapp-support { right: 12px; bottom: 68px; width: 54px; height: 54px; }
+  .dg-whatsapp-icon { font-size: 28px; }
 }
 
 @import "../../public/assets/fonts/gordita/stylesheet.css";
 @import "../../public/assets/fonts/bootstrap-icons-1.11.1/font/bootstrap-icons.css";
 @import "../../public/assets/fonts/font-awesome-6.4.2/css/all.css";
 @import "../../public/assets/scss/style.scss";
+
+/* Compact, better-balanced version of the existing homepage footer. */
+.footer-one.dg-footer-compact {
+  .footer-intro {
+    padding: 18px;
+
+    .bg-wrapper { padding: 28px 20px; }
+
+    p { font-size: 15px; line-height: 1.65; }
+  }
+
+  &.dark-bg .footer-intro .email { font-size: 28px; }
+
+  .footer-nav {
+    width: 50%;
+    padding-right: 40px;
+    padding-left: 40px;
+
+    .footer-nav-link a {
+      font-size: 16px;
+      line-height: 36px;
+    }
+  }
+
+  .footer-title {
+    margin-bottom: 16px;
+    font-size: 21px;
+  }
+}
+
+@media (max-width: 991px) {
+  .footer-one.dg-footer-compact {
+    .footer-nav { padding-right: 24px; padding-left: 24px; }
+    &.dark-bg .footer-intro .email { font-size: 24px; }
+  }
+}
+
+@media (max-width: 767px) {
+  .footer-one.dg-footer-compact {
+    padding: 40px 0 28px;
+
+    .footer-intro {
+      padding: 14px;
+
+      .bg-wrapper { padding: 24px 16px; }
+    }
+
+    .footer-nav {
+      width: 50%;
+      margin-top: 28px;
+      padding-right: 16px;
+      padding-left: 16px;
+    }
+  }
+}
+
+@media (max-width: 575px) {
+  .footer-one.dg-footer-compact {
+    .footer-nav {
+      width: 100%;
+      padding-right: 0;
+      padding-left: 0;
+      border-right: 0;
+    }
+
+    &.dark-bg .footer-intro .email { font-size: clamp(20px, 7vw, 25px); }
+  }
+}

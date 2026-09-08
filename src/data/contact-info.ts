@@ -1,8 +1,15 @@
 export const contactInfo = {
+  legalName: "De Gennaro Property",
+  tradingName: "DG Property",
+  registrationNumber: "2022/651308/07",
+  ppraNumber: "F152984",
   locationName: "Bedford Arcade",
   fullAddress: "59 Van Buuren Rd, Bedfordview, Johannesburg, 2007",
   phoneDisplay: "087 630 2532",
   phoneHref: "tel:0876302532",
+  whatsappDisplay: "+27 62 013 2079",
+  whatsappUrl: "https://wa.me/27620132079",
   emailDisplay: "hello@dg-property.co.za",
   emailHref: "mailto:hello@dg-property.co.za",
+  websiteUrl: "https://dg-property.co.za",
 };

@@ -1,7 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
-import Link from "next/link";
+
 import axios from "axios";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import FooterFour from "@/layouts/footers/FooterFour";
 import HeaderOne from "@/layouts/headers/HeaderOne";
 import { API_ROOT, BACKEND_ROOT } from "@/utils/publicEnv";
 
@@ -19,192 +22,326 @@ interface NewsPost {
   createdAt?: string;
 }
 
+const formatDate = (date?: string) => {
+  if (!date) return "";
+
+  return new Date(date).toLocaleDateString("en-ZA", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+};
+
 export default function PropertyNewsPage() {
   const [posts, setPosts] = useState<NewsPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
-    axios.get(`${API_ROOT}/news/public`)
-      .then(r => setPosts(Array.isArray(r.data) ? r.data : []))
-      .catch(() => setError("Failed to load news. Please try again later."))
-      .finally(() => setLoading(false));
-  }, []);
+    const controller = new AbortController();
 
-  const categories = ["All", ...Array.from(new Set(posts.map(p => p.category).filter(Boolean))) as string[]];
+    setLoading(true);
+    setError("");
 
-  const filtered = posts.filter(p => {
-    const matchCat = activeCategory === "All" || p.category === activeCategory;
-    const q = search.toLowerCase();
-    const matchSearch = !q || p.title.toLowerCase().includes(q) || (p.summary || "").toLowerCase().includes(q) || (p.tags || "").toLowerCase().includes(q);
-    return matchCat && matchSearch;
+    axios
+      .get(`${API_ROOT}/news/public`, { signal: controller.signal })
+      .then((response) => setPosts(Array.isArray(response.data) ? response.data : []))
+      .catch((requestError) => {
+        if (!axios.isCancel(requestError)) {
+          setError("We could not load the latest newsletters right now.");
+        }
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false);
+      });
+
+    return () => controller.abort();
+  }, [retryCount]);
+
+  const categories = [
+    "All",
+    ...(Array.from(new Set(posts.map((post) => post.category).filter(Boolean))) as string[]),
+  ];
+
+  const filteredPosts = posts.filter((post) => {
+    const matchesCategory = activeCategory === "All" || post.category === activeCategory;
+    const query = search.trim().toLowerCase();
+    const matchesSearch =
+      !query ||
+      post.title.toLowerCase().includes(query) ||
+      (post.summary || "").toLowerCase().includes(query) ||
+      (post.tags || "").toLowerCase().includes(query);
+
+    return matchesCategory && matchesSearch;
   });
-
-  const formatDate = (d?: string) => {
-    if (!d) return "";
-    return new Date(d).toLocaleDateString("en-ZA", { day: "numeric", month: "long", year: "numeric" });
-  };
 
   return (
     <>
       <HeaderOne style={true} />
 
-      {/* ── Hero ── */}
-      <section style={{
-        position: "relative",
-        backgroundImage: "url('/assets/images/media/jk.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center 35%",
-        minHeight: 420,
-        display: "flex",
-        alignItems: "center",
-        paddingTop: 160,
-        paddingBottom: 80,
-        overflow: "hidden",
-      }}>
-        {/* dark overlay */}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(120deg, rgba(10,20,35,0.52) 45%, rgba(10,20,35,0.28) 100%)" }} />
-        {/* gold top line */}
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: "linear-gradient(90deg, #c8973a, #e8b86d, #c8973a)", zIndex: 2 }} />
-        <div className="container" style={{ position: "relative", zIndex: 1 }}>
-          <div className="row align-items-center">
-            <div className="col-lg-7">
-              <span style={{ display: "inline-block", background: "rgba(200,151,58,0.15)", color: "#e8b86d", border: "1px solid rgba(200,151,58,0.4)", borderRadius: 4, fontSize: 11, fontWeight: 700, letterSpacing: 2, padding: "5px 14px", marginBottom: 18, textTransform: "uppercase" }}>
-                DG PROPERTY Newsletter
-              </span>
-              <h1 style={{ fontFamily: "var(--site-font-family)", fontSize: "clamp(34px, 5vw, 56px)", fontWeight: 800, color: "#fff", lineHeight: 1.1, margin: "0 0 18px", letterSpacing: -0.5 }}>
-                Newsletter
-              </h1>
-              <div style={{ width: 50, height: 3, background: "linear-gradient(90deg,#c8973a,#e8b86d)", borderRadius: 2, marginBottom: 20 }} />
-              <nav style={{ fontSize: 13, color: "rgba(255,255,255,0.5)" }}>
-                <Link href="/" style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Home</Link>
-                <span style={{ margin: "0 8px" }}>/</span>
-                <span style={{ color: "#e8b86d", fontWeight: 600 }}>Newsletter</span>
-              </nav>
-            </div>
-            <div className="col-lg-5 d-none d-lg-flex justify-content-end align-items-center">
-              <div style={{ color: "rgba(255,255,255,0.45)", fontSize: 15, textAlign: "right", lineHeight: 2.2, fontStyle: "italic" }}>
-                Market Updates · Investment Insights<br />Retail &amp; Development · Industry News
+      <main className="newsletter-page">
+        <section className="newsletter-hero">
+          <div className="container">
+            <div className="newsletter-hero-grid">
+              <div className="newsletter-hero-copy">
+                <p className="newsletter-eyebrow">DG Property journal</p>
+                <h1>News that moves property forward.</h1>
+                <p className="newsletter-intro">
+                  Clear market updates, investment thinking and commercial property insight from
+                  the people working in the market every day.
+                </p>
+                <nav className="newsletter-breadcrumb" aria-label="Breadcrumb">
+                  <Link href="/">Home</Link>
+                  <span aria-hidden="true">/</span>
+                  <span>Newsletter</span>
+                </nav>
+              </div>
+
+              <div className="newsletter-hero-media">
+                <Image
+                  src="/assets/images/media/jk.jpg"
+                  alt="DG Property market insights"
+                  fill
+                  priority
+                  sizes="(max-width: 991px) 100vw, 42vw"
+                  quality={76}
+                />
+                <div className="newsletter-topic-block">
+                  <span>Inside every edition</span>
+                  <strong>Market · Investment · Retail · Development</strong>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        {/* wave */}
-        <svg style={{ position: "absolute", bottom: -1, left: 0, width: "100%", height: 50, zIndex: 1 }} viewBox="0 0 1440 50" preserveAspectRatio="none" fill="none">
-          <path d="M0,50 C360,0 1080,0 1440,50 L1440,50 L0,50 Z" fill="#f7fafc" />
-        </svg>
-      </section>
+        </section>
 
-      {/* ── Filters ── */}
-      <section style={{ background: "#f7fafc", padding: "36px 0 0" }}>
-        <div className="container">
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 14, alignItems: "center", justifyContent: "space-between", marginBottom: 28 }}>
-            {/* Category pills */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-              {categories.map(c => (
-                <button
-                  key={c}
-                  onClick={() => setActiveCategory(c)}
-                  style={{
-                    padding: "7px 18px", borderRadius: 50, fontSize: 13, fontWeight: 600, cursor: "pointer", border: "none", transition: "all 0.2s",
-                    background: activeCategory === c ? "linear-gradient(90deg,#c8973a,#e8b86d)" : "#fff",
-                    color: activeCategory === c ? "#fff" : "#4a5568",
-                    boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
-                  }}
-                >
-                  {c}
+        <section className="newsletter-content">
+          <div className="container">
+            <div className="newsletter-toolbar" aria-label="Filter newsletters">
+              <div className="newsletter-categories" role="group" aria-label="Newsletter category">
+                {categories.map((category) => (
+                  <button
+                    key={category}
+                    type="button"
+                    className={activeCategory === category ? "is-active" : ""}
+                    onClick={() => setActiveCategory(category)}
+                    aria-pressed={activeCategory === category}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+
+              <div className="newsletter-search">
+                <label htmlFor="newsletter-search">Search newsletters</label>
+                <i className="bi bi-search" aria-hidden="true" />
+                <input
+                  id="newsletter-search"
+                  type="search"
+                  placeholder="Search newsletters"
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="newsletter-section-heading">
+              <div>
+                <p>Property intelligence</p>
+                <h2>Latest editions</h2>
+              </div>
+              {!loading && !error && (
+                <span>{filteredPosts.length} {filteredPosts.length === 1 ? "article" : "articles"}</span>
+              )}
+            </div>
+
+            {loading && (
+              <div className="newsletter-state" role="status">
+                <i className="bi bi-newspaper" aria-hidden="true" />
+                <h3>Loading the latest editions</h3>
+                <p>Gathering current property news and insights.</p>
+              </div>
+            )}
+
+            {!loading && error && (
+              <div className="newsletter-state newsletter-state--error" role="alert">
+                <i className="bi bi-cloud-slash" aria-hidden="true" />
+                <h3>News is temporarily unavailable</h3>
+                <p>{error}</p>
+                <button type="button" onClick={() => setRetryCount((count) => count + 1)}>
+                  Try again
                 </button>
-              ))}
-            </div>
-            {/* Search */}
-            <div style={{ position: "relative", minWidth: 240 }}>
-              <i className="bi bi-search" style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "#a0aec0", fontSize: 14 }} />
-              <input
-                type="text"
-                placeholder="Search articles…"
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                style={{ paddingLeft: 36, padding: "9px 14px 9px 36px", border: "1px solid #e2e8f0", borderRadius: 8, fontSize: 14, width: "100%", outline: "none", background: "#fff" }}
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Posts grid ── */}
-      <section style={{ background: "#f7fafc", paddingBottom: 80, paddingTop: 12 }}>
-        <div className="container">
-          {loading && (
-            <div style={{ textAlign: "center", padding: "60px 0", color: "#718096" }}>
-              <div style={{ fontSize: 36, marginBottom: 12 }}>📰</div>
-              <p>Loading news…</p>
-            </div>
-          )}
-          {error && (
-            <div style={{ textAlign: "center", padding: "60px 0", color: "#c53030" }}>{error}</div>
-          )}
-          {!loading && !error && filtered.length === 0 && (
-            <div style={{ textAlign: "center", padding: "60px 0", color: "#a0aec0" }}>
-              <div style={{ fontSize: 36, marginBottom: 12 }}>📭</div>
-              <p style={{ fontSize: 16 }}>No articles found{search ? ` for "${search}"` : ""}.</p>
-            </div>
-          )}
-          <div className="row gy-4">
-            {filtered.map(post => (
-              <div className="col-lg-4 col-md-6" key={post.id}>
-                <Link href={`/property-news/${post.slug}`} style={{ textDecoration: "none", display: "block", height: "100%" }}>
-                <article
-                  style={{
-                    background: "#fff",
-                    borderRadius: 14,
-                    overflow: "hidden",
-                    boxShadow: "0 4px 18px rgba(0,0,0,0.07)",
-                    cursor: "pointer",
-                    transition: "transform 0.2s, box-shadow 0.2s",
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 28px rgba(0,0,0,0.13)"; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = ""; (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 18px rgba(0,0,0,0.07)"; }}
-                >
-                  {/* Image */}
-                  <div style={{ height: 200, overflow: "hidden", background: "#e2e8f0", flexShrink: 0, position: "relative" }}>
-                    {post.imageUrl ? (
-                      <img src={`${BACKEND_ROOT}${post.imageUrl}`} alt={post.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                    ) : (
-                      <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        <i className="bi bi-newspaper" style={{ fontSize: 44, color: "#cbd5e0" }} />
-                      </div>
-                    )}
-                    {post.category && (
-                      <span style={{ position: "absolute", top: 12, left: 12, background: "rgba(200,151,58,0.9)", color: "#fff", fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 20, letterSpacing: 1, textTransform: "uppercase" }}>
-                        {post.category}
-                      </span>
-                    )}
-                  </div>
-                  {/* Content */}
-                  <div style={{ padding: "20px 22px", display: "flex", flexDirection: "column", flex: 1 }}>
-                    <div style={{ fontSize: 12, color: "#a0aec0", marginBottom: 8, display: "flex", alignItems: "center", gap: 10 }}>
-                      {post.author && <span><i className="bi bi-person" style={{ marginRight: 4 }} />{post.author}</span>}
-                      <span><i className="bi bi-calendar3" style={{ marginRight: 4 }} />{formatDate(post.publishedAt || post.createdAt)}</span>
-                    </div>
-                    <h3 style={{ fontSize: 16, fontWeight: 700, color: "#1a2332", margin: "0 0 10px", lineHeight: 1.4 }}>{post.title}</h3>
-                    {post.summary && <p style={{ fontSize: 13.5, color: "#718096", lineHeight: 1.6, margin: "0 0 16px", flex: 1 }}>{post.summary}</p>}
-                    <span style={{ color: "#c8973a", fontWeight: 600, fontSize: 13, display: "inline-flex", alignItems: "center", gap: 5, marginTop: "auto" }}>
-                      Read more <i className="bi bi-arrow-right" />
-                    </span>
-                  </div>
-                </article>
-                </Link>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            )}
 
+            {!loading && !error && filteredPosts.length === 0 && (
+              <div className="newsletter-state">
+                <i className="bi bi-search" aria-hidden="true" />
+                <h3>No matching newsletters</h3>
+                <p>Try another search term or select a different category.</p>
+                {(search || activeCategory !== "All") && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearch("");
+                      setActiveCategory("All");
+                    }}
+                  >
+                    Clear filters
+                  </button>
+                )}
+              </div>
+            )}
+
+            {!loading && !error && filteredPosts.length > 0 && (
+              <div className="newsletter-grid">
+                {filteredPosts.map((post, index) => {
+                  const date = formatDate(post.publishedAt || post.createdAt);
+
+                  return (
+                    <Link
+                      href={`/property-news/${post.slug}`}
+                      className={`newsletter-card ${index === 0 ? "newsletter-card--featured" : ""}`}
+                      key={post.id}
+                    >
+                      <article>
+                        <div className="newsletter-card-media">
+                          {post.imageUrl ? (
+                            <img
+                              src={`${BACKEND_ROOT}${post.imageUrl}`}
+                              alt={post.title}
+                              loading={index === 0 ? "eager" : "lazy"}
+                              decoding="async"
+                            />
+                          ) : (
+                            <div className="newsletter-card-placeholder" aria-hidden="true">
+                              <i className="bi bi-newspaper" />
+                            </div>
+                          )}
+                          {post.category && <span className="newsletter-card-category">{post.category}</span>}
+                          <span className="newsletter-card-number" aria-hidden="true">
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                        </div>
+
+                        <div className="newsletter-card-copy">
+                          <div className="newsletter-card-meta">
+                            {date && <span>{date}</span>}
+                            {post.author && <span>By {post.author}</span>}
+                          </div>
+                          <h3>{post.title}</h3>
+                          {post.summary && <p>{post.summary}</p>}
+                          <span className="newsletter-card-link">
+                            Read the edition <i className="bi bi-arrow-up-right" aria-hidden="true" />
+                          </span>
+                        </div>
+                      </article>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </section>
+      </main>
+
+      <FooterFour />
+
+      <style jsx>{`
+        .newsletter-page { background: #f3f5f1; }
+        .newsletter-hero { position: relative; overflow: hidden; padding: 158px 0 86px; background: #102536; }
+        .newsletter-hero::before { content: ""; position: absolute; inset: 0; opacity: .16; background-image: linear-gradient(rgba(255,255,255,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.12) 1px, transparent 1px); background-size: 64px 64px; mask-image: linear-gradient(to right, black, transparent 58%); }
+        .newsletter-hero-grid { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0,1.1fr) minmax(360px,.9fr); gap: 64px; align-items: stretch; }
+        .newsletter-hero-copy { display: flex; flex-direction: column; justify-content: center; min-height: 390px; padding: 42px 0; }
+        .newsletter-eyebrow, .newsletter-section-heading p { margin: 0 0 18px; color: #e8b86d; font-size: 12px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; }
+        .newsletter-hero h1 { max-width: 760px; margin: 0; color: #fff; font-size: clamp(44px,5.7vw,78px); font-weight: 700; letter-spacing: -.045em; line-height: .98; }
+        .newsletter-intro { max-width: 650px; margin: 28px 0 34px; color: rgba(255,255,255,.68); font-size: 17px; line-height: 1.75; }
+        .newsletter-breadcrumb { display: flex; align-items: center; gap: 10px; color: #e8b86d; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+        .newsletter-breadcrumb a { color: rgba(255,255,255,.66); text-decoration: none; }
+        .newsletter-hero-media { position: relative; min-height: 430px; overflow: hidden; border: 1px solid rgba(255,255,255,.24); box-shadow: 24px 24px 0 rgba(232,184,109,.12); }
+        .newsletter-hero-media :global(img) { object-fit: cover; }
+        .newsletter-hero-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top,rgba(9,24,35,.74),transparent 62%); }
+        .newsletter-topic-block { position: absolute; z-index: 2; right: 0; bottom: 0; left: 0; padding: 24px 26px; border-top: 1px solid rgba(255,255,255,.2); color: #fff; backdrop-filter: blur(8px); }
+        .newsletter-topic-block span, .newsletter-topic-block strong { display: block; }
+        .newsletter-topic-block span { margin-bottom: 6px; color: #e8b86d; font-size: 10px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
+        .newsletter-topic-block strong { font-size: 14px; line-height: 1.5; }
+        .newsletter-content { padding: 0 0 100px; }
+        .newsletter-toolbar { position: relative; z-index: 3; display: flex; align-items: center; justify-content: space-between; gap: 24px; margin: -34px 0 72px; padding: 20px; border: 1px solid #dce1d8; border-left: 6px solid #879078; background: #fff; box-shadow: 0 18px 45px rgba(21,42,55,.09); }
+        .newsletter-categories { display: flex; flex-wrap: wrap; gap: 8px; }
+        .newsletter-categories button { min-height: 44px; padding: 0 17px; border: 1px solid #dfe4dd; background: #f7f8f5; color: #506071; font-size: 12px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; transition: background .2s ease,border-color .2s ease,color .2s ease; }
+        .newsletter-categories button:hover, .newsletter-categories button:focus-visible, .newsletter-categories button.is-active { border-color: #102536; background: #102536; color: #fff; }
+        .newsletter-search { position: relative; flex: 0 1 310px; min-width: 240px; }
+        .newsletter-search label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+        .newsletter-search i { position: absolute; top: 50%; left: 16px; color: #7f8b96; transform: translateY(-50%); }
+        .newsletter-search input { width: 100%; min-height: 48px; padding: 0 16px 0 44px; border: 1px solid #dfe4dd; border-radius: 0; outline: none; background: #f7f8f5; color: #102536; font-size: 14px; }
+        .newsletter-search input:focus { border-color: #879078; box-shadow: 0 0 0 3px rgba(135,144,120,.14); }
+        .newsletter-section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 34px; padding-bottom: 22px; border-bottom: 1px solid #ced5cb; }
+        .newsletter-section-heading p { margin-bottom: 8px; color: #76551f; }
+        .newsletter-section-heading h2 { margin: 0; color: #102536; font-size: clamp(34px,4vw,50px); font-weight: 700; letter-spacing: -.04em; }
+        .newsletter-section-heading > span { color: #53616e; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+        .newsletter-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
+        .newsletter-card { min-width: 0; border: 1px solid #dce1d8; border-top: 4px solid #879078; background: #fff; color: inherit; text-decoration: none; transition: transform .2s ease,box-shadow .2s ease; }
+        .newsletter-card:hover, .newsletter-card:focus-visible { transform: translateY(-5px); box-shadow: 0 22px 42px rgba(16,37,54,.12); }
+        .newsletter-card article { display: grid; grid-template-rows: 255px 1fr; height: 100%; }
+        .newsletter-card--featured { grid-column: 1/-1; border-top-color: #d3a95f; }
+        .newsletter-card--featured article { grid-template-columns: minmax(0,1.25fr) minmax(340px,.75fr); grid-template-rows: minmax(390px,auto); }
+        .newsletter-card-media { position: relative; min-width: 0; overflow: hidden; background: #dfe4dd; }
+        .newsletter-card-media > img { width: 100%; height: 100%; object-fit: cover; transition: transform .45s ease; }
+        .newsletter-card:hover .newsletter-card-media > img { transform: scale(1.035); }
+        .newsletter-card-placeholder { display: grid; place-items: center; width: 100%; height: 100%; color: #8e9a89; background: linear-gradient(135deg,#e7ebe4,#d7ded4); font-size: 48px; }
+        .newsletter-card-category, .newsletter-card-number { position: absolute; z-index: 1; top: 16px; display: inline-flex; align-items: center; justify-content: center; min-height: 34px; padding: 0 12px; color: #fff; font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+        .newsletter-card-category { left: 16px; background: #76551f; }
+        .newsletter-card-number { right: 16px; min-width: 38px; background: #102536; }
+        .newsletter-card-copy { display: flex; flex-direction: column; padding: 30px; }
+        .newsletter-card--featured .newsletter-card-copy { justify-content: center; padding: 46px; background: #102536; }
+        .newsletter-card-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 18px; color: #596675; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+        .newsletter-card h3 { margin: 0 0 16px; color: #102536; font-size: clamp(22px,2.2vw,31px); font-weight: 700; letter-spacing: -.025em; line-height: 1.18; }
+        .newsletter-card--featured h3 { color: #fff; font-size: clamp(29px,3vw,42px); }
+        .newsletter-card-copy p { display: -webkit-box; overflow: hidden; margin: 0 0 26px; color: #53616e; font-size: 14px; line-height: 1.75; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+        .newsletter-card--featured .newsletter-card-copy p { color: rgba(255,255,255,.62); -webkit-line-clamp: 4; }
+        .newsletter-card-link { display: inline-flex; align-items: center; gap: 8px; margin-top: auto; color: #76551f; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+        .newsletter-card--featured .newsletter-card-link { color: #e8b86d; }
+        .newsletter-state { display: flex; flex-direction: column; align-items: flex-start; min-height: 270px; justify-content: center; padding: 48px; border: 1px solid #dce1d8; border-left: 6px solid #879078; background: #fff; }
+        .newsletter-state > i { margin-bottom: 18px; color: #879078; font-size: 36px; }
+        .newsletter-state h3 { margin: 0 0 8px; color: #102536; font-size: 25px; }
+        .newsletter-state p { margin: 0; color: #53616e; }
+        .newsletter-state button { min-height: 44px; margin-top: 22px; padding: 0 20px; border: 0; background: #102536; color: #fff; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+        .newsletter-state--error { border-left-color: #b46a58; }
+
+        @media (max-width: 991px) {
+          .newsletter-hero { padding-top: 140px; }
+          .newsletter-hero-grid { grid-template-columns: 1fr; gap: 28px; }
+          .newsletter-hero-copy { min-height: 0; padding: 10px 0 24px; }
+          .newsletter-hero-media { min-height: 360px; box-shadow: 16px 16px 0 rgba(232,184,109,.12); }
+          .newsletter-toolbar { align-items: stretch; flex-direction: column; }
+          .newsletter-search { flex-basis: auto; width: 100%; }
+          .newsletter-card--featured article { grid-template-columns: 1fr; grid-template-rows: 340px auto; }
+        }
+
+        @media (max-width: 767px) {
+          .newsletter-hero { padding: 126px 0 68px; }
+          .newsletter-hero h1 { font-size: clamp(40px,13vw,58px); }
+          .newsletter-intro { font-size: 15px; }
+          .newsletter-hero-media { min-height: 300px; }
+          .newsletter-toolbar { margin-bottom: 54px; padding: 15px; }
+          .newsletter-categories { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); }
+          .newsletter-categories button { padding: 0 10px; }
+          .newsletter-section-heading { align-items: flex-start; flex-direction: column; }
+          .newsletter-grid { grid-template-columns: 1fr; }
+          .newsletter-card--featured { grid-column: auto; }
+          .newsletter-card article, .newsletter-card--featured article { grid-template-columns: 1fr; grid-template-rows: 245px auto; }
+          .newsletter-card-copy, .newsletter-card--featured .newsletter-card-copy { padding: 26px 24px; }
+          .newsletter-state { padding: 34px 26px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .newsletter-card, .newsletter-card-media > img { transition: none; }
+          .newsletter-card:hover, .newsletter-card:focus-visible, .newsletter-card:hover .newsletter-card-media > img { transform: none; }
+        }
+      `}</style>
     </>
   );
 }

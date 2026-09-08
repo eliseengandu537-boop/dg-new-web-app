@@ -37,7 +37,7 @@ const ListingSix = () => {
       const query = buildCommercialSearchQuery(nextFilters);
 
       setAppliedFilters(nextFilters);
-      router.replace(query ? `/listing_07?${query}` : "/listing_07", { scroll: false });
+      router.replace(query ? `/properties?${query}` : "/properties", { scroll: false });
    }, [router]);
 
    const heroBadge = useMemo(() => {
@@ -50,15 +50,17 @@ const ListingSix = () => {
    return (
       <>
          <HeaderFour />
-         <PropertyHero title="All Listings" badge={heroBadge} subtitle="Explore our curated property listings.">
-            <CommercialPropertySearchBar
-               overlay={true}
-               defaultFilters={defaultFilters}
-               onSearch={handleSearch}
-            />
-         </PropertyHero>
-         <ListingSevenArea filters={appliedFilters} />
-         <FancyBanner />
+         <main>
+            <PropertyHero title="All Listings" badge={heroBadge} subtitle="Explore our curated property listings.">
+               <CommercialPropertySearchBar
+                  overlay={true}
+                  defaultFilters={defaultFilters}
+                  onSearch={handleSearch}
+               />
+            </PropertyHero>
+            <ListingSevenArea filters={appliedFilters} />
+            <FancyBanner />
+         </main>
          <FooterFour />
       </>
    )

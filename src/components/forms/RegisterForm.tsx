@@ -27,7 +27,7 @@ const RegisterForm = () => {
   .object({
     name: yup.string().required("Name is required"),
     email: yup.string().required("Email is required").email("Invalid email"),
-    password: yup.string().required("Password is required"),
+    password: yup.string().required("Password is required").min(8, "Use at least 8 characters"),
     termsAccepted: yup
       .boolean()
       .oneOf([true], "You must accept the terms and conditions") 
@@ -80,33 +80,37 @@ const RegisterForm = () => {
       <div className="row">
         <div className="col-12">
           <div className="input-group-meta position-relative mb-25">
-            <label>Name*</label>
-            <input type="text" {...register("name")} placeholder="Your Name" />
-            <p className="form_error">{errors.name?.message}</p>
+            <label htmlFor="register-name">Name*</label>
+            <input id="register-name" type="text" autoComplete="name" {...register("name")} placeholder="Your name" aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? "register-name-error" : undefined} />
+            <p id="register-name-error" className="form_error" role={errors.name ? "alert" : undefined}>{errors.name?.message}</p>
           </div>
         </div>
         <div className="col-12">
           <div className="input-group-meta position-relative mb-25">
-            <label>Email*</label>
-            <input type="email" {...register("email")} placeholder="Youremail@gmail.com" />
-            <p className="form_error">{errors.email?.message}</p>
+            <label htmlFor="register-email">Email*</label>
+            <input id="register-email" type="email" autoComplete="email" {...register("email")} placeholder="you@example.com" aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? "register-email-error" : undefined} />
+            <p id="register-email-error" className="form_error" role={errors.email ? "alert" : undefined}>{errors.email?.message}</p>
           </div>
         </div>
         <div className="col-12">
           <div className="input-group-meta position-relative mb-20">
-            <label>Password*</label>
+            <label htmlFor="register-password">Password*</label>
             <input
+              id="register-password"
               type={isPasswordVisible ? "text" : "password"}
+              autoComplete="new-password"
               {...register("password")}
               placeholder="Enter Password"
               className="pass_log_id"
+              aria-invalid={Boolean(errors.password)}
+              aria-describedby={errors.password ? "register-password-error" : undefined}
             />
             <span className="placeholder_icon">
-              <span className={`passVicon ${isPasswordVisible ? "eye-slash" : ""}`}>
-                <Image onClick={togglePasswordVisibility} src={OpenEye} alt="" />
-              </span>
+              <button type="button" className={`passVicon ${isPasswordVisible ? "eye-slash" : ""}`} onClick={togglePasswordVisibility} aria-label={isPasswordVisible ? "Hide password" : "Show password"}>
+                <Image src={OpenEye} alt="" aria-hidden="true" />
+              </button>
             </span>
-            <p className="form_error">{errors.password?.message}</p>
+            <p id="register-password-error" className="form_error" role={errors.password ? "alert" : undefined}>{errors.password?.message}</p>
           </div>
         </div>
         <div className="col-12">

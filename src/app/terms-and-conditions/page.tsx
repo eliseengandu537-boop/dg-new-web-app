@@ -1,175 +1,55 @@
-import LegalHero from "@/components/common/breadcrumb/LegalHero";
-import FancyBanner from "@/components/common/FancyBanner";
-import FooterFour from "@/layouts/footers/FooterFour";
-import HeaderOne from "@/layouts/headers/HeaderOne";
-import Wrapper from "@/layouts/Wrapper";
 import Link from "next/link";
+import LegalPageShell, { LegalSection } from "@/components/legal/LegalPageShell";
+import { contactInfo } from "@/data/contact-info";
+import { pageMetadata } from "@/utils/seo";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Terms & Conditions | DG Property",
-};
+  description: "Terms governing the DG Property website and enquiries about commercial property services in South Africa.",
+  path: "/terms-and-conditions",
+});
 
-export default function TermsAndConditionsPage() {
+export default function TermsPage() {
   return (
-    <Wrapper>
-      <HeaderOne style={true} />
-      <LegalHero
-        title="Terms & Conditions"
-        description="The terms that govern your use of the De Gennaro Property website and our commercial property services."
-      />
+    <LegalPageShell title="Terms & Conditions" description="Terms for using the DG Property website and submitting property enquiries.">
+      <p style={{ color: "#0d1f2d", fontSize: "1.05rem", lineHeight: 1.8, marginBottom: 8 }}>By using this website you agree to these terms. Separate written mandates, quotations, leases, sale agreements, course terms or other service agreements apply to an actual transaction and prevail if they conflict with these website terms.</p>
+      <p style={{ color: "#566575", marginBottom: 0 }}>Last updated: 7 September 2026</p>
 
-      <section
-        className="pt-130 xl-pt-100 md-pt-80 pb-130 xl-pb-100 md-pb-80"
-        style={{ background: "#f7f3ed" }}
-      >
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-xl-10">
-              <div
-                style={{
-                  background: "#ffffff",
-                  border: "1px solid rgba(13, 31, 45, 0.08)",
-                  borderRadius: 28,
-                  boxShadow: "0 20px 60px rgba(13, 31, 45, 0.08)",
-                  padding: "clamp(24px, 4vw, 48px)",
-                }}
-              >
-                <p style={{ color: "#0d1f2d", fontSize: "1.05rem", lineHeight: 1.8 }}>
-                  Welcome to DG Property. By accessing or using this website,
-                  you agree to comply with and be bound by the following Terms
-                  and Conditions. If you do not agree with these terms, please
-                  do not use this website.
-                </p>
+      <LegalSection title="1. Provider information">
+        <address style={{ fontStyle: "normal" }}><strong>{contactInfo.legalName}</strong>, trading as {contactInfo.tradingName}<br />Registration number: {contactInfo.registrationNumber}<br />PPRA number: {contactInfo.ppraNumber}<br />{contactInfo.fullAddress}<br /><a href={contactInfo.emailHref}>{contactInfo.emailDisplay}</a> · <a href={contactInfo.phoneHref}>{contactInfo.phoneDisplay}</a><br /><a href={contactInfo.websiteUrl}>{contactInfo.websiteUrl}</a></address>
+      </LegalSection>
 
-                <div
-                  className="mt-45"
-                  style={{
-                    background: "#f7f3ed",
-                    borderRadius: 24,
-                    padding: "clamp(20px, 3vw, 32px)",
-                  }}
-                >
-                  <h4 className="mb-20">1. Company Information</h4>
-                  <p className="mb-10 fw-500">De Gennaro Property</p>
-                  <p className="mb-10">
-                    Registration Number: 2022/651308/07
-                  </p>
-                  <p className="mb-10">PPRA Number: F152984</p>
-                  <p className="mb-10">
-                    Email:{" "}
-                    <a href="mailto:hello@dg-property.co.za">
-                      hello@dg-property.co.za
-                    </a>
-                  </p>
-                  <p className="mb-0">
-                    Phone: <a href="tel:+27876302532">+27 87 630 2532</a>
-                  </p>
-                </div>
+      <LegalSection title="2. Website purpose and acceptable use">
+        <p>This site provides information about commercial property listings, leasing, sales, investments, development services, training and related enquiries. You may use it only for lawful purposes and may not interfere with its security, availability or another person&apos;s rights.</p>
+      </LegalSection>
 
-                <div className="mt-45">
-                  <h4 className="mb-20">2. Website Use</h4>
-                  <p className="mb-15" style={{ lineHeight: 1.8 }}>
-                    This website is intended to provide information regarding
-                    commercial property sales, leasing, investment
-                    opportunities, and related property services.
-                  </p>
-                  <p className="mb-0" style={{ lineHeight: 1.8 }}>
-                    You agree to use this website only for lawful purposes and
-                    in a manner that does not infringe the rights of, restrict,
-                    or inhibit the use of this website by any third party.
-                  </p>
-                </div>
+      <LegalSection title="3. Listings and enquiries">
+        <p>Property prices, rentals, sizes, availability, images, yields and descriptions can change and should be independently verified before a decision is made. Submitting a form is a request for contact; it is not an offer, acceptance, reservation, mandate, lease, sale or investment agreement.</p>
+      </LegalSection>
 
-                <div className="mt-45">
-                  <h4 className="mb-20">3. Property Listings &amp; Information</h4>
-                  <p className="mb-15" style={{ lineHeight: 1.8 }}>
-                    All property information, pricing, availability, sizes,
-                    rentals, images, and related content displayed on this
-                    website are provided for informational purposes only and may
-                    change without notice.
-                  </p>
-                  <p className="mb-15" style={{ lineHeight: 1.8 }}>
-                    While De Gennaro Property aims to keep all information
-                    accurate and up to date, we do not guarantee the accuracy,
-                    completeness, or reliability of any information displayed
-                    on the website.
-                  </p>
-                  <p className="mb-0" style={{ lineHeight: 1.8 }}>
-                    Properties may be withdrawn, leased, sold, or amended at
-                    any time without prior notice.
-                  </p>
-                </div>
+      <LegalSection title="4. Consumer rights, cancellations and refunds">
+        <p>Nothing in these terms limits a right that cannot lawfully be excluded under the Consumer Protection Act, the Electronic Communications and Transactions Act or another applicable law. The site does not currently take online payment. The process for a later paid service, course or booking is explained in our <Link href="/refund-policy">Refund and Cancellation Policy</Link> and in the written agreement for that service.</p>
+      </LegalSection>
 
-                <div className="mt-45">
-                  <h4 className="mb-20">4. Intellectual Property</h4>
-                  <p className="mb-15" style={{ lineHeight: 1.8 }}>
-                    All content on this website, including text, branding,
-                    logos, graphics, images, videos, brochures, and design
-                    elements, are the property of De Gennaro Property unless
-                    otherwise stated.
-                  </p>
-                  <p className="mb-0" style={{ lineHeight: 1.8 }}>
-                    No content may be copied, reproduced, distributed, or used
-                    without prior written permission.
-                  </p>
-                </div>
+      <LegalSection title="5. Privacy and storage">
+        <p>Personal information is handled under our <Link href="/privacy-policy">Privacy Policy</Link>. Browser storage and optional analytics are explained in our <Link href="/cookie-policy">Cookie Policy</Link>.</p>
+      </LegalSection>
 
-                <div className="mt-45">
-                  <h4 className="mb-20">5. Third-Party Links</h4>
-                  <p className="mb-0" style={{ lineHeight: 1.8 }}>
-                    This website may contain links to third-party websites for
-                    convenience or additional information. De Gennaro Property
-                    is not responsible for the content, privacy practices, or
-                    reliability of any external websites.
-                  </p>
-                </div>
+      <LegalSection title="6. Intellectual property and image rights">
+        <p>Website content is owned by, commissioned by or licensed to its respective rights holder. DG Property branding may not be used without permission. Property photographs and third-party names or marks remain subject to their owners&apos; rights; their appearance does not transfer ownership to a site visitor.</p>
+      </LegalSection>
 
-                <div className="mt-45">
-                  <h4 className="mb-20">6. Limitation of Liability</h4>
-                  <p className="mb-15" style={{ lineHeight: 1.8 }}>
-                    De Gennaro Property shall not be held liable for any
-                    direct, indirect, incidental, or consequential damages
-                    arising from the use of this website or reliance on any
-                    information contained within it.
-                  </p>
-                  <p className="mb-0" style={{ lineHeight: 1.8 }}>
-                    Users access and use this website at their own risk.
-                  </p>
-                </div>
+      <LegalSection title="7. External services">
+        <p>External links and user-requested embedded media are governed by the third party&apos;s terms and privacy practices. DG Property does not control an external site, but will take reasonable steps to remove a link or item after receiving a substantiated rights or safety concern.</p>
+      </LegalSection>
 
-                <div className="mt-45">
-                  <h4 className="mb-20">7. Privacy</h4>
-                  <p className="mb-0" style={{ lineHeight: 1.8 }}>
-                    Use of this website is also governed by our{" "}
-                    <Link href="/privacy-policy">Privacy Policy</Link>.
-                  </p>
-                </div>
+      <LegalSection title="8. Liability and availability">
+        <p>We take reasonable steps to keep the website useful and accurate but do not promise uninterrupted availability or that every listing remains current. To the extent permitted by law, DG Property is not responsible for loss caused solely by relying on unverified website information. This does not exclude liability or remedies that applicable law does not allow us to exclude.</p>
+      </LegalSection>
 
-                <div className="mt-45">
-                  <h4 className="mb-20">8. Changes to Terms</h4>
-                  <p className="mb-0" style={{ lineHeight: 1.8 }}>
-                    De Gennaro Property reserves the right to amend or update
-                    these Terms and Conditions at any time without prior
-                    notice. Continued use of the website constitutes acceptance
-                    of any revised terms.
-                  </p>
-                </div>
-
-                <div className="mt-45">
-                  <h4 className="mb-20">9. Governing Law</h4>
-                  <p className="mb-0" style={{ lineHeight: 1.8 }}>
-                    These Terms and Conditions are governed by the laws of the
-                    Republic of South Africa.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <FancyBanner style={false} />
-      <FooterFour />
-    </Wrapper>
+      <LegalSection title="9. Governing law and contact">
+        <p>South African law governs these website terms. Please send a question, complaint or rights notice to <a href={contactInfo.emailHref}>{contactInfo.emailDisplay}</a> or call <a href={contactInfo.phoneHref}>{contactInfo.phoneDisplay}</a> so it can be investigated.</p>
+      </LegalSection>
+    </LegalPageShell>
   );
 }

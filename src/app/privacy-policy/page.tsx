@@ -1,218 +1,71 @@
-import LegalHero from "@/components/common/breadcrumb/LegalHero";
-import FancyBanner from "@/components/common/FancyBanner";
-import FooterFour from "@/layouts/footers/FooterFour";
-import HeaderOne from "@/layouts/headers/HeaderOne";
-import Wrapper from "@/layouts/Wrapper";
+import Link from "next/link";
+import LegalPageShell, { LegalSection } from "@/components/legal/LegalPageShell";
+import { contactInfo } from "@/data/contact-info";
+import { pageMetadata } from "@/utils/seo";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Privacy Policy | DG Property",
-};
+  description: "How De Gennaro Property collects, uses, stores and protects personal information under South Africa's POPIA.",
+  path: "/privacy-policy",
+});
 
 export default function PrivacyPolicyPage() {
   return (
-    <Wrapper>
-      <HeaderOne style={true} />
-      <LegalHero
-        title="Privacy Policy"
-        description="How De Gennaro Property collects, uses and protects your personal information in accordance with the Protection of Personal Information Act (POPIA)."
-      />
+    <LegalPageShell title="Privacy Policy" description="A clear account of the personal information we collect and the choices available to you.">
+      <p style={{ color: "#0d1f2d", fontSize: "1.05rem", lineHeight: 1.8, marginBottom: 8 }}>
+        {contactInfo.legalName}, trading as {contactInfo.tradingName}, is the responsible party for the personal information described in this policy. This notice supports the conditions for lawful processing in the Protection of Personal Information Act 4 of 2013 (POPIA).
+      </p>
+      <p style={{ color: "#566575", marginBottom: 0 }}>Last updated: 7 September 2026</p>
 
-      <section
-        className="pt-130 xl-pt-100 md-pt-80 pb-130 xl-pb-100 md-pb-80"
-        style={{ background: "#f7f3ed" }}
-      >
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-xl-10">
-              <div
-                style={{
-                  background: "#ffffff",
-                  border: "1px solid rgba(13, 31, 45, 0.08)",
-                  borderRadius: 28,
-                  boxShadow: "0 20px 60px rgba(13, 31, 45, 0.08)",
-                  padding: "clamp(24px, 4vw, 48px)",
-                }}
-              >
-                <p style={{ color: "#0d1f2d", fontSize: "1.05rem", lineHeight: 1.8 }}>
-                  De Gennaro Property respects your privacy and is committed to
-                  protecting your personal information in accordance with the
-                  Protection of Personal Information Act (POPIA) of South
-                  Africa.
-                </p>
-                <p style={{ color: "rgba(13, 31, 45, 0.78)", lineHeight: 1.8 }}>
-                  This Privacy Policy explains how we collect, use, and protect
-                  your information when you use DG Property.
-                </p>
+      <LegalSection title="1. Information we collect">
+        <p>We collect information that you choose to provide through an enquiry, contact, viewing or account form. Depending on the form, this can include your name, email address, phone number, property requirement, preferred area, budget range, listing reference and message.</p>
+        <p>When you allow optional analytics, we record the page visited with a randomly generated browser identifier that expires after 24 hours. We do not use advertising pixels or third-party analytics tags.</p>
+      </LegalSection>
 
-                <div className="mt-45">
-                  <h4 className="mb-20">1. Information We Collect</h4>
-                  <p className="mb-15">
-                    We may collect personal information including but not
-                    limited to:
-                  </p>
-                  <ul className="mb-0 ps-4" style={{ lineHeight: 1.9 }}>
-                    <li>Name and surname</li>
-                    <li>Email address</li>
-                    <li>Phone number</li>
-                    <li>Company details</li>
-                    <li>Property requirements or inquiries</li>
-                    <li>Website usage data and analytics</li>
-                  </ul>
-                </div>
+      <LegalSection title="2. Why we process it">
+        <ul className="ps-4 mb-0">
+          <li>To respond to the request you submitted and provide relevant property information.</li>
+          <li>To arrange viewings and support leasing, sale, investment or advisory discussions.</li>
+          <li>To administer an account where you create one.</li>
+          <li>To meet legal, regulatory, fraud-prevention and record-keeping obligations.</li>
+          <li>To measure basic site usage only where you allow optional analytics.</li>
+        </ul>
+        <p className="mt-3 mb-0">We do not add enquiry details to electronic direct-marketing lists unless separate permission has been obtained or another lawful basis applies.</p>
+      </LegalSection>
 
-                <div className="mt-45">
-                  <h4 className="mb-20">2. How We Use Your Information</h4>
-                  <p className="mb-15">Your information may be used to:</p>
-                  <ul className="mb-0 ps-4" style={{ lineHeight: 1.9 }}>
-                    <li>Respond to property inquiries</li>
-                    <li>Provide property-related services and updates</li>
-                    <li>
-                      Communicate regarding listings, leasing, or sales
-                      opportunities
-                    </li>
-                    <li>Improve our website and user experience</li>
-                    <li>
-                      Send marketing communications where consent has been
-                      provided
-                    </li>
-                  </ul>
-                </div>
+      <LegalSection title="3. Who may receive it">
+        <p>Authorised DG Property staff and service providers that host or operate the website may process information where needed for these purposes. Relevant details may be shared with a property owner, landlord, developer, broker or professional adviser when necessary to respond to your property request. We may also disclose information where required by law.</p>
+        <p className="mb-0">We do not sell personal information. If a service provider processes information outside South Africa, we require an appropriate POPIA-compatible safeguard.</p>
+      </LegalSection>
 
-                <div className="mt-45">
-                  <h4 className="mb-20">3. Sharing of Information</h4>
-                  <p className="mb-15">
-                    De Gennaro Property does not sell or rent personal
-                    information to third parties.
-                  </p>
-                  <p className="mb-15">
-                    Information may only be shared with:
-                  </p>
-                  <ul className="mb-0 ps-4" style={{ lineHeight: 1.9 }}>
-                    <li>
-                      Property owners or landlords where necessary for
-                      transactions
-                    </li>
-                    <li>
-                      Service providers assisting with website or business
-                      operations
-                    </li>
-                    <li>Authorities where legally required</li>
-                  </ul>
-                </div>
+      <LegalSection title="4. Retention and security">
+        <p>We keep personal information only for as long as it is needed for the stated purpose, an active business relationship, dispute handling or a legal record-keeping requirement. It is then deleted, securely destroyed or de-identified.</p>
+        <p className="mb-0">Reasonable technical and organisational safeguards are used to reduce the risk of loss, misuse, unauthorised access, alteration or disclosure. No internet service can promise absolute security.</p>
+      </LegalSection>
 
-                <div className="mt-45">
-                  <h4 className="mb-20">4. Cookies &amp; Website Analytics</h4>
-                  <p className="mb-15" style={{ lineHeight: 1.8 }}>
-                    This website may use cookies and analytics tools to improve
-                    user experience and monitor website performance.
-                  </p>
-                  <p className="mb-0" style={{ lineHeight: 1.8 }}>
-                    Users may disable cookies through their browser settings.
-                  </p>
-                </div>
+      <LegalSection title="5. Your rights">
+        <p>You may ask whether we hold your information, request access or correction, request deletion where applicable, object to certain processing, or withdraw consent without affecting earlier lawful processing. You may also complain to South Africa&apos;s Information Regulator.</p>
+        <p className="mb-0">Send a privacy request to <a href={contactInfo.emailHref}>{contactInfo.emailDisplay}</a>. The Information Regulator publishes rights, forms and contact routes at <a href="https://inforegulator.org.za/" target="_blank" rel="noopener noreferrer">inforegulator.org.za</a>.</p>
+      </LegalSection>
 
-                <div className="mt-45">
-                  <h4 className="mb-20">5. Data Security</h4>
-                  <p className="mb-0" style={{ lineHeight: 1.8 }}>
-                    We take reasonable technical and organisational measures to
-                    protect personal information from loss, misuse,
-                    unauthorised access, disclosure, or alteration.
-                  </p>
-                </div>
+      <LegalSection title="6. Cookies, storage and embedded content">
+        <p>Our storage and analytics choices are explained in the <Link href="/cookie-policy">Cookie Policy</Link>. A property video is not loaded from YouTube until you choose to open it; the privacy-enhanced YouTube domain is used.</p>
+      </LegalSection>
 
-                <div className="mt-45">
-                  <h4 className="mb-20">6. Your Rights</h4>
-                  <p className="mb-15" style={{ lineHeight: 1.8 }}>
-                    In accordance with POPIA, users may request:
-                  </p>
-                  <ul className="mb-20 ps-4" style={{ lineHeight: 1.9 }}>
-                    <li>Access to personal information</li>
-                    <li>Correction of inaccurate information</li>
-                    <li>
-                      Deletion of personal information where applicable
-                    </li>
-                    <li>
-                      Withdrawal of consent for marketing communications
-                    </li>
-                  </ul>
-                  <p className="mb-0" style={{ lineHeight: 1.8 }}>
-                    Requests can be submitted to:{" "}
-                    <a href="mailto:hello@dg-property.co.za">
-                      hello@dg-property.co.za
-                    </a>
-                  </p>
-                </div>
+      <LegalSection title="7. Children and policy changes">
+        <p>This public property website is not directed at children and its forms are not intended to collect children&apos;s personal information. We may update this notice when our practices or legal obligations change and will show the revision date here.</p>
+      </LegalSection>
 
-                <div className="mt-45">
-                  <h4 className="mb-20">7. Retention of Information</h4>
-                  <p className="mb-0" style={{ lineHeight: 1.8 }}>
-                    Personal information will only be retained for as long as
-                    necessary to fulfil the purpose for which it was collected
-                    or as required by law.
-                  </p>
-                </div>
-
-                <div className="mt-45">
-                  <h4 className="mb-20">8. Third-Party Services</h4>
-                  <p className="mb-0" style={{ lineHeight: 1.8 }}>
-                    This website may use third-party tools or integrations
-                    including analytics, maps, embedded content, or social
-                    media platforms. These services may collect data in
-                    accordance with their own privacy policies.
-                  </p>
-                </div>
-
-                <div className="mt-45">
-                  <h4 className="mb-20">9. Updates to this Policy</h4>
-                  <p className="mb-0" style={{ lineHeight: 1.8 }}>
-                    De Gennaro Property reserves the right to update this
-                    Privacy Policy at any time. Any changes will be posted on
-                    this page.
-                  </p>
-                </div>
-
-                <div
-                  className="mt-45"
-                  style={{
-                    background: "#f7f3ed",
-                    borderRadius: 24,
-                    padding: "clamp(20px, 3vw, 32px)",
-                  }}
-                >
-                  <h4 className="mb-20">10. Contact Information</h4>
-                  <p className="mb-10 fw-500">De Gennaro Property</p>
-                  <p className="mb-10">
-                    Registration Number: 2022/651308/07
-                  </p>
-                  <p className="mb-10">PPRA Number: F152984</p>
-                  <p className="mb-10">
-                    Email:{" "}
-                    <a href="mailto:hello@dg-property.co.za">
-                      hello@dg-property.co.za
-                    </a>
-                  </p>
-                  <p className="mb-10">
-                    Phone: <a href="tel:+27876302532">+27 87 630 2532</a>
-                  </p>
-                  <p className="mb-0">
-                    Website:{" "}
-                    <a
-                      href="https://www.dg-property.co.za"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      www.dg-property.co.za
-                    </a>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <FancyBanner style={false} />
-      <FooterFour />
-    </Wrapper>
+      <LegalSection title="8. Responsible party details">
+        <address style={{ fontStyle: "normal", marginBottom: 0 }}>
+          <strong>{contactInfo.legalName}</strong><br />
+          Registration number: {contactInfo.registrationNumber}<br />
+          PPRA number: {contactInfo.ppraNumber}<br />
+          {contactInfo.fullAddress}<br />
+          <a href={contactInfo.phoneHref}>{contactInfo.phoneDisplay}</a><br />
+          <a href={contactInfo.emailHref}>{contactInfo.emailDisplay}</a>
+        </address>
+      </LegalSection>
+    </LegalPageShell>
   );
 }

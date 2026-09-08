@@ -22,7 +22,7 @@ const FancyBanner = () => {
                         <div className="d-inline-flex flex-wrap align-items-center position-relative mt-15">
                            <Link href="/agent" className="btn-eight mt-10 me-4"><span>Become an Agent</span></Link>
                            <Link href="/inquiry" className="btn-two rounded-0 border-0 mt-10"><span>Send Inquiry</span></Link>
-                           <Image src={fanchyBannerShape_1} alt="" className="lazy-img shapes shape_02 wow fadeInRight" />
+                           <Image src={fanchyBannerShape_1} alt="" aria-hidden="true" className="lazy-img shapes shape_02 wow fadeInRight" />
                         </div>
                      </div>
                   </div>
@@ -31,8 +31,8 @@ const FancyBanner = () => {
                         className="media-wrapper position-relative z-1 d-inline-block"
                         style={{ maxWidth: 470, width: "100%", marginLeft: "auto" }}
                      >
-                        <Image src={fanchyBannerShape_2} alt="" className="lazy-img" />
-                        <Image src={fanchyBannerShape_3} alt="" className="lazy-img shapes shape_01" />
+                        <Image src={fanchyBannerShape_2} alt="DG Property commercial broker" className="lazy-img" />
+                        <Image src={fanchyBannerShape_3} alt="" aria-hidden="true" className="lazy-img shapes shape_01" />
                      </div>
                   </div>
                </div>

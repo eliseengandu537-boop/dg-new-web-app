@@ -1,54 +1,59 @@
 "use client"
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import CountUp from "react-countup";
 import DropdownTwo from "@/components/search-dropdown/home-dropdown/DropdownTwo";
 
-const stats = [
-   { value: 250, prefix: "R", suffix: "M+", label: "Transactions Completed" },
-   { value: 18, suffix: "+", label: "Commercial Specialists" },
-   { value: 7, suffix: "+", label: "Years Experience" },
-   { value: 3, label: "Asset Classes" },
+const HERO_SLIDES = [
+   "/assets/images/assets/back1.jpg",
+   "/assets/images/assets/p1.jpeg",
+   "/assets/images/assets/p2.jpeg",
+   "/assets/images/assets/ba3.jpg",
+   "/assets/images/assets/back3.jpg",
 ];
 
 const HeroBanner = () => {
-   const heroSlides = [
-      "/assets/images/assets/back1.jpg",
-      "/assets/images/assets/p1.jpeg",
-      "/assets/images/assets/p2.jpeg",
-      "/assets/images/assets/ba3.jpg",
-      "/assets/images/assets/back3.jpg",
-   ];
    const [activeSlide, setActiveSlide] = useState(0);
+   const [isPaused, setIsPaused] = useState(false);
+   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
    useEffect(() => {
+      const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
+
+      updatePreference();
+      mediaQuery.addEventListener?.("change", updatePreference);
+      return () => mediaQuery.removeEventListener?.("change", updatePreference);
+   }, []);
+
+   useEffect(() => {
+      if (isPaused || prefersReducedMotion) return;
+
       const intervalId = window.setInterval(() => {
-         setActiveSlide((prev) => (prev + 1) % heroSlides.length);
+         setActiveSlide((prev) => (prev + 1) % HERO_SLIDES.length);
       }, 4000);
       return () => window.clearInterval(intervalId);
-   }, [heroSlides.length]);
+   }, [isPaused, prefersReducedMotion]);
 
    return (
       <>
          {/* ── HERO ──────────────────────────────────────────────────── */}
-         <div style={{ position: "relative", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+         <div className="dg-home-hero" style={{ position: "relative", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
 
             {/* Background slideshow */}
             <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 0 }}>
-               {heroSlides.map((slide, i) => (
-                  <div
-                     key={i}
-                     style={{
-                        position: "absolute",
-                        inset: 0,
-                        backgroundImage: `url(${slide})`,
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        opacity: activeSlide === i ? 1 : 0,
-                        transition: "opacity 1.2s ease-in-out",
-                     }}
-                  />
-               ))}
+               <Image
+                  key={HERO_SLIDES[activeSlide]}
+                  src={HERO_SLIDES[activeSlide]}
+                  alt=""
+                  fill
+                  priority={activeSlide === 0}
+                  sizes="100vw"
+                  quality={76}
+                  aria-hidden="true"
+                  className="dg-home-hero-image"
+                  style={{ objectFit: "cover", objectPosition: "center" }}
+               />
             </div>
 
             {/* Deep gradient overlay */}
@@ -63,7 +68,7 @@ const HeroBanner = () => {
 
             {/* Content */}
             <div
-               className="container"
+               className="container dg-home-hero-content"
                style={{
                   position: "relative",
                   zIndex: 2,
@@ -142,7 +147,7 @@ const HeroBanner = () => {
                      {/* CTAs */}
                      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 20, marginBottom: 60 }}>
                         <Link
-                           href="/listing_07"
+                           href="/properties"
                            style={{
                               display: "inline-flex",
                               alignItems: "center",
@@ -178,13 +183,38 @@ const HeroBanner = () => {
                   right: 40,
                   zIndex: 3,
                   display: "flex",
+                  alignItems: "center",
                   gap: 8,
                }}
             >
-               {heroSlides.map((_, i) => (
+               <button
+                  type="button"
+                  onClick={() => setIsPaused((paused) => !paused)}
+                  aria-label={isPaused ? "Play background slideshow" : "Pause background slideshow"}
+                  title={isPaused ? "Play slideshow" : "Pause slideshow"}
+                  style={{
+                     width: 32,
+                     height: 32,
+                     marginRight: 4,
+                     borderRadius: "50%",
+                     border: "1px solid rgba(255,255,255,0.45)",
+                     background: "rgba(13,31,45,0.55)",
+                     color: "#fff",
+                     display: "inline-flex",
+                     alignItems: "center",
+                     justifyContent: "center",
+                     cursor: "pointer",
+                  }}
+               >
+                  <i className={`bi ${isPaused ? "bi-play-fill" : "bi-pause-fill"}`} aria-hidden="true" />
+               </button>
+               {HERO_SLIDES.map((_, i) => (
                   <button
                      key={i}
+                     type="button"
                      onClick={() => setActiveSlide(i)}
+                     aria-label={`Show background image ${i + 1} of ${HERO_SLIDES.length}`}
+                     aria-current={activeSlide === i ? "true" : undefined}
                      style={{
                         width: activeSlide === i ? 28 : 8,
                         height: 8,
@@ -200,43 +230,33 @@ const HeroBanner = () => {
             </div>
          </div>
 
-         {/* ── STATS STRIP ───────────────────────────────────────────── */}
-         <div
-            style={{
-               background: "#0d1f2d",
-               padding: "30px 0",
-            }}
-         >
-            <div className="container">
-               <div className="row gy-4">
-                  {stats.map((stat, i) => (
-                     <div className="col-6 col-md-3" key={i}>
-                        <div
-                           style={{
-                              textAlign: "center",
-                              borderRight: i < stats.length - 1 ? "1px solid rgba(255,255,255,0.12)" : "none",
-                              padding: "4px 0",
-                           }}
-                        >
-                           <div style={{ fontSize: "clamp(1.5rem, 3vw, 2.2rem)", fontWeight: 800, color: "#ffffff", lineHeight: 1.1 }}>
-                              <CountUp
-                                 start={0}
-                                 end={stat.value}
-                                 duration={2.2}
-                                 separator=","
-                                 prefix={stat.prefix || ""}
-                                 suffix={stat.suffix || ""}
-                              />
-                           </div>
-                           <div style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", letterSpacing: 1.2, textTransform: "uppercase", marginTop: 4 }}>
-                              {stat.label}
-                           </div>
-                        </div>
-                     </div>
-                  ))}
-               </div>
-            </div>
-         </div>
+         <style jsx>{`
+            .dg-home-hero-image {
+               animation: hero-image-fade 0.75s ease-out both;
+            }
+
+            @keyframes hero-image-fade {
+               from { opacity: 0.35; transform: scale(1.01); }
+               to { opacity: 1; transform: scale(1); }
+            }
+
+            @media (max-width: 767px) {
+               .dg-home-hero {
+                  min-height: auto !important;
+               }
+
+               .dg-home-hero-content {
+                  padding-top: 138px !important;
+                  padding-bottom: 48px !important;
+               }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+               .dg-home-hero-image {
+                  animation: none;
+               }
+            }
+         `}</style>
 
       </>
    )

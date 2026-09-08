@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface PropertyHeroProps {
   title: string;
@@ -24,12 +25,20 @@ const PropertyHero = ({
       minHeight: 420,
       display: "flex",
       alignItems: "center",
-      backgroundImage: `url(${bgImage})`,
-      backgroundSize: "cover",
-      backgroundPosition: "center",
+      background: "#102435",
       overflow: "hidden",
     }}
   >
+    <Image
+      src={bgImage}
+      alt=""
+      fill
+      priority
+      sizes="100vw"
+      quality={74}
+      aria-hidden="true"
+      style={{ objectFit: "cover", objectPosition: "center" }}
+    />
     <div
       style={{
         position: "absolute",
@@ -95,26 +104,28 @@ const PropertyHero = ({
               marginBottom: 22,
             }}
           />
-          <ul
-            style={{
-              listStyle: "none",
-              padding: 0,
-              margin: 0,
-              display: "flex",
-              gap: 8,
-              flexWrap: "wrap",
-            }}
-          >
-            <li>
-              <Link href="/" style={{ color: "rgba(255,255,255,0.65)", textDecoration: "none", fontSize: 14 }}>
-                Home
-              </Link>
-            </li>
-            <li style={{ color: "rgba(255,255,255,0.45)", fontSize: 14 }}>/</li>
-            <li style={{ color: "rgba(255,255,255,0.65)", fontSize: 14 }}>Properties</li>
-            <li style={{ color: "rgba(255,255,255,0.45)", fontSize: 14 }}>/</li>
-            <li style={{ color: "#fff", fontSize: 14 }}>{breadcrumb || title}</li>
-          </ul>
+          <nav aria-label="Breadcrumb">
+            <ol
+              style={{
+                listStyle: "none",
+                padding: 0,
+                margin: 0,
+                display: "flex",
+                gap: 8,
+                flexWrap: "wrap",
+              }}
+            >
+              <li>
+                <Link href="/" style={{ color: "rgba(255,255,255,0.65)", textDecoration: "none", fontSize: 14 }}>
+                  Home
+                </Link>
+              </li>
+              <li aria-hidden="true" style={{ color: "rgba(255,255,255,0.45)", fontSize: 14 }}>/</li>
+              <li><Link href="/properties" style={{ color: "rgba(255,255,255,0.65)", textDecoration: "none", fontSize: 14 }}>Properties</Link></li>
+              <li aria-hidden="true" style={{ color: "rgba(255,255,255,0.45)", fontSize: 14 }}>/</li>
+              <li aria-current="page" style={{ color: "#fff", fontSize: 14 }}>{breadcrumb || title}</li>
+            </ol>
+          </nav>
         </div>
         <div className="col-lg-5 mt-4 mt-lg-0 text-lg-end">
           {subtitle && (

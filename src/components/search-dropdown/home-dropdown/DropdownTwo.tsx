@@ -26,7 +26,7 @@ type HeroSearchFilters = {
 const TAB_CONFIG = [
   { label: "For Sale", icon: "bi-house-door", listingType: "sale" },
   { label: "To Let", icon: "bi-key", listingType: "lease" },
-  { label: "Investments", icon: "bi-graph-up-arrow", listingType: "investment" },
+  { label: "Invest", icon: "bi-graph-up-arrow", listingType: "investment" },
 ];
 
 const INITIAL_FILTERS: HeroSearchFilters = {
@@ -216,7 +216,7 @@ const DropdownTwo = () => {
       priceMax: selectedPriceRange.max !== undefined ? String(selectedPriceRange.max) : "",
     });
 
-    router.push(query ? `/listing_07?${query}` : "/listing_07");
+    router.push(query ? `/properties?${query}` : "/properties");
   };
 
   const clearFilters = () => {
@@ -276,15 +276,14 @@ const DropdownTwo = () => {
 
   return (
     <div ref={rootRef} className="hero-property-search">
-      <div className="hero-search-tabs" role="tablist" aria-label="Listing type">
+      <div className="hero-search-tabs" role="group" aria-label="Listing type">
         {TAB_CONFIG.map((tab, index) => (
           <button
             key={tab.listingType}
             type="button"
             className={`hero-search-tab ${activeTab === index ? "is-active" : ""}`}
             onClick={() => handleTabChange(index)}
-            role="tab"
-            aria-selected={activeTab === index}
+            aria-pressed={activeTab === index}
           >
             <i className={`bi ${tab.icon}`}></i>
             <span>{tab.label}</span>
@@ -702,7 +701,8 @@ const DropdownTwo = () => {
           }
 
           .hero-search-tab span {
-            white-space: nowrap;
+            white-space: normal;
+            line-height: 1.2;
           }
 
           .hero-search-card {

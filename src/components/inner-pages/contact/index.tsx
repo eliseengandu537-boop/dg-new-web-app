@@ -6,7 +6,9 @@ const Contact = () => {
    return (
       <>
          <HeaderOne style={true} />
-         <ContactArea />
+         <main>
+            <ContactArea />
+         </main>
          <FooterFour />
       </>
    )

@@ -10,10 +10,12 @@ const ListingDetailsSix = () => {
    return (
       <>
          <HeaderFour />
-         <Suspense fallback={<div className="mt-200 text-center"><p>Loading...</p></div>}>
-            <ListingDetailsSixArea />
-         </Suspense>
-         <FancyBanner />
+         <main>
+            <Suspense fallback={<div className="mt-200 text-center"><p>Loading...</p></div>}>
+               <ListingDetailsSixArea />
+            </Suspense>
+            <FancyBanner />
+         </main>
          <FooterFour />
       </>
    )

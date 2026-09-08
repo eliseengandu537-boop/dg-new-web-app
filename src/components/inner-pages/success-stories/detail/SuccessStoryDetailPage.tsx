@@ -36,8 +36,8 @@ const SuccessStoryDetailPage = async ({ slug }: { slug: string }) => {
     .filter(Boolean);
 
   const brochureUrl = resolveMediaUrl(story?.brochureUrl);
-  const mapSrc = story?.googleMapsQuery
-    ? `https://www.google.com/maps?q=${encodeURIComponent(story.googleMapsQuery)}&output=embed`
+  const mapUrl = story?.googleMapsQuery
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(story.googleMapsQuery)}`
     : "";
 
   const detailItems = story ? [
@@ -57,12 +57,12 @@ const SuccessStoryDetailPage = async ({ slug }: { slug: string }) => {
         <section style={{ padding: "180px 0 100px", textAlign: "center" }}>
           <div className="container">
             <h1 style={{ fontSize: 34, fontWeight: 800, color: "#0d1f2d", marginBottom: 16 }}>Success Story</h1>
-            <p style={{ color: "#718096", marginBottom: 24 }}>{error || "This success story is unavailable."}</p>
+            <p style={{ color: "#4a5568", marginBottom: 24 }}>{error || "This success story is unavailable."}</p>
             <Link
               href="/success-stories"
               style={{
                 display: "inline-block",
-                background: "linear-gradient(90deg, #888e7d 0%, #6b7263 100%)",
+                background: "linear-gradient(90deg, #5f6758 0%, #4f584a 100%)",
                 color: "#fff",
                 fontWeight: 700,
                 fontSize: 14,
@@ -111,7 +111,7 @@ const SuccessStoryDetailPage = async ({ slug }: { slug: string }) => {
                 <div
                   style={{
                     display: "inline-block",
-                    background: "#888e7d",
+                    background: "#5f6758",
                     color: "#fff",
                     fontSize: 11,
                     fontWeight: 700,
@@ -148,20 +148,14 @@ const SuccessStoryDetailPage = async ({ slug }: { slug: string }) => {
                     </p>
                   ))}
 
-                  {mapSrc && (
+                  {mapUrl && (
                     <>
                       <h4 style={{ fontSize: 18, fontWeight: 700, color: "#0d1f2d", marginBottom: 16 }}>Location</h4>
-                      <div style={{ borderRadius: 12, overflow: "hidden", marginBottom: 40, boxShadow: "0 4px 18px rgba(0,0,0,0.10)" }}>
-                        <iframe
-                          src={mapSrc}
-                          width="100%"
-                          height="280"
-                          style={{ border: 0, display: "block" }}
-                          allowFullScreen
-                          loading="lazy"
-                          referrerPolicy="no-referrer-when-downgrade"
-                        />
-                      </div>
+                      <p style={{ color: "#4a5568", marginBottom: 16 }}>The map opens on Google only when you choose the link below.</p>
+                      <a href={mapUrl} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 40, padding: "12px 20px", borderRadius: 999, background: "#0d1f2d", color: "#fff", textDecoration: "none", fontWeight: 700 }}>
+                        <i className="bi bi-map" aria-hidden="true" />
+                        Open location in Google Maps
+                      </a>
                     </>
                   )}
 
@@ -197,10 +191,10 @@ const SuccessStoryDetailPage = async ({ slug }: { slug: string }) => {
                     {detailItems.map((item) => (
                       <div key={item.label} style={{ display: "flex", gap: 14, alignItems: "flex-start", marginBottom: 20 }}>
                         <div style={{ width: 38, height: 38, borderRadius: 8, background: "#fff", boxShadow: "0 2px 8px rgba(0,0,0,0.08)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                          <i className={`bi ${item.icon}`} style={{ color: "#888e7d", fontSize: 16 }} />
+                          <i className={`bi ${item.icon}`} aria-hidden="true" style={{ color: "#5f6758", fontSize: 16 }} />
                         </div>
                         <div>
-                          <div style={{ fontSize: 11, fontWeight: 600, color: "#a0aec0", textTransform: "uppercase", letterSpacing: 1, marginBottom: 2 }}>{item.label}</div>
+                          <div style={{ fontSize: 11, fontWeight: 600, color: "#53616e", textTransform: "uppercase", letterSpacing: 1, marginBottom: 2 }}>{item.label}</div>
                           <div style={{ fontSize: 14, fontWeight: 600, color: "#2d3748" }}>{item.value}</div>
                         </div>
                       </div>
@@ -211,7 +205,7 @@ const SuccessStoryDetailPage = async ({ slug }: { slug: string }) => {
                       style={{
                         display: "block",
                         marginTop: 28,
-                        background: "linear-gradient(90deg, #888e7d 0%, #6b7263 100%)",
+                        background: "linear-gradient(90deg, #5f6758 0%, #4f584a 100%)",
                         color: "#fff",
                         fontWeight: 700,
                         fontSize: 14,
@@ -237,7 +231,7 @@ const SuccessStoryDetailPage = async ({ slug }: { slug: string }) => {
                           gap: 8,
                           marginTop: 12,
                           background: "#fff",
-                          color: "#888e7d",
+                          color: "#5f6758",
                           fontWeight: 700,
                           fontSize: 14,
                           padding: "13px 0",
@@ -245,7 +239,7 @@ const SuccessStoryDetailPage = async ({ slug }: { slug: string }) => {
                           textDecoration: "none",
                           textAlign: "center",
                           letterSpacing: 0.4,
-                          border: "2px solid #888e7d",
+                          border: "2px solid #5f6758",
                         }}
                       >
                         <i className="bi bi-download" style={{ fontSize: 15 }} />

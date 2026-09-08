@@ -9,9 +9,9 @@ import serviceShape_2 from "@/assets/images/shape/shape_73.svg";
 import serviceShape_3 from "@/assets/images/shape/shape_74.svg";
 
 const serviceLinks: Record<string, string> = {
-   "Commercial Leasing": "/service_01",
-   "Investment Sales": "/service_02",
-   "Retail Leasing": "/service_details",
+   "Commercial Leasing": "/commercial-for-lease",
+   "Investment Sales": "/investment-sales",
+   "Retail Leasing": "/retail-leasing",
    "Tenant Representation": "/inquiry",
    "Development Land": "/development-land",
    "Portfolio Advisory": "/inquiry",
@@ -66,7 +66,7 @@ const BLockFeatureTwo = () => {
                      </div>
                   </div>
                   <div className="col-xxl-5 col-lg-6 ms-auto">
-                     <p className="text-white fs-24 m0 lh-lg  wow fadeInRight">DG Property brings together specialist brokers, deep market knowledge, and a proven track record to serve commercial occupiers, investors and developers across South Africa.</p>
+                     <p className="text-white fs-24 m0 lh-lg  wow fadeInRight">DG Property brings together specialist brokers and market knowledge to serve commercial occupiers, investors and developers across South Africa.</p>
                   </div>
                </div>
 

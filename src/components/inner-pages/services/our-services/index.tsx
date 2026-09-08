@@ -62,13 +62,13 @@ const OurServices = () => {
               <div style={{ display: "inline-block", background: "rgba(255,255,255,0.12)", color: "#f0b95e", fontSize: 11, fontWeight: 700, letterSpacing: 2.5, textTransform: "uppercase", padding: "6px 16px", borderRadius: 4, marginBottom: 20, border: "1px solid rgba(240,185,94,0.35)" }}>DG Property Services</div>
               <h1 style={{ color: "#fff", fontSize: "clamp(2rem, 5vw, 3.2rem)", fontWeight: 800, lineHeight: 1.18, marginBottom: 10 }}>Our Services</h1>
               <div style={{ width: 60, height: 3, background: "linear-gradient(90deg, #c8973a, #e8b86d)", borderRadius: 2, marginBottom: 22 }} />
-              <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", gap: 8, flexWrap: "wrap" }}>
-                <li><Link href="/" style={{ color: "rgba(255,255,255,0.65)", textDecoration: "none", fontSize: 14 }}>Home</Link></li>
-                <li style={{ color: "rgba(255,255,255,0.45)", fontSize: 14 }}>/</li>
-                <li style={{ color: "rgba(255,255,255,0.65)", fontSize: 14 }}>About</li>
-                <li style={{ color: "rgba(255,255,255,0.45)", fontSize: 14 }}>/</li>
-                <li style={{ color: "#fff", fontSize: 14 }}>Our Services</li>
-              </ul>
+              <nav aria-label="Breadcrumb">
+                <ol style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", gap: 8, flexWrap: "wrap" }}>
+                  <li><Link href="/" style={{ color: "rgba(255,255,255,0.65)", textDecoration: "none", fontSize: 14 }}>Home</Link></li>
+                  <li aria-hidden="true" style={{ color: "rgba(255,255,255,0.45)", fontSize: 14 }}>/</li>
+                  <li aria-current="page" style={{ color: "#fff", fontSize: 14 }}>Our Services</li>
+                </ol>
+              </nav>
             </div>
             <div className="col-lg-5 mt-4 mt-lg-0 text-lg-end">
               <p style={{ color: "rgba(255,255,255,0.82)", fontSize: 17, lineHeight: 1.7, marginBottom: 28 }}>Retail · Leasing · Development · Sales · Marketing</p>
@@ -89,7 +89,7 @@ const OurServices = () => {
         <div className="container">
           <div className="row gy-5 align-items-start">
             <div className="col-lg-5">
-              <div style={{ color: "#888e7d", fontSize: 11, fontWeight: 700, letterSpacing: 2.5, textTransform: "uppercase", marginBottom: 18 }}>Your Partner</div>
+              <div style={{ color: "#5f6758", fontSize: 11, fontWeight: 700, letterSpacing: 2.5, textTransform: "uppercase", marginBottom: 18 }}>Your Partner</div>
               <h2 style={{ fontSize: "clamp(1.5rem, 3vw, 2.2rem)", fontWeight: 800, color: "#0d1f2d", lineHeight: 1.3, marginBottom: 0 }}>
                 Building robust, equitable relationships is core to how we operate at DG Property.
               </h2>
@@ -99,7 +99,7 @@ const OurServices = () => {
                 We work extensively with landlords and tenants across the country. Our priority is to
                 build strong relationships with retailers and landlords, thereby creating and developing
                 properties that support and ensure success for all parties involved. We represent all
-                our client&apos;s interests with an unmatched level of professionalism and efficiency
+                our client&apos;s interests with consistent professionalism and efficiency
                 within the industry.
               </p>
             </div>
@@ -121,11 +121,11 @@ const OurServices = () => {
                   }}
                 >
                   <div style={{ width: 52, height: 52, borderRadius: 12, background: "linear-gradient(135deg, #888e7d18 0%, #888e7d0a 100%)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18 }}>
-                    <i className={`bi ${card.icon}`} style={{ fontSize: 24, color: "#888e7d" }} />
+                    <i className={`bi ${card.icon}`} aria-hidden="true" style={{ fontSize: 24, color: "#5f6758" }} />
                   </div>
                   <h6 style={{ fontSize: 15, fontWeight: 700, color: "#0d1f2d", marginBottom: 10, lineHeight: 1.35 }}>{card.title}</h6>
-                  <p style={{ fontSize: 13.5, color: "#718096", lineHeight: 1.7, marginBottom: 14, flexGrow: 1 }}>{card.desc}</p>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: "#888e7d", cursor: "pointer", letterSpacing: 0.2, textDecoration: "underline", textUnderlineOffset: 3 }}>View more</span>
+                  <p style={{ fontSize: 13.5, color: "#4a5568", lineHeight: 1.7, marginBottom: 14, flexGrow: 1 }}>{card.desc}</p>
+                  <Link href={["/retail-leasing", "/commercial-for-lease", "/development-leasing", "/investment-sales", "/investment", "/inquiry"][i]} style={{ fontSize: 13, fontWeight: 600, color: "#5f6758", letterSpacing: 0.2, textDecoration: "underline", textUnderlineOffset: 3 }}>View more</Link>
                 </div>
               </div>
             ))}

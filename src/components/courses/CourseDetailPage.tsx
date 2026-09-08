@@ -73,13 +73,12 @@ const learnings = [
   "Master the art of cold calling to generate leads and build client relationships.",
   "Develop effective networking strategies to expand your professional connections.",
   "Gain a solid understanding of different types of commercial property assets.",
-  "Learn how to analyze property rates and zoning for successful deal-making.",
+  "Learn how to analyse property rates and zoning when assessing a potential deal.",
   "Understand client qualifications and how to assess their needs effectively.",
   "Navigate legal documentation and contracts with confidence and accuracy.",
 ];
 
 export default function CourseDetailPage() {
-  const [activeTab, setActiveTab] = useState<"info" | "reviews">("info");
   const [openModules, setOpenModules] = useState<number[]>([0]);
   const [showBankDetails, setShowBankDetails] = useState(false);
 
@@ -108,13 +107,13 @@ export default function CourseDetailPage() {
 
         <div className="container position-relative" style={{ zIndex: 1 }}>
           {/* breadcrumb */}
-          <nav style={{ marginBottom: 18 }}>
+          <nav aria-label="Breadcrumb" style={{ marginBottom: 18 }}>
             <ol style={{ display:"flex",gap:8,alignItems:"center",listStyle:"none",padding:0,margin:0 }}>
               <li><Link href="/" style={{ color:"rgba(255,255,255,0.55)",fontSize:"0.85rem",textDecoration:"none" }}>Home</Link></li>
-              <li style={{ color:"rgba(255,255,255,0.3)",fontSize:"0.85rem" }}>/</li>
+              <li aria-hidden="true" style={{ color:"rgba(255,255,255,0.75)",fontSize:"0.85rem" }}>/</li>
               <li><Link href="/courses" style={{ color:"rgba(255,255,255,0.55)",fontSize:"0.85rem",textDecoration:"none" }}>Courses</Link></li>
-              <li style={{ color:"rgba(255,255,255,0.3)",fontSize:"0.85rem" }}>/</li>
-              <li style={{ color:"#e8773a",fontSize:"0.85rem" }}>Candidate Practitioner</li>
+              <li aria-hidden="true" style={{ color:"rgba(255,255,255,0.75)",fontSize:"0.85rem" }}>/</li>
+              <li style={{ color:"#f2bf72",fontSize:"0.85rem" }}>Candidate Practitioner</li>
             </ol>
           </nav>
 
@@ -122,7 +121,7 @@ export default function CourseDetailPage() {
             <div className="col-lg-8">
               <span
                 style={{
-                  background:"rgba(232,119,58,0.18)",color:"#e8773a",
+                  background:"rgba(232,119,58,0.18)",color:"#f2bf72",
                   fontSize:"0.75rem",fontWeight:700,padding:"5px 14px",
                   borderRadius:20,textTransform:"uppercase",letterSpacing:"0.12em",
                   marginBottom:16,display:"inline-block",
@@ -136,20 +135,14 @@ export default function CourseDetailPage() {
               >
                 Candidate Practitioner Course: Beginner
               </h1>
-              <p style={{ color:"rgba(255,255,255,0.65)",fontSize:"0.85rem",marginBottom:28,fontStyle:"italic" }}>
-                Uncategorized
-              </p>
-
               {/* meta row */}
               <div style={{ display:"flex",gap:24,flexWrap:"wrap" }}>
                 {[
-                  { icon:"bi-star-fill",text:"Top Rated",color:"#f5c94e" },
-                  { icon:"bi-people",text:"1 Enrolled",color:"#e8773a" },
-                  { icon:"bi-clock",text:"30 Hours",color:"#e8773a" },
-                  { icon:"bi-calendar3",text:"Last Updated Aug 1, 2025",color:"#e8773a" },
+                  { icon:"bi-clock",text:"30 Hours",color:"#f2bf72" },
+                  { icon:"bi-collection-play",text:"6 Sections",color:"#f2bf72" },
                 ].map((m,i) => (
                   <span key={i} style={{ display:"flex",alignItems:"center",gap:7,color:"rgba(255,255,255,0.75)",fontSize:"0.88rem" }}>
-                    <i className={`bi ${m.icon}`} style={{ color:m.color }} />
+                    <i className={`bi ${m.icon}`} aria-hidden="true" style={{ color:m.color }} />
                     {m.text}
                   </span>
                 ))}
@@ -183,7 +176,7 @@ export default function CourseDetailPage() {
                 fill
                 style={{ objectFit: "cover", opacity: 0.7 }}
               />
-              {/* play button */}
+              {/* Course preview cover */}
               <div style={{ position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:2 }}>
                 <div
                   style={{
@@ -191,56 +184,17 @@ export default function CourseDetailPage() {
                     background:"rgba(232,119,58,0.95)",
                     display:"flex",alignItems:"center",justifyContent:"center",
                     boxShadow:"0 8px 32px rgba(232,119,58,0.45)",
-                    cursor:"pointer",
                     transition:"transform 0.2s",
                   }}
                 >
-                  <i className="bi bi-play-fill" style={{ fontSize:30,color:"#fff",marginLeft:4 }} />
+                  <i className="bi bi-book" aria-hidden="true" style={{ fontSize:30,color:"#fff" }} />
                 </div>
                 <p style={{ color:"rgba(255,255,255,0.8)",fontSize:"0.85rem",marginTop:12 }}>
-                  Preview this course
+                  Course overview
                 </p>
               </div>
-              {/* duration bar */}
-              <div style={{ position:"absolute",bottom:0,left:0,right:0,background:"rgba(0,0,0,0.75)",padding:"10px 18px",display:"flex",alignItems:"center",gap:12,zIndex:2 }}>
-                <i className="bi bi-play-circle" style={{ color:"#fff",fontSize:18,cursor:"pointer" }} />
-                <div style={{ flex:1,height:3,background:"rgba(255,255,255,0.25)",borderRadius:2,position:"relative" }}>
-                  <div style={{ width:"35%",height:"100%",background:"#e8773a",borderRadius:2 }} />
-                </div>
-                <span style={{ color:"rgba(255,255,255,0.7)",fontSize:"0.78rem" }}>00:34 / 00:48</span>
-                <i className="bi bi-volume-up" style={{ color:"#fff",fontSize:16,cursor:"pointer" }} />
-                <i className="bi bi-fullscreen" style={{ color:"#fff",fontSize:14,cursor:"pointer" }} />
-              </div>
             </div>
 
-            {/* Tabs */}
-            <div
-              style={{
-                display:"flex",gap:0,marginBottom:36,
-                borderBottom:"2px solid #e8e8e8",
-              }}
-            >
-              {(["info","reviews"] as const).map((t) => (
-                <button
-                  key={t}
-                  onClick={() => setActiveTab(t)}
-                  style={{
-                    padding:"12px 28px",
-                    background:"none",border:"none",cursor:"pointer",
-                    fontWeight:600,fontSize:"0.95rem",
-                    color: activeTab===t ? "#e8773a" : "#888",
-                    borderBottom: activeTab===t ? "2px solid #e8773a" : "2px solid transparent",
-                    marginBottom:-2,
-                    textTransform:"capitalize",
-                    transition:"all 0.2s",
-                  }}
-                >
-                  {t === "info" ? "Course Info" : "Reviews"}
-                </button>
-              ))}
-            </div>
-
-            {activeTab === "info" && (
               <>
                 {/* About Course */}
                 <div
@@ -270,17 +224,16 @@ export default function CourseDetailPage() {
                   <p style={{ fontSize:"0.95rem",color:"#555",lineHeight:1.85,marginBottom:16 }}>
                     Whether you&apos;re interested in creating your own business, establishing yourself as an independent
                     broker, or excelling in your role within a real estate company, this course offers the
-                    foundational knowledge to help you succeed. It&apos;s ideal for individuals who value flexibility,
+                    foundational knowledge used in the field. It&apos;s intended for individuals who value flexibility,
                     autonomy, and the opportunity to craft a career on their own terms.
                   </p>
                   <p style={{ fontSize:"0.95rem",color:"#555",lineHeight:1.85,marginBottom:16 }}>
                     With guidance from experienced industry professional and Director,{" "}
-                    <strong>Michela De Gennaro</strong>, you&apos;ll be well-equipped to start your journey in commercial
-                    property selling.
+                    <strong>Michela De Gennaro</strong>, the course introduces the work involved in commercial
+                    property brokerage.
                   </p>
-                  <p style={{ fontSize:"0.95rem",color:"#e8773a",lineHeight:1.85,fontWeight:600,margin:0 }}>
-                    Join us today and start your path toward becoming a successful commercial property broker
-                    with the freedom and flexibility you&apos;ve always wanted!
+                  <p style={{ fontSize:"0.95rem",color:"#a34818",lineHeight:1.85,fontWeight:600,margin:0 }}>
+                    Review the outline below to decide whether this introductory course suits your learning goals.
                   </p>
                 </div>
 
@@ -307,7 +260,7 @@ export default function CourseDetailPage() {
                               marginTop:2,
                             }}
                           >
-                            <i className="bi bi-check2" style={{ color:"#e8773a",fontSize:14,fontWeight:700 }} />
+                            <i className="bi bi-check2" aria-hidden="true" style={{ color:"#a34818",fontSize:14,fontWeight:700 }} />
                           </div>
                           <p style={{ fontSize:"0.9rem",color:"#444",lineHeight:1.6,margin:0 }}>
                             <strong>{i+1}.</strong> {item}
@@ -332,20 +285,22 @@ export default function CourseDetailPage() {
                       <h3 style={{ fontSize:"1.3rem", fontWeight:700, color:"#0f1f2e", margin:0 }}>
                         Course Content
                       </h3>
-                      <p style={{ fontSize:"0.82rem", color:"#aaa", margin:"5px 0 0" }}>
+                      <p style={{ fontSize:"0.82rem", color:"#595959", margin:"5px 0 0" }}>
                         {courseModules.length} sections &bull;{" "}
                         {courseModules.reduce((a,m) => a + m.lessons.length, 0)} lessons
                       </p>
                     </div>
                     <button
+                      type="button"
                       onClick={() => setOpenModules(openModules.length === courseModules.length ? [] : courseModules.map((_,i)=>i))}
-                      style={{ background:"none", border:"none", cursor:"pointer", color:"#e8773a", fontSize:"0.82rem", fontWeight:600, padding:0 }}
+                      style={{ background:"none", border:"none", cursor:"pointer", color:"#a34818", fontSize:"0.82rem", fontWeight:600, padding:0 }}
+                      aria-controls="course-module-list"
                     >
                       {openModules.length === courseModules.length ? "Collapse all" : "Expand all"}
                     </button>
                   </div>
 
-                  <div style={{ display:"flex", flexDirection:"column", gap:0 }}>
+                  <div id="course-module-list" style={{ display:"flex", flexDirection:"column", gap:0 }}>
                     {courseModules.map((mod, i) => {
                       const isOpen = openModules.includes(i);
                       return (
@@ -355,7 +310,10 @@ export default function CourseDetailPage() {
 
                           {/* module header */}
                           <button
+                            type="button"
                             onClick={() => toggleModule(i)}
+                            aria-expanded={isOpen}
+                            aria-controls={`course-module-${i}`}
                             style={{
                               width:"100%", display:"flex", alignItems:"center",
                               justifyContent:"space-between", padding:"18px 4px",
@@ -367,13 +325,13 @@ export default function CourseDetailPage() {
                               <div
                                 style={{
                                   width:38, height:38, borderRadius:"50%",
-                                  background: isOpen ? "#e8773a" : "#f5f5f5",
+                                  background: isOpen ? "#943a13" : "#f5f5f5",
                                   display:"flex", alignItems:"center", justifyContent:"center",
                                   flexShrink:0,
                                   transition:"background 0.2s",
                                 }}
                               >
-                                <span style={{ fontSize:"0.8rem", fontWeight:800, color: isOpen ? "#fff" : "#aaa" }}>
+                                <span style={{ fontSize:"0.8rem", fontWeight:800, color: isOpen ? "#fff" : "#595959" }}>
                                   {String(i+1).padStart(2,"0")}
                                 </span>
                               </div>
@@ -381,7 +339,7 @@ export default function CourseDetailPage() {
                                 <span style={{ fontWeight:700, color:"#0f1f2e", fontSize:"0.95rem", display:"block" }}>
                                   {mod.title}
                                 </span>
-                                <span style={{ fontSize:"0.78rem", color:"#bbb" }}>
+                                <span style={{ fontSize:"0.78rem", color:"#595959" }}>
                                   {mod.lessons.length} {mod.lessons.length === 1 ? "lesson" : "lessons"}
                                   {mod.lessons.some(l=>l.duration) && " · " + mod.lessons.filter(l=>l.duration).map(l=>l.duration).join(", ")}
                                 </span>
@@ -397,7 +355,8 @@ export default function CourseDetailPage() {
                             >
                               <i
                                 className={`bi bi-chevron-${isOpen ? "up" : "down"}`}
-                                style={{ color: isOpen ? "#e8773a" : "#bbb", fontSize:13 }}
+                                aria-hidden="true"
+                                style={{ color: isOpen ? "#a34818" : "#595959", fontSize:13 }}
                               />
                             </div>
                           </button>
@@ -405,6 +364,7 @@ export default function CourseDetailPage() {
                           {/* lessons */}
                           {isOpen && (
                             <div
+                              id={`course-module-${i}`}
                               style={{
                                 background:"#fafafa",
                                 borderRadius:12,
@@ -431,14 +391,14 @@ export default function CourseDetailPage() {
                                         flexShrink:0,
                                       }}
                                     >
-                                      <i className="bi bi-play-fill" style={{ color:"#e8773a", fontSize:10, marginLeft:1 }} />
+                                      <i className="bi bi-play-fill" aria-hidden="true" style={{ color:"#a34818", fontSize:10, marginLeft:1 }} />
                                     </div>
                                     <span style={{ fontSize:"0.88rem", color:"#444" }}>{lesson.name}</span>
                                   </div>
                                   {lesson.duration ? (
                                     <span
                                       style={{
-                                        fontSize:"0.75rem", color:"#e8773a", fontWeight:600,
+                                        fontSize:"0.75rem", color:"#913b17", fontWeight:600,
                                         background:"rgba(232,119,58,0.08)",
                                         padding:"3px 10px", borderRadius:20,
                                       }}
@@ -446,7 +406,7 @@ export default function CourseDetailPage() {
                                       {lesson.duration}
                                     </span>
                                   ) : (
-                                    <i className="bi bi-lock" style={{ color:"#ccc", fontSize:13 }} />
+                                    <i className="bi bi-lock" aria-label="Locked lesson" style={{ color:"#595959", fontSize:13 }} />
                                   )}
                                 </div>
                               ))}
@@ -458,50 +418,6 @@ export default function CourseDetailPage() {
                   </div>
                 </div>
               </>
-            )}
-
-            {activeTab === "reviews" && (
-              <div
-                style={{
-                  background:"#fff",borderRadius:20,
-                  padding:"36px 32px",
-                  boxShadow:"0 4px 24px rgba(0,0,0,0.06)",
-                }}
-              >
-                <h3 style={{ fontSize:"1.3rem",fontWeight:700,color:"#0f1f2e",marginBottom:28 }}>
-                  Student Reviews
-                </h3>
-                {[
-                  { name:"Khaya Nyamathe",role:"Commercial Property Broker",img:"/assets/images/agent/img_01.jpg",text:"Taking the property course has been a game-changer for me. It provided me with a solid understanding of the property market, investment strategies, and the legal aspects that come within the game. The course's practical approach made complex concepts easier to grasp, and the real-world examples helped me connect theory with practice." },
-                  { name:"Cassidy O'Keefe",role:"Intern Broker",img:"/assets/images/agent/img_02.jpg",text:"This course has been an incredibly valuable experience, providing me with the essential knowledge and tools to excel as a broker. The insights gained have deepened my understanding of the industry, equipping me with strategies to navigate challenges and seize properties with confidence." },
-                  { name:"Deylin Pillay",role:"Retail Property Broker",img:"/assets/images/agent/img_03.jpg",text:"This course has been a game-changer for me as a property broker! The knowledge and practical tips Michela shares are incredibly valuable and easy to apply. Since implementing what I've learned, I've closed more deals and grown so much in my career." },
-                ].map((r,i) => (
-                  <div
-                    key={i}
-                    style={{
-                      display:"flex",gap:18,padding:"24px 0",
-                      borderBottom: i<2 ? "1px solid #f0f0f0" : "none",
-                    }}
-                  >
-                    <div style={{ width:52,height:52,borderRadius:"50%",overflow:"hidden",flexShrink:0,border:"2px solid rgba(232,119,58,0.3)" }}>
-                      <Image src={r.img} alt={r.name} width={52} height={52} style={{ objectFit:"cover",width:"100%",height:"100%" }} />
-                    </div>
-                    <div style={{ flex:1 }}>
-                      <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6 }}>
-                        <div>
-                          <span style={{ fontWeight:700,color:"#0f1f2e",fontSize:"0.95rem" }}>{r.name}</span>
-                          <span style={{ color:"#e8773a",fontSize:"0.82rem",marginLeft:10 }}>{r.role}</span>
-                        </div>
-                        <div style={{ display:"flex",gap:2 }}>
-                          {[1,2,3,4,5].map(s => <i key={s} className="bi bi-star-fill" style={{ color:"#f5c94e",fontSize:12 }} />)}
-                        </div>
-                      </div>
-                      <p style={{ fontSize:"0.9rem",color:"#666",lineHeight:1.7,margin:0 }}>{r.text}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
 
           {/* RIGHT SIDEBAR */}
@@ -525,7 +441,6 @@ export default function CourseDetailPage() {
                   {/* price */}
                   <div style={{ display:"flex",alignItems:"baseline",gap:8,marginBottom:20 }}>
                     <span style={{ fontSize:"2.2rem",fontWeight:900,color:"#0f1f2e" }}>R4&nbsp;000</span>
-                    <span style={{ fontSize:"0.85rem",color:"#bbb",textDecoration:"line-through" }}>R5 000</span>
                   </div>
 
                   <button
@@ -533,7 +448,7 @@ export default function CourseDetailPage() {
                     className="btn-nine text-uppercase"
                     style={{ display:"block",width:"100%",textAlign:"center",padding:"15px 20px",fontSize:"0.9rem",marginBottom:16,border:"none",cursor:"pointer" }}
                   >
-                    <span>{showBankDetails ? "Hide Details ✕" : "Add to Cart 🛒"}</span>
+                    <span>{showBankDetails ? "Hide payment details" : "Show payment details"}</span>
                   </button>
 
                   {/* Bank Details Panel */}
@@ -548,12 +463,12 @@ export default function CourseDetailPage() {
                       }}
                     >
                       <div style={{ display:"flex",alignItems:"center",gap:8,marginBottom:16 }}>
-                        <i className="bi bi-bank2" style={{ color:"#e8773a",fontSize:18 }} />
+                        <i className="bi bi-bank2" aria-hidden="true" style={{ color:"#f2bf72",fontSize:18 }} />
                         <h6 style={{ color:"#fff",fontWeight:700,margin:0,fontSize:"0.95rem" }}>Payment Details</h6>
                       </div>
                       <p style={{ color:"rgba(255,255,255,0.6)",fontSize:"0.78rem",marginBottom:16 }}>
                         Please make an EFT payment using the details below and send your proof of payment to{" "}
-                        <a href="mailto:info@dg-property.co.za" style={{ color:"#e8773a" }}>info@dg-property.co.za</a>
+                        <a href="mailto:info@dg-property.co.za" style={{ color:"#f2bf72" }}>info@dg-property.co.za</a>
                       </p>
                       <div style={{ display:"flex",flexDirection:"column",gap:10 }}>
                         {[
@@ -580,29 +495,28 @@ export default function CourseDetailPage() {
                         ))}
                       </div>
                       <p style={{ color:"rgba(255,255,255,0.5)",fontSize:"0.75rem",marginTop:14,marginBottom:0 }}>
-                        Enrolment is confirmed once payment is verified. Courses begin within 24 to 48 hours.
+                        Enrolment and access are confirmed after payment has been verified.
                       </p>
                     </div>
                   )}
 
-                  <p style={{ fontSize:"0.8rem",color:"#aaa",textAlign:"center",margin:"0 0 24px" }}>
-                    30-day money-back guarantee
+                  <p style={{ fontSize:"0.8rem",color:"#586574",textAlign:"center",margin:"0 0 24px" }}>
+                    Cancellations and refunds are handled under our <Link href="/refund-policy" style={{ textDecoration:"underline" }}>Refund Policy</Link>.
                   </p>
 
                   {/* meta info */}
                   <div style={{ display:"flex",flexDirection:"column",gap:13,paddingTop:20,borderTop:"1px solid #f0f0f0" }}>
                     {[
                       { icon:"bi-bar-chart-steps",label:"Level",value:"Beginner" },
-                      { icon:"bi-people",label:"Enrolled",value:"1 Student" },
                       { icon:"bi-clock-history",label:"Duration",value:"30 Hours" },
                       { icon:"bi-calendar-check",label:"Last Updated",value:"August 1, 2025" },
                     ].map((m,i) => (
                       <div key={i} style={{ display:"flex",alignItems:"center",gap:12 }}>
                         <div style={{ width:34,height:34,borderRadius:8,background:"rgba(232,119,58,0.08)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0 }}>
-                          <i className={`bi ${m.icon}`} style={{ color:"#e8773a",fontSize:15 }} />
+                          <i className={`bi ${m.icon}`} aria-hidden="true" style={{ color:"#a34818",fontSize:15 }} />
                         </div>
                         <div>
-                          <p style={{ fontSize:"0.72rem",color:"#aaa",margin:0,lineHeight:1 }}>{m.label}</p>
+                          <p style={{ fontSize:"0.72rem",color:"#595959",margin:0,lineHeight:1 }}>{m.label}</p>
                           <p style={{ fontSize:"0.88rem",fontWeight:600,color:"#333",margin:0 }}>{m.value}</p>
                         </div>
                       </div>
@@ -612,12 +526,12 @@ export default function CourseDetailPage() {
 
                 {/* instructor */}
                 <div style={{ padding:"20px 28px",borderTop:"1px solid #f5f5f5",background:"#fafafa" }}>
-                  <p style={{ fontSize:"0.72rem",color:"#aaa",textTransform:"uppercase",letterSpacing:"0.12em",margin:"0 0 12px" }}>A course by</p>
+                  <p style={{ fontSize:"0.72rem",color:"#595959",textTransform:"uppercase",letterSpacing:"0.12em",margin:"0 0 12px" }}>A course by</p>
                   <div style={{ display:"flex",alignItems:"center",gap:12 }}>
                     <div
                       style={{
                         width:42,height:42,borderRadius:"50%",
-                        background:"linear-gradient(135deg,#e8773a,#c45d1e)",
+                        background:"linear-gradient(135deg,#943a13,#713014)",
                         display:"flex",alignItems:"center",justifyContent:"center",
                         flexShrink:0,
                       }}
@@ -626,7 +540,7 @@ export default function CourseDetailPage() {
                     </div>
                     <div>
                       <p style={{ fontWeight:700,color:"#0f1f2e",margin:0,fontSize:"0.95rem" }}>Michela De Gennaro</p>
-                      <p style={{ color:"#e8773a",margin:0,fontSize:"0.78rem" }}>CEO &amp; Director</p>
+                      <p style={{ color:"#a34818",margin:0,fontSize:"0.78rem" }}>CEO &amp; Director</p>
                     </div>
                   </div>
                 </div>
@@ -648,7 +562,7 @@ export default function CourseDetailPage() {
                 <ul style={{ listStyle:"none",padding:0,margin:0,display:"flex",flexDirection:"column",gap:10 }}>
                   {materials.map((m,i) => (
                     <li key={i} style={{ display:"flex",gap:9,alignItems:"flex-start" }}>
-                      <i className="bi bi-check-circle-fill" style={{ color:"#e8773a",fontSize:13,flexShrink:0,marginTop:3 }} />
+                      <i className="bi bi-check-circle-fill" aria-hidden="true" style={{ color:"#a34818",fontSize:13,flexShrink:0,marginTop:3 }} />
                       <span style={{ fontSize:"0.82rem",color:"#555",lineHeight:1.6 }}>{m}</span>
                     </li>
                   ))}
@@ -670,7 +584,7 @@ export default function CourseDetailPage() {
                 <ul style={{ listStyle:"none",padding:0,margin:0,display:"flex",flexDirection:"column",gap:10 }}>
                   {audience.map((a,i) => (
                     <li key={i} style={{ display:"flex",gap:9,alignItems:"center" }}>
-                      <i className="bi bi-person-fill" style={{ color:"#e8773a",fontSize:13 }} />
+                      <i className="bi bi-person-fill" aria-hidden="true" style={{ color:"#a34818",fontSize:13 }} />
                       <span style={{ fontSize:"0.85rem",color:"#555",fontWeight:500 }}>{a}</span>
                     </li>
                   ))}

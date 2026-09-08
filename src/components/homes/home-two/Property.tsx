@@ -24,6 +24,7 @@ const sliderSettings = {
    autoplay: true,
    autoplaySpeed: 2000,
    pauseOnHover: true,
+   pauseOnFocus: true,
    responsive: [
       { breakpoint: 1400, settings: { slidesToShow: 3 } },
       { breakpoint: 992, settings: { slidesToShow: 2 } },
@@ -45,6 +46,8 @@ const SlideCard = ({ slide }: { slide: Slide }) => {
             <img
                src={resolveMediaUrl(slide.imageUrl)}
                alt={slide.title || "Featured property"}
+               loading="lazy"
+               decoding="async"
                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain" }}
             />
             {badge && (
@@ -86,32 +89,46 @@ const SlideCard = ({ slide }: { slide: Slide }) => {
 const Property = () => {
    const [slides, setSlides] = useState<Slide[]>([])
    const [loading, setLoading] = useState(true)
+   const [loadError, setLoadError] = useState(false)
+   const [retryCount, setRetryCount] = useState(0)
+   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
    const sliderRef = useRef<Slider | null>(null)
 
    useEffect(() => {
       setLoading(true)
+      setLoadError(false)
       fetchPublicFeaturedSlides()
          .then((res) => {
             setSlides(Array.isArray(res.data) ? res.data.filter((s: Slide) => s.imageUrl) : [])
          })
          .catch(() => {
             setSlides([])
+            setLoadError(true)
          })
          .finally(() => {
             setLoading(false)
          })
+   }, [retryCount])
+
+   useEffect(() => {
+      const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
+      const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches)
+
+      updatePreference()
+      mediaQuery.addEventListener?.("change", updatePreference)
+      return () => mediaQuery.removeEventListener?.("change", updatePreference)
    }, [])
 
    // Nudge react-slick to start autoplaying once the slides have rendered
    // (autoplay can fail to kick off when slides load asynchronously).
    useEffect(() => {
-      if (loading || slides.length === 0) return
+      if (loading || slides.length === 0 || prefersReducedMotion) return
       const timer = setTimeout(() => sliderRef.current?.slickPlay(), 100)
       return () => clearTimeout(timer)
-   }, [loading, slides.length])
+   }, [loading, prefersReducedMotion, slides.length])
 
    // Nothing to show and not loading — hide the whole section.
-   if (!loading && slides.length === 0) return null
+   if (!loading && slides.length === 0 && !loadError) return null
 
    return (
       <div style={{ background: "#f8f9fa", paddingTop: 90, paddingBottom: 90, marginTop: 0 }}>
@@ -150,9 +167,21 @@ const Property = () => {
                   <div className="spinner-border" role="status" />
                   <p className="mt-3" style={{ fontSize: 16, color: "#6b7280" }}>Loading featured properties...</p>
                </div>
+            ) : loadError ? (
+               <div className="text-center py-5" role="status">
+                  <p className="mb-3" style={{ fontSize: 16, color: "#6b7280" }}>
+                     We couldn&apos;t load the recent deals right now.
+                  </p>
+                  <div className="d-flex flex-wrap justify-content-center gap-3">
+                     <button type="button" className="btn-eight" onClick={() => setRetryCount((count) => count + 1)}>
+                        Try again
+                     </button>
+                     <Link href="/properties" className="btn-eight">Browse all listings</Link>
+                  </div>
+               </div>
             ) : (
                <div className="featured-slides-wrapper" style={{ margin: "0 -10px" }}>
-                  <Slider {...sliderSettings} ref={sliderRef}>
+                  <Slider {...sliderSettings} autoplay={!prefersReducedMotion} speed={prefersReducedMotion ? 0 : sliderSettings.speed} ref={sliderRef}>
                      {slides.map((slide) => (
                         <div key={slide.id} style={{ padding: "0 10px" }}>
                            <SlideCard slide={slide} />

@@ -1,7 +1,6 @@
 import FooterOne from "@/layouts/footers/FooterOne"
 import HeroBanner from "./HeroBanner"
 import Property from "./Property"
-import TrustedLogos from "./TrustedLogos"
 import InstagramFeed from "./InstagramFeed"
 import FAQ from "./FAQ"
 import FancyBannerTwo from "./FancyBannerTwo"
@@ -11,12 +10,13 @@ const HomeTwo = () => {
   return (
     <>
       <HeaderTwo style_1={false} style_2={false} />
-      <HeroBanner />
-      <Property />
-      <TrustedLogos />
-      <InstagramFeed />
-      <FAQ />
-      <FancyBannerTwo/>
+      <main>
+        <HeroBanner />
+        <Property />
+        <InstagramFeed />
+        <FAQ />
+        <FancyBannerTwo/>
+      </main>
       <FooterOne style={true} />
     </>
   )

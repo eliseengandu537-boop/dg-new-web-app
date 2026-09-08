@@ -3,14 +3,13 @@
 import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import { animationCreate } from "@/utils/utils";
-import ScrollToTop from "@/components/common/ScrollToTop";
-
-if (typeof window !== "undefined") {
-    require("bootstrap/dist/js/bootstrap");
-}
 
 const Wrapper = ({ children }: any) => {
     useEffect(() => {
+        // Keep Bootstrap out of the initial page bundle and load its interactive
+        // behaviour only after the browser has rendered the page.
+        void import("bootstrap/dist/js/bootstrap");
+
         // animation
         const timer = setTimeout(() => {
             animationCreate();
@@ -22,7 +21,6 @@ const Wrapper = ({ children }: any) => {
 
     return <>
         {children}
-        <ScrollToTop />
         <ToastContainer position="top-center" />
     </>;
 }

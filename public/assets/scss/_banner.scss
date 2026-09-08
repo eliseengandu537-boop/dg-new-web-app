@@ -917,9 +917,9 @@
         li {
             padding: 0 3px;
             font-size: 17px;
-            color: rgba($color: #313131, $alpha: 0.5);
+            color: #595959;
             a {
-                color: rgba($color: #313131, $alpha: 0.5);
+                color: #595959;
                 @include transition(0.3s);
                 &:hover {
                     color: $color-one;

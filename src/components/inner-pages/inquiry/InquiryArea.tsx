@@ -12,6 +12,13 @@ const InquiryArea = () => {
             <div className="container position-relative" style={{ zIndex: 1 }}>
                <div className="row align-items-center g-5">
                   <div className="col-lg-7">
+                     <nav aria-label="Breadcrumb" className="dg-inquiry-hero__breadcrumb">
+                        <ol>
+                           <li><Link href="/">Home</Link></li>
+                           <li aria-hidden="true">/</li>
+                           <li aria-current="page">Inquiry</li>
+                        </ol>
+                     </nav>
                      <p className="dg-inquiry-hero__eyebrow">Send an inquiry</p>
                      <h1 className="dg-inquiry-hero__title">
                         Tell us what you need.
@@ -91,6 +98,23 @@ const InquiryArea = () => {
                font-weight: 700;
                letter-spacing: 0.18em;
                text-transform: uppercase;
+            }
+            .dg-inquiry-hero__breadcrumb {
+               margin-bottom: 18px;
+               font-size: 14px;
+            }
+            .dg-inquiry-hero__breadcrumb ol {
+               display: flex;
+               flex-wrap: wrap;
+               gap: 8px;
+               margin: 0;
+               padding: 0;
+               list-style: none;
+               color: #fff;
+            }
+            .dg-inquiry-hero__breadcrumb a {
+               color: rgba(255,255,255,0.68);
+               text-decoration: none;
             }
             .dg-inquiry-hero__title {
                margin: 0;
@@ -211,7 +235,7 @@ const InquiryArea = () => {
             }
             .dg-inquiry-form__eyebrow {
                margin: 0 0 6px;
-               color: #dc7b37;
+               color: #9b4618;
                font-size: 0.7rem;
                font-weight: 800;
                letter-spacing: 0.16em;
@@ -296,7 +320,7 @@ const InquiryArea = () => {
             }
             .dg-field label {
                margin-bottom: 8px;
-               color: #7b8795;
+               color: #556270;
                font-size: 0.78rem;
                font-weight: 700;
                letter-spacing: 0.08em;

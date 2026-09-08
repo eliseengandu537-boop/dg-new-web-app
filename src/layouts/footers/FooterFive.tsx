@@ -66,7 +66,11 @@ const FooterFive = () => {
                </div>
             </div>
             <div className="bottom-footer">
-               <p className="m0 text-center fs-16">Copyright @2026 DG Property.</p>
+               <p className="m0 text-center fs-16">
+                  Copyright © {new Date().getFullYear()} DG Property.
+                  <span className="dg-footer-separator" aria-hidden="true">•</span>
+                  <span data-cookie-settings-slot />
+               </p>
             </div>
          </div>
       </div>

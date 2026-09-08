@@ -11,19 +11,30 @@ export const dynamic = "force-dynamic";
 
 const PATHS = [
   "",
+  "/properties",
   "/about_us_02",
   "/our-services",
   "/agent",
   "/commercial-for-lease",
+  "/retail-properties",
+  "/industrial-warehouse",
   "/development-land",
   "/investment",
   "/fuel-station",
+  "/investment-sales",
+  "/retail-leasing",
+  "/development-leasing",
   "/success-stories",
   "/property-news",
   "/courses",
+  "/courses/candidate-practitioner",
   "/contact",
+  "/inquiry",
+  "/faq",
   "/privacy-policy",
   "/terms-and-conditions",
+  "/cookie-policy",
+  "/refund-policy",
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

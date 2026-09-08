@@ -12,17 +12,19 @@ interface DataType {
 }
 
 const commercialListingLinks = [
-   { link: "/listing_01", link_title: "Office Space" },
-   { link: "/listing_02", link_title: "Retail Space" },
-   { link: "listing_03", link_title: "Industrial Property" },
-   { link: "listing_04", link_title: "Warehouses" },
+   { link: "/commercial-for-lease", link_title: "Office Space" },
+   { link: "/retail-properties", link_title: "Retail Space" },
+   { link: "/industrial-warehouse", link_title: "Industrial Property" },
+   { link: "/industrial-warehouse", link_title: "Warehouses" },
    { link: "/development-land", link_title: "Development Land" },
-   { link: "/listing_06", link_title: "Investment Properties" },
+   { link: "/investment", link_title: "Investment Properties" },
 ];
 
 const legalLinks = [
    { link: "/terms-and-conditions", link_title: "Terms & conditions" },
    { link: "/privacy-policy", link_title: "Privacy policy" },
+   { link: "/cookie-policy", link_title: "Cookie policy" },
+   { link: "/refund-policy", link_title: "Refund policy" },
    { link: "/faq", link_title: "Faq’s" },
 ];
 
@@ -31,15 +33,15 @@ const footer_data: DataType[] = [
       id: 2,
       widget_class: "xs-mt-30",
       page: "home_1",
-      widget_title: "Legal",
-      footer_link: legalLinks
+      widget_title: "New Listing",
+      footer_link: commercialListingLinks
    },
    {
       id: 3,
       widget_class: "xs-mt-30",
       page: "home_1",
-      widget_title: "New Listing",
-      footer_link: commercialListingLinks
+      widget_title: "Legal",
+      footer_link: legalLinks
    },
 
    // home two

@@ -78,7 +78,7 @@ const simpleFieldTitleStyle: React.CSSProperties = {
   fontWeight: 700,
   letterSpacing: 1.2,
   textTransform: "uppercase",
-  color: "#7a8561",
+  color: "#59614f",
   marginBottom: 6,
 };
 
@@ -294,6 +294,7 @@ const CommercialPropertySearchBar = ({
     if (field.type === "select") {
       return (
         <select
+          aria-label={field.label}
           value={filters[field.key as keyof CommercialSearchFilters] || ""}
           onChange={(e) => updateFilter(field.key as keyof CommercialSearchFilters, e.target.value)}
           style={baseInputStyle}
@@ -309,6 +310,7 @@ const CommercialPropertySearchBar = ({
 
     return (
       <input
+        aria-label={field.label}
         type={field.type === "number" ? "number" : "text"}
         placeholder={field.placeholder || field.label}
         value={filters[field.key as keyof CommercialSearchFilters] || ""}
@@ -329,6 +331,8 @@ const CommercialPropertySearchBar = ({
                 onClick={() => handleListingTypeChange(tab.value)}
                 className={`nav-link m0 ${filters.listingType === tab.value ? "active" : ""}`}
                 type="button"
+                role="tab"
+                aria-selected={filters.listingType === tab.value}
               >
                 {tab.label}
               </button>
@@ -429,6 +433,7 @@ const CommercialPropertySearchBar = ({
                   <div style={simpleFieldShellStyle}>
                     <div style={simpleFieldTitleStyle}>Location</div>
                     <input
+                      aria-label="Location"
                       type="text"
                       list={locationListId}
                       placeholder="Search suburb, city or province"
@@ -443,6 +448,7 @@ const CommercialPropertySearchBar = ({
                   <div style={simpleFieldShellStyle}>
                     <div style={simpleFieldTitleStyle}>Property Type</div>
                     <select
+                      aria-label="Property type"
                       value={filters.category || ""}
                       onChange={(event) => handlePropertyTypeChange(event.target.value)}
                       style={{ ...simpleFieldInputStyle, cursor: "pointer" }}
@@ -460,6 +466,7 @@ const CommercialPropertySearchBar = ({
                   <div style={simpleFieldShellStyle}>
                     <div style={simpleFieldTitleStyle}>Budget</div>
                     <select
+                      aria-label="Budget"
                       value={filters.priceRange || ""}
                       onChange={(event) => handlePriceRangeChange(event.target.value)}
                       style={{ ...simpleFieldInputStyle, cursor: "pointer" }}
@@ -479,7 +486,7 @@ const CommercialPropertySearchBar = ({
                     style={{
                       width: "100%",
                       minHeight: 74,
-                      background: "#7a8561",
+                      background: "#59614f",
                       color: "#fff",
                       border: "none",
                       borderRadius: 14,
@@ -556,6 +563,7 @@ const CommercialPropertySearchBar = ({
               <div style={{ flex: "1 1 200px", minWidth: 180 }}>
                 <div style={fieldLabelStyle}>Location</div>
                 <input
+                  aria-label="Location"
                   type="text"
                   list={locationListId}
                   placeholder="City, Suburb, or Province"
@@ -602,7 +610,7 @@ const CommercialPropertySearchBar = ({
                 <button
                   type="submit"
                   style={{
-                    background: "#7a8561",
+                    background: "#59614f",
                     color: "#fff",
                     border: "none",
                     borderRadius: 8,
@@ -677,7 +685,7 @@ const CommercialPropertySearchBar = ({
                     type="button"
                     onClick={applySearch}
                     style={{
-                      background: "#7a8561",
+                      background: "#59614f",
                       color: "#fff",
                       border: "none",
                       borderRadius: isSimple ? 12 : 10,

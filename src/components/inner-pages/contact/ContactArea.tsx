@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { contactInfo } from "@/data/contact-info";
 import ContactForm from "@/components/forms/ContactForm";
 
@@ -35,14 +36,29 @@ const ContactArea = () => {
             style={{
                position: "relative",
                overflow: "hidden",
-               backgroundImage:
-                  "linear-gradient(135deg, rgba(16,36,53,0.92) 0%, rgba(23,48,68,0.88) 55%, rgba(33,69,90,0.88) 100%), url(/assets/images/media/78.jpg)",
-               backgroundSize: "cover",
-               backgroundPosition: "center",
+               background: "#102435",
                paddingTop: 170,
                paddingBottom: 110,
             }}
          >
+            <Image
+               src="/assets/images/media/78.jpg"
+               alt=""
+               fill
+               priority
+               sizes="100vw"
+               quality={72}
+               aria-hidden="true"
+               style={{ objectFit: "cover", objectPosition: "center" }}
+            />
+            <div
+               style={{
+                  position: "absolute",
+                  inset: 0,
+                  background:
+                     "linear-gradient(135deg, rgba(16,36,53,0.92) 0%, rgba(23,48,68,0.88) 55%, rgba(33,69,90,0.88) 100%)",
+               }}
+            />
             <div
                style={{
                   position: "absolute",
@@ -77,6 +93,13 @@ const ContactArea = () => {
             <div className="container position-relative" style={{ zIndex: 1 }}>
                <div className="row align-items-center g-5">
                   <div className="col-lg-7">
+                     <nav aria-label="Breadcrumb" style={{ marginBottom: 18 }}>
+                        <ol style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", gap: 8, flexWrap: "wrap", fontSize: 14 }}>
+                           <li><Link href="/" style={{ color: "rgba(255,255,255,0.68)", textDecoration: "none" }}>Home</Link></li>
+                           <li aria-hidden="true" style={{ color: "rgba(255,255,255,0.75)" }}>/</li>
+                           <li aria-current="page" style={{ color: "#fff" }}>Contact</li>
+                        </ol>
+                     </nav>
                      <p
                         style={{
                            margin: "0 0 16px",
@@ -186,7 +209,7 @@ const ContactArea = () => {
                                     <span
                                        style={{
                                           display: "block",
-                                          color: "rgba(255,255,255,0.58)",
+                                          color: "rgba(255,255,255,0.75)",
                                           fontSize: "0.72rem",
                                           letterSpacing: "0.14em",
                                           textTransform: "uppercase",
@@ -250,7 +273,7 @@ const ContactArea = () => {
                               <p
                                  style={{
                                     margin: "0 0 10px",
-                                    color: "#dc7b37",
+                                    color: "#9b4618",
                                     fontSize: "0.74rem",
                                     fontWeight: 700,
                                     letterSpacing: "0.16em",
@@ -340,22 +363,13 @@ const ContactArea = () => {
                                  </div>
                               </div>
 
-                              <div
-                                 className="contact-map-frame"
-                                 style={{
-                                    borderRadius: 22,
-                                    overflow: "hidden",
-                                    minHeight: 320,
-                                    boxShadow: "0 10px 30px rgba(14, 24, 37, 0.08)",
-                                    marginTop: "auto",
-                                 }}
-                              >
-                                 <iframe
-                                    className="w-100 h-100"
-                                    src="https://maps.google.com/maps?width=600&amp;height=400&amp;hl=en&amp;q=Bedford+Arcade,+59+Van+Buuren+Rd,+Bedfordview,+Johannesburg,+2007&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
-                                    loading="lazy"
-                                    referrerPolicy="no-referrer-when-downgrade"
-                                 ></iframe>
+                              <div className="contact-map-frame" style={{ borderRadius: 22, minHeight: 320, boxShadow: "0 10px 30px rgba(14,24,37,.08)", marginTop: "auto", background: "linear-gradient(135deg,#e9eff2,#dbe6eb)", padding: 28, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center" }}>
+                                 <i className="bi bi-geo-alt-fill" aria-hidden="true" style={{ color: "#62695a", fontSize: 42, marginBottom: 14 }} />
+                                 <h3 style={{ color: "#152637", fontSize: "1.4rem", fontWeight: 700, marginBottom: 8 }}>Visit DG Property</h3>
+                                 <address style={{ color: "#425160", fontStyle: "normal", lineHeight: 1.7, maxWidth: 360 }}>{contactInfo.fullAddress}</address>
+                                 <Link href={quickContact[2].href} target="_blank" rel="noopener noreferrer" style={{ background: "#62695a", color: "#fff", padding: "12px 22px", borderRadius: 999, textDecoration: "none", fontWeight: 700, fontSize: 14 }}>
+                                    Open in Google Maps
+                                 </Link>
                               </div>
                            </div>
                         </div>
@@ -370,7 +384,7 @@ const ContactArea = () => {
                href="/login"
                style={{
                   fontSize: "0.75rem",
-                  color: "#9da8b4",
+                  color: "#596675",
                   textDecoration: "none",
                   letterSpacing: "0.08em",
                   borderBottom: "1px solid #d7dee5",
@@ -401,7 +415,7 @@ const ContactArea = () => {
             .friendly-contact-shell .friendly-contact-form .input-group-meta label {
                display: block;
                margin-bottom: 8px;
-               color: #7b8795;
+                  color: #556270;
                font-size: 0.8rem;
                font-weight: 700;
                letter-spacing: 0.08em;

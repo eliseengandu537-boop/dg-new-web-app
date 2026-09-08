@@ -27,6 +27,8 @@ const CategoryListingAreaInner = ({ category, listingType, detailsLink = "/listi
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const [sortOrder, setSortOrder] = useState("newest");
   const serializedFilters = JSON.stringify(filters || {});
   const activeFilters = useMemo<CommercialSearchFilters>(
@@ -74,6 +76,7 @@ const CategoryListingAreaInner = ({ category, listingType, detailsLink = "/listi
     });
 
     setLoading(true);
+    setLoadError(false);
     fetchPublicProperties(params)
       .then((res) => {
         setProperties(res.data.properties || []);
@@ -84,9 +87,10 @@ const CategoryListingAreaInner = ({ category, listingType, detailsLink = "/listi
         setProperties([]);
         setTotal(0);
         setTotalPages(1);
+        setLoadError(true);
       })
       .finally(() => setLoading(false));
-  }, [activeFilters, category, listingType, currentPage]);
+  }, [activeFilters, category, listingType, currentPage, retryCount]);
 
   const sortedProperties = [...properties].sort((a, b) => {
     if (sortOrder === "price_low") return (a.price || 0) - (b.price || 0);
@@ -109,38 +113,49 @@ const CategoryListingAreaInner = ({ category, listingType, detailsLink = "/listi
     <div className="property-listing-six pb-200 xl-pb-120 pt-20 xl-pt-10">
       <div className="container container-large">
 
-        <div className="listing-header-filter d-sm-flex justify-content-between align-items-center mb-40 lg-mb-30">
-          <div>
-            {loading
-              ? "Loading..."
-              : total > 0
-                ? <>Showing <span className="color-dark fw-500">{start}–{end}</span> of <span className="color-dark fw-500">{total}</span> results</>
-                : "No properties found"
-            }
-          </div>
-          <div className="d-flex align-items-center xs-mt-20">
-            <div className="short-filter d-flex align-items-center">
-              <div className="fs-16 me-2">Sort by:</div>
-              <NiceSelect
-                className="nice-select rounded-0"
-                options={[
-                  { value: "newest", text: "Newest" },
-                  { value: "price_low", text: "Price Low" },
-                  { value: "price_high", text: "Price High" },
-                ]}
-                defaultCurrent={0}
-                onChange={(e: any) => setSortOrder(e.target.value)}
-                name=""
-                placeholder=""
-              />
+        {(loading || (!loadError && total > 0)) && (
+          <div className="listing-header-filter d-sm-flex justify-content-between align-items-center mb-40 lg-mb-30">
+            <div>
+              {loading
+                ? "Loading..."
+                : <>Showing <span className="color-dark fw-500">{start}–{end}</span> of <span className="color-dark fw-500">{total}</span> results</>
+              }
             </div>
+            {!loading && total > 0 && (
+              <div className="d-flex align-items-center xs-mt-20">
+                <div className="short-filter d-flex align-items-center">
+                  <div className="fs-16 me-2">Sort by:</div>
+                  <NiceSelect
+                    className="nice-select rounded-0"
+                    options={[
+                      { value: "newest", text: "Newest" },
+                      { value: "price_low", text: "Price Low" },
+                      { value: "price_high", text: "Price High" },
+                    ]}
+                    defaultCurrent={0}
+                    onChange={(e: any) => setSortOrder(e.target.value)}
+                    name="sort"
+                    placeholder="Sort properties"
+                  />
+                </div>
+              </div>
+            )}
           </div>
-        </div>
+        )}
 
         {loading ? (
           <div className="text-center py-5">
             <div className="spinner-border" role="status" />
             <p className="mt-3 fs-16">Loading properties...</p>
+          </div>
+        ) : loadError ? (
+          <div className="text-center py-5" role="alert">
+            <p className="fs-18 fw-500 color-dark">Properties are temporarily unavailable</p>
+            <p className="fs-16">Please try again, or contact our team if you need immediate assistance.</p>
+            <div className="d-flex flex-wrap justify-content-center gap-3 mt-25">
+              <button type="button" className="btn-nine" onClick={() => setRetryCount((count) => count + 1)}>Try again</button>
+              <a href="/contact" className="btn-eight">Contact us</a>
+            </div>
           </div>
         ) : sortedProperties.length === 0 ? (
           <div className="text-center py-5">

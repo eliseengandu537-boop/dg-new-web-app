@@ -21,7 +21,7 @@ const BLockFeatureOne = () => {
                      <Link href="/inquiry" className="btn-three mt-20"><span>Request a Callback</span> <i className="fa-light fa-arrow-right-long"></i></Link>
                   </div>
                   <div className="mt-25 text-center">
-                     <Link href="/listing_05" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "linear-gradient(90deg, #c8973a, #e8b86d)", color: "#fff", fontWeight: 600, fontSize: 15, padding: "14px 34px", borderRadius: 50, textDecoration: "none", letterSpacing: 0.4 }}>
+                     <Link href="/investment" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "linear-gradient(90deg, #c8973a, #e8b86d)", color: "#fff", fontWeight: 600, fontSize: 15, padding: "14px 34px", borderRadius: 50, textDecoration: "none", letterSpacing: 0.4 }}>
                         View Investment Properties <i className="bi bi-arrow-up-right"></i>
                      </Link>
                   </div>

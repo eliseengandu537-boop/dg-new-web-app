@@ -21,13 +21,15 @@ const ServiceDetails = () => {
                      <div style={{ display: "inline-block", background: "rgba(255,255,255,0.12)", color: "#f0b95e", fontSize: 11, fontWeight: 700, letterSpacing: 2.5, textTransform: "uppercase", padding: "6px 16px", borderRadius: 4, marginBottom: 20, border: "1px solid rgba(240,185,94,0.35)" }}>Retail Leasing</div>
                      <h1 style={{ color: "#fff", fontSize: "clamp(2rem, 5vw, 3.2rem)", fontWeight: 800, lineHeight: 1.18, marginBottom: 10 }}>Placing the Right Brands<br />in the Right Spaces</h1>
                      <div style={{ width: 60, height: 3, background: "linear-gradient(90deg, #c8973a, #e8b86d)", borderRadius: 2, marginBottom: 22 }} />
-                     <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", gap: 8, flexWrap: "wrap" }}>
-                        <li><Link href="/" style={{ color: "rgba(255,255,255,0.65)", textDecoration: "none", fontSize: 14 }}>Home</Link></li>
-                        <li style={{ color: "rgba(255,255,255,0.45)", fontSize: 14 }}>/</li>
-                        <li style={{ color: "rgba(255,255,255,0.65)", fontSize: 14 }}>Services</li>
-                        <li style={{ color: "rgba(255,255,255,0.45)", fontSize: 14 }}>/</li>
-                        <li style={{ color: "#fff", fontSize: 14 }}>Retail Leasing</li>
-                     </ul>
+                     <nav aria-label="Breadcrumb">
+                        <ol style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", gap: 8, flexWrap: "wrap" }}>
+                           <li><Link href="/" style={{ color: "rgba(255,255,255,0.65)", textDecoration: "none", fontSize: 14 }}>Home</Link></li>
+                           <li aria-hidden="true" style={{ color: "rgba(255,255,255,0.45)", fontSize: 14 }}>/</li>
+                           <li><Link href="/our-services" style={{ color: "rgba(255,255,255,0.65)", textDecoration: "none", fontSize: 14 }}>Services</Link></li>
+                           <li aria-hidden="true" style={{ color: "rgba(255,255,255,0.45)", fontSize: 14 }}>/</li>
+                           <li aria-current="page" style={{ color: "#fff", fontSize: 14 }}>Retail Leasing</li>
+                        </ol>
+                     </nav>
                   </div>
                   <div className="col-lg-5 mt-4 mt-lg-0 text-lg-end">
                      <p style={{ color: "rgba(255,255,255,0.82)", fontSize: 17, lineHeight: 1.7, marginBottom: 28 }}>Strategy · Precision · Results</p>

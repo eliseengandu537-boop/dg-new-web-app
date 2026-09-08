@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import Image from "next/image";
 import { AUTH_API_URL } from "@/utils/api";
+import { contactInfo } from "@/data/contact-info";
 
 import OpenEye from "@/assets/images/icon/icon_68.svg";
 
@@ -63,21 +64,21 @@ const LoginForm = () => {
          <div className="row">
             <div className="col-12">
                <div className="input-group-meta position-relative mb-25">
-                  <label>Email*</label>
-                  <input type="email" {...register("email")} placeholder="Youremail@gmail.com" />
-                  <p className="form_error">{errors.email?.message}</p>
+                  <label htmlFor="login-email">Email*</label>
+                  <input id="login-email" type="email" autoComplete="email" {...register("email")} placeholder="you@example.com" aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? "login-email-error" : undefined} />
+                  <p id="login-email-error" className="form_error" role={errors.email ? "alert" : undefined}>{errors.email?.message}</p>
                </div>
             </div>
             <div className="col-12">
                <div className="input-group-meta position-relative mb-20">
-                  <label>Password*</label>
-                  <input type={isPasswordVisible ? "text" : "password"} {...register("password")} placeholder="Enter Password" className="pass_log_id" />
+                  <label htmlFor="login-password">Password*</label>
+                  <input id="login-password" type={isPasswordVisible ? "text" : "password"} autoComplete="current-password" {...register("password")} placeholder="Enter password" className="pass_log_id" aria-invalid={Boolean(errors.password)} aria-describedby={errors.password ? "login-password-error" : undefined} />
                   <span className="placeholder_icon">
-                     <span className={`passVicon ${isPasswordVisible ? "eye-slash" : ""}`}>
-                        <Image onClick={togglePasswordVisibility} src={OpenEye} alt="" />
-                     </span>
+                     <button type="button" className={`passVicon ${isPasswordVisible ? "eye-slash" : ""}`} onClick={togglePasswordVisibility} aria-label={isPasswordVisible ? "Hide password" : "Show password"}>
+                        <Image src={OpenEye} alt="" aria-hidden="true" />
+                     </button>
                   </span>
-                  <p className="form_error">{errors.password?.message}</p>
+                  <p id="login-password-error" className="form_error" role={errors.password ? "alert" : undefined}>{errors.password?.message}</p>
                </div>
             </div>
             <div className="col-12">
@@ -86,7 +87,7 @@ const LoginForm = () => {
                      <input type="checkbox" id="remember" />
                      <label htmlFor="remember">Keep me logged in</label>
                   </div>
-                  <Link href="#">Forget Password?</Link>
+                  <Link href={`${contactInfo.emailHref}?subject=Password%20help`}>Need help signing in?</Link>
                </div>
             </div>
             <div className="col-12">

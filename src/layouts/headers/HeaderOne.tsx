@@ -14,7 +14,7 @@ const HeaderOne = ({ style }: any) => {
       <>
          <header className={`theme-main-menu menu-overlay menu-style-one sticky-menu ${sticky ? "fixed" : style ? "white-vr" : ""}`}>
             {!style && <div className="alert-wrapper text-center">
-               <p className="fs-16 m0 text-white">The <Link href="/listing_01" className="fw-500">flash sale</Link> go on. The offer will end in: <span>This Sunday</span></p>
+               <p className="fs-16 m0 text-white">Explore commercial property opportunities across South Africa. <Link href="/properties" className="fw-500">View listings</Link></p>
             </div>}
             <div className="inner-content gap-one">
                <div className="top-header position-relative">

@@ -15,7 +15,7 @@ const DropdownOne = () => {
    const selectHandler = (e: any) => { };
 
    const searchHandler = () => {
-      window.location.href = '/listing_07';
+      window.location.href = '/properties';
    };
 
    return (

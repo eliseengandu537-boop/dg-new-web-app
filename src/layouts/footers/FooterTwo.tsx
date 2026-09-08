@@ -11,44 +11,37 @@ import footer_data from "@/data/home-data/FooterData";
 import { contactInfo } from "@/data/contact-info";
 
 interface ContentType {
-   title: string;
-   desc_1: string;
    desc_2: string;
    email: string;
    number: string;
-   icon: [string, string][];
+   icon: [string, string, string][];
 }
 
 const footer_content: ContentType = {
-   title: "Our Newsletter",
-   desc_1: "Get instant news by subscribe to our newsletter",
    desc_2: `Located in: ${contactInfo.locationName} | ${contactInfo.fullAddress}`,
    email: contactInfo.emailDisplay,
    number: contactInfo.phoneDisplay,
-   icon: [["fa-brands fa-facebook-f", "https://www.facebook.com/share/1Cfzm1Fy4t/?mibextid=wwXIfr"], ["fa-brands fa-linkedin-in", "https://www.linkedin.com/company/degennaro-property/"], ["fa-brands fa-instagram", "https://www.instagram.com/dg_property_/"]],
+   icon: [["fa-brands fa-facebook-f", "https://www.facebook.com/share/1Cfzm1Fy4t/?mibextid=wwXIfr", "Facebook"], ["fa-brands fa-linkedin-in", "https://www.linkedin.com/company/degennaro-property/", "LinkedIn"], ["fa-brands fa-instagram", "https://www.instagram.com/dg_property_/", "Instagram"]],
 }
 
-const { title, desc_1, desc_2, email, number, icon } = footer_content;
+const { desc_2, email, number, icon } = footer_content;
 
 const FooterTwo = () => {
    return (
       <div className="footer-two">
          <div className="container container-large">
             <div className="bg-wrapper position-relative z-1">
-               <div className="news-letter-area">
+               <div className="news-letter-area" aria-labelledby="property-updates-title">
                   <div className="row align-items-center">
                      <div className="col-lg-6">
                         <div className="text-center text-lg-start md-mb-20">
-                           <h2>{title}</h2>
-                           <p className="fs-20 m0">{desc_1}</p>
+                           <h2 id="property-updates-title">Property Updates</h2>
+                           <p className="fs-20 m0">Read DG Property news and market insights.</p>
                         </div>
                      </div>
                      <div className="col-lg-6">
-                        <div className="form-wrapper me-auto ms-auto me-lg-0">
-                           <form onSubmit={(e) => e.preventDefault()}>
-                              <input type="email" placeholder="Your email address" />
-                              <button><i className="fa-light fa-arrow-right-long"></i></button>
-                           </form>
+                        <div className="form-wrapper me-auto ms-auto me-lg-0 text-center text-lg-end">
+                           <Link href="/property-news" className="btn-nine">Read Property News</Link>
                         </div>
                      </div>
                   </div>
@@ -65,21 +58,21 @@ const FooterTwo = () => {
                         <p className="mb-45 lg-mb-30 pe-2 pe-lg-5">{desc_2}</p>
                         <ul className="style-none contact-info">
                            <li className="d-flex align-items-center">
-                              <Image src={footerIcon_1} alt="" width="20" />
+                              <Image src={footerIcon_1} alt="" aria-hidden="true" width="20" />
                               <Link href={contactInfo.emailHref}>{email}</Link>
                            </li>
                            <li className="d-flex align-items-center">
-                              <Image src={footerIcon_2} alt="" width="20" />
+                              <Image src={footerIcon_2} alt="" aria-hidden="true" width="20" />
                               <Link href={contactInfo.phoneHref}>{number}</Link>
                            </li>
                         </ul>
 
                         <ul className="style-none d-flex align-items-center social-icon">
-                           {icon.map(([cls, href], i) => (
-                              <li key={i}><Link href={href} target="_blank" rel="noopener noreferrer"><i className={cls}></i></Link></li>
+                           {icon.map(([cls, href, label], i) => (
+                              <li key={i}><Link href={href} target="_blank" rel="noopener noreferrer" aria-label={`Visit DG Property on ${label}`}><i className={cls} aria-hidden="true"></i></Link></li>
                            ))}
                         </ul>
-                        <Image src={footerShape_1} alt="" className="lazy-img shapes shape_01 d-none d-xl-block" />
+                        <Image src={footerShape_1} alt="" aria-hidden="true" className="lazy-img shapes shape_01 d-none d-xl-block" />
                      </div>
                   </div>
 
@@ -99,7 +92,7 @@ const FooterTwo = () => {
                               </div>
                            ))}
                            <div className="col-xxl-3 col-lg-2 d-none d-lg-block">
-                              <Image src={footerShape_2} alt="" className="lazy-img mt-50" />
+                              <Image src={footerShape_2} alt="" aria-hidden="true" className="lazy-img mt-50" />
                            </div>
                         </div>
                      </div>
@@ -113,7 +106,11 @@ const FooterTwo = () => {
                      <li><Link href="/privacy-policy">Privacy Policy</Link></li>
                      <li><Link href="/contact">Contact Us</Link></li>
                   </ul>
-                  <p className="mb-15 text-center text-lg-start order-md-first">Copyright @2026 DG Property.</p>
+                  <p className="mb-15 text-center text-lg-start order-md-first">
+                     Copyright © {new Date().getFullYear()} DG Property.
+                     <span className="dg-footer-separator" aria-hidden="true">•</span>
+                     <span data-cookie-settings-slot />
+                  </p>
                </div>
             </div>
          </div>

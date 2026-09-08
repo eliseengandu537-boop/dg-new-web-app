@@ -216,7 +216,7 @@
         font-size: 14px;
         letter-spacing: 1px;
         text-transform: uppercase;
-        color: rgba($color: #000000, $alpha: 0.4);
+        color: #595959;
         margin: 0 2px 1px 0;
         @include transition(0.2s);
         &.active {

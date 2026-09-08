@@ -25,25 +25,31 @@ const statusLabel = (status?: string) => {
 
 const Offcanvas = ({ offCanvas, setOffCanvas }: any) => {
    const [slides, setSlides] = useState<Slide[]>([])
-   const [loading, setLoading] = useState(true)
+   const [loading, setLoading] = useState(false)
+   const [loadError, setLoadError] = useState(false)
+   const [retryCount, setRetryCount] = useState(0)
 
    useEffect(() => {
+      if (!offCanvas || slides.length > 0) return
+
       setLoading(true)
+      setLoadError(false)
       fetchPublicFeaturedSlides()
          .then((res) => {
             setSlides(Array.isArray(res.data) ? res.data.filter((s: Slide) => s.imageUrl) : [])
          })
          .catch(() => {
             setSlides([])
+            setLoadError(true)
          })
          .finally(() => {
             setLoading(false)
          })
-   }, [])
+   }, [offCanvas, retryCount, slides.length])
 
    return (
       <>
-         <div className={`offcanvas offcanvas-end sidebar-nav ${offCanvas ? "show" : ""}`} id="sideNav">
+         <div className={`offcanvas offcanvas-end sidebar-nav ${offCanvas ? "show" : ""}`} id="sideNav" role="dialog" aria-modal="true" aria-labelledby="side-nav-title" aria-hidden={!offCanvas}>
             <div className="offcanvas-header">
                <div className="logo order-lg-0">
                   <Link href="/" className="d-flex align-items-center">
@@ -56,7 +62,7 @@ const Offcanvas = ({ offCanvas, setOffCanvas }: any) => {
             <div className="wrapper mt-60">
                <div className="d-flex flex-column h-100">
                   <div className="property-block">
-                     <h4 className="title pb-25">Recent Deals</h4>
+                     <h4 className="title pb-25" id="side-nav-title">Recent Deals</h4>
                      <div className="row">
                         {loading ? (
                            <div className="col-12">
@@ -65,11 +71,17 @@ const Offcanvas = ({ offCanvas, setOffCanvas }: any) => {
                                  <p className="pt-15 m0">Loading recent deals...</p>
                               </div>
                            </div>
+                        ) : loadError ? (
+                           <div className="col-12">
+                              <div className="text-center py-4 px-3" style={{ background: "#f7f7f7", borderRadius: 16 }} role="status">
+                                 <p className="m0 fw-500 color-dark">Recent deals are temporarily unavailable.</p>
+                                 <button type="button" className="btn-eight mt-15" onClick={() => setRetryCount((count) => count + 1)}>Try again</button>
+                              </div>
+                           </div>
                         ) : slides.length === 0 ? (
                            <div className="col-12">
                               <div className="text-center py-4 px-3" style={{ background: "#f7f7f7", borderRadius: 16 }}>
                                  <p className="m0 fw-500 color-dark">No recent deals available.</p>
-                                 <p className="m0 pt-10">Featured slides added in the admin dashboard will show here.</p>
                               </div>
                            </div>
                         ) : (
@@ -133,9 +145,9 @@ const Offcanvas = ({ offCanvas, setOffCanvas }: any) => {
                   </div>
                   <ul
                      className="style-none d-flex flex-wrap w-100 justify-content-between align-items-center social-icon pt-25 mt-auto">
-                     <li><Link href="https://www.facebook.com/share/1Cfzm1Fy4t/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer"><i className="fa-brands fa-facebook-f"></i></Link></li>
-                     <li><Link href="https://www.linkedin.com/company/degennaro-property/" target="_blank" rel="noopener noreferrer"><i className="fa-brands fa-linkedin-in"></i></Link></li>
-                     <li><Link href="https://www.instagram.com/dg_property_/" target="_blank" rel="noopener noreferrer"><i className="fa-brands fa-instagram"></i></Link></li>
+                     <li><Link href="https://www.facebook.com/share/1Cfzm1Fy4t/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Visit DG Property on Facebook"><i className="fa-brands fa-facebook-f" aria-hidden="true"></i></Link></li>
+                     <li><Link href="https://www.linkedin.com/company/degennaro-property/" target="_blank" rel="noopener noreferrer" aria-label="Visit DG Property on LinkedIn"><i className="fa-brands fa-linkedin-in" aria-hidden="true"></i></Link></li>
+                     <li><Link href="https://www.instagram.com/dg_property_/" target="_blank" rel="noopener noreferrer" aria-label="Visit DG Property on Instagram"><i className="fa-brands fa-instagram" aria-hidden="true"></i></Link></li>
                   </ul>
                </div>
             </div>

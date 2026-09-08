@@ -83,7 +83,7 @@ const ListingEightArea = ({ style }: any) => {
                         name=""
                         placeholder="" />
                   </div>
-                  <Link href={`/${style ? "listing_09" : "listing_07"}`} className="tran3s layout-change rounded-circle ms-auto ms-sm-3" data-bs-toggle="tooltip" title="Switch To Grid View"><i className="fa-regular fa-grid-2"></i></Link>
+                  <Link href={style ? "/listing_09" : "/properties"} className="tran3s layout-change rounded-circle ms-auto ms-sm-3" data-bs-toggle="tooltip" title="Switch To Grid View"><i className="fa-regular fa-grid-2"></i></Link>
                </div>
             </div>
 

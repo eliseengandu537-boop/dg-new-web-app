@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /dashboard/
+Disallow: /login
 
 Sitemap: https://dg-property.co.za/sitemap.xml

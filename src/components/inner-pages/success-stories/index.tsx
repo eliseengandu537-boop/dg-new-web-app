@@ -60,6 +60,13 @@ const SuccessStories = async () => {
         >
           <div className="row justify-content-center">
             <div className="col-lg-8">
+              <nav aria-label="Breadcrumb" style={{ marginBottom: 18 }}>
+                <ol style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", justifyContent: "center", gap: 8, flexWrap: "wrap", fontSize: 14 }}>
+                  <li><Link href="/" style={{ color: "rgba(255,255,255,0.68)", textDecoration: "none" }}>Home</Link></li>
+                  <li aria-hidden="true" style={{ color: "rgba(255,255,255,0.42)" }}>/</li>
+                  <li aria-current="page" style={{ color: "#fff" }}>Success Stories</li>
+                </ol>
+              </nav>
               <div
                 style={{
                   display: "inline-block",
@@ -103,7 +110,7 @@ const SuccessStories = async () => {
                 href="/inquiry"
                 style={{
                   display: "inline-block",
-                  background: "linear-gradient(90deg, #888e7d 0%, #6b7263 100%)",
+                  background: "linear-gradient(90deg, #5f6758 0%, #4f584a 100%)",
                   color: "#fff",
                   fontWeight: 600,
                   fontSize: 15,
@@ -133,8 +140,8 @@ const SuccessStories = async () => {
             Success Stories
           </h2>
           <div style={{ width: 60, height: 4, background: "linear-gradient(90deg, #888e7d, #b5a98a)", borderRadius: 2, margin: "0 auto 24px" }} />
-          <p style={{ maxWidth: 640, margin: "0 auto", fontSize: 16, color: "#718096", lineHeight: 1.85 }}>
-            Explore a selection of landmark projects we&apos;ve helped bring to life, from neighbourhood retail hubs to large-scale mall transformations.
+          <p style={{ maxWidth: 640, margin: "0 auto", fontSize: 16, color: "#4a5568", lineHeight: 1.85 }}>
+            Explore published DG Property projects, from neighbourhood retail hubs to mall developments and refurbishments.
           </p>
         </div>
       </section>
@@ -212,7 +219,7 @@ const SuccessStories = async () => {
                             position: "absolute",
                             top: 16,
                             left: 16,
-                            background: "#888e7d",
+                            background: "#5f6758",
                             color: "#fff",
                             fontSize: 11,
                             fontWeight: 700,
@@ -240,7 +247,7 @@ const SuccessStories = async () => {
                         {story.title}
                       </h4>
                       <div style={{ width: 40, height: 3, background: "#888e7d", borderRadius: 2, marginBottom: 16 }} />
-                      <p style={{ fontSize: 14, color: "#718096", lineHeight: 1.75, marginBottom: 20, flexGrow: 1 }}>
+                      <p style={{ fontSize: 14, color: "#4a5568", lineHeight: 1.75, marginBottom: 20, flexGrow: 1 }}>
                         {story.summary || "Explore how DG Property helped deliver this project."}
                       </p>
 
@@ -256,14 +263,14 @@ const SuccessStories = async () => {
                       >
                         {story.location && (
                           <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                            <i className="bi bi-geo-alt" style={{ color: "#888e7d", fontSize: 14 }} />
-                            <span style={{ fontSize: 12, color: "#718096" }}>{story.location}</span>
+                            <i className="bi bi-geo-alt" aria-hidden="true" style={{ color: "#5f6758", fontSize: 14 }} />
+                            <span style={{ fontSize: 12, color: "#4a5568" }}>{story.location}</span>
                           </div>
                         )}
                         {story.gla && (
                           <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                            <i className="bi bi-rulers" style={{ color: "#888e7d", fontSize: 14 }} />
-                            <span style={{ fontSize: 12, color: "#718096" }}>{story.gla}</span>
+                            <i className="bi bi-rulers" aria-hidden="true" style={{ color: "#5f6758", fontSize: 14 }} />
+                            <span style={{ fontSize: 12, color: "#4a5568" }}>{story.gla}</span>
                           </div>
                         )}
                       </div>
@@ -273,7 +280,7 @@ const SuccessStories = async () => {
                           display: "inline-flex",
                           alignItems: "center",
                           gap: 8,
-                          color: "#888e7d",
+                          color: "#5f6758",
                           fontWeight: 700,
                           fontSize: 14,
                           letterSpacing: 0.3,

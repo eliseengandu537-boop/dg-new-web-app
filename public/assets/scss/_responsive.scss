@@ -644,7 +644,8 @@
  
  
  /*Extra Small breakpoints*/
- @media (max-width: 575px) {
+@media (max-width: 575px) {
+   .fancy-banner-two {background-attachment: scroll;}
    .btn-four {width: 45px; height: 45px;}
    .user-data-form h2 {font-size: 35px;}
    .title-one h2.home-two-one-line-title {font-size: 32px;}

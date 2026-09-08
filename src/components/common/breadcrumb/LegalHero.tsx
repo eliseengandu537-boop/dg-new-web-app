@@ -122,14 +122,9 @@ const LegalHero = ({ title, eyebrow = "Legal", description, lastUpdated }: Props
                      </p>
                   )}
 
-                  <ul
+                  <nav aria-label="Breadcrumb"><ol
                      className="d-inline-flex align-items-center justify-content-center"
-                     style={{
-                        listStyle: "none",
-                        padding: 0,
-                        margin: "34px 0 0",
-                        gap: 10,
-                     }}
+                     style={{ listStyle: "none", padding: 0, margin: "34px 0 0", gap: 10 }}
                   >
                      <li>
                         <Link
@@ -143,11 +138,11 @@ const LegalHero = ({ title, eyebrow = "Legal", description, lastUpdated }: Props
                            Home
                         </Link>
                      </li>
-                     <li style={{ color: "rgba(255,255,255,0.32)", fontSize: "0.85rem" }}>/</li>
+                     <li aria-hidden="true" style={{ color: "rgba(255,255,255,0.32)", fontSize: "0.85rem" }}>/</li>
                      <li style={{ color: "rgba(255,255,255,0.62)", fontSize: "0.85rem" }}>{eyebrow}</li>
-                     <li style={{ color: "rgba(255,255,255,0.32)", fontSize: "0.85rem" }}>/</li>
-                     <li style={{ color: "#f0b95e", fontSize: "0.85rem", fontWeight: 600 }}>{title}</li>
-                  </ul>
+                     <li aria-hidden="true" style={{ color: "rgba(255,255,255,0.32)", fontSize: "0.85rem" }}>/</li>
+                     <li aria-current="page" style={{ color: "#f0b95e", fontSize: "0.85rem", fontWeight: 600 }}>{title}</li>
+                  </ol></nav>
                </div>
             </div>
          </div>

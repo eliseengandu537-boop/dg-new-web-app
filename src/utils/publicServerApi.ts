@@ -4,6 +4,14 @@ import type { Broker } from "@/components/inner-pages/agent/types";
 import type { SuccessStory } from "@/components/inner-pages/success-stories/types";
 import { getServerApiRoot } from "./serverApiTargets";
 
+export interface PublicNewsPost {
+  title: string;
+  slug: string;
+  summary?: string;
+  imageUrl?: string;
+  featuredImage?: string;
+}
+
 export class PublicApiError extends Error {
   status: number;
 
@@ -56,6 +64,18 @@ export const getPublicSuccessStories = async () =>
 export const getPublicSuccessStoryBySlug = async (slug: string) => {
   try {
     return await fetchPublicJson<SuccessStory>(`/success-stories/public/${slug}`);
+  } catch (error) {
+    if (error instanceof PublicApiError && error.status === 404) {
+      return null;
+    }
+
+    throw error;
+  }
+};
+
+export const getPublicNewsBySlug = async (slug: string) => {
+  try {
+    return await fetchPublicJson<PublicNewsPost>(`/news/public/${slug}`);
   } catch (error) {
     if (error instanceof PublicApiError && error.status === 404) {
       return null;

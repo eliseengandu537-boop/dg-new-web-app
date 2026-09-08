@@ -18,25 +18,26 @@ import brandLogo_13 from "@/assets/images/logo/l13.png"
 
 type BrandLogo = {
    key: string
+   name: string
    src: StaticImageData
    width?: number
    height?: number
 }
 
 const brand_data: BrandLogo[] = [
-   { key: "l1", src: brandLogo_1 },
-   { key: "l2", src: brandLogo_2 },
-   { key: "l3", src: brandLogo_3 },
-   { key: "l4", src: brandLogo_4 },
-   { key: "l5", src: brandLogo_5 },
-   { key: "l6", src: brandLogo_6 },
-   { key: "l7", src: brandLogo_7 },
-   { key: "l8", src: brandLogo_8 },
-   { key: "l9", src: brandLogo_9 },
-   { key: "l10", src: brandLogo_10 },
-   { key: "l11", src: brandLogo_11 },
-   { key: "l12", src: brandLogo_12 },
-   { key: "l13", src: brandLogo_13 },
+   { key: "l1", name: "Boxer", src: brandLogo_1 },
+   { key: "l2", name: "Fairvest Limited", src: brandLogo_2 },
+   { key: "l3", name: "Famous Brands", src: brandLogo_3 },
+   { key: "l4", name: "Galito's", src: brandLogo_4 },
+   { key: "l5", name: "KFC", src: brandLogo_5 },
+   { key: "l6", name: "Levingers", src: brandLogo_6 },
+   { key: "l7", name: "Octodec Investments", src: brandLogo_7 },
+   { key: "l8", name: "Orion Group", src: brandLogo_8 },
+   { key: "l9", name: "Primi", src: brandLogo_9 },
+   { key: "l10", name: "Redefine Properties", src: brandLogo_10 },
+   { key: "l11", name: "Sausage Saloon", src: brandLogo_11 },
+   { key: "l12", name: "Shift Espresso Bar", src: brandLogo_12 },
+   { key: "l13", name: "Shorties Chickens", src: brandLogo_13 },
 ]
 
 const setting = {
@@ -77,7 +78,7 @@ const BrandTwo = () => {
                <div key={brand.key} className="item" style={{ padding: "10px 20px", display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <Image
                      src={brand.src}
-                     alt=""
+                     alt={`${brand.name} logo`}
                      style={{
                         height: brand.height || 80,
                         width: brand.width || 180,

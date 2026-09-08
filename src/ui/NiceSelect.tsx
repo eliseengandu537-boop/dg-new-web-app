@@ -1,6 +1,5 @@
 "use client"
-import React, { useState, useCallback, useRef, FC, ChangeEvent } from "react";
-import { useClickAway } from "react-use";
+import React, { FC, ChangeEvent } from "react";
 
 interface Option {
   value: string;
@@ -24,53 +23,22 @@ const NiceSelect: FC<NiceSelectProps> = ({
   onChange,
   name,
 }) => {
-  const [open, setOpen] = useState(false);
-  const [current, setCurrent] = useState<Option>(options[defaultCurrent]);
-  const onClose = useCallback(() => {
-    setOpen(false);
-  }, []);
-  const ref = useRef<HTMLDivElement | null>(null);
-
-  useClickAway(ref, onClose);
-
-  const currentHandler = (item: Option) => {
-    setCurrent(item);
-    onChange({ target: { value: item.value } } as ChangeEvent<HTMLSelectElement>);
-    onClose();
-  };
+  const accessibleName = name
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/[-_]+/g, " ")
+    .replace(/^./, (character) => character.toUpperCase());
 
   return (
-    <div
-      className={`nice-select form-select-lg ${className || ""} ${open ? "open" : ""}`}
-      role="button"
-      tabIndex={0}
-      onClick={() => setOpen((prev) => !prev)}
-      onKeyDown={(e) => e}
-      ref={ref}
+    <select
+      className={`nice-select form-select-lg ${className || ""}`}
+      defaultValue={options[defaultCurrent]?.value || ""}
+      onChange={onChange}
+      name={name}
+      aria-label={accessibleName || placeholder || "Select an option"}
     >
-      <span className="current">{current?.text || placeholder}</span>
-      <ul
-        className="list"
-        role="menubar"
-        onClick={(e) => e.stopPropagation()}
-        onKeyDown={(e) => e.stopPropagation()}
-      >
-        {options?.map((item, i) => (
-          <li
-            key={i}
-            data-value={item.value}
-            className={`option ${item.value === current?.value ? "selected focus" : ""
-              }`}
-            style={{ fontSize: '14px' }}
-            role="menuitem"
-            onClick={() => currentHandler(item)}
-            onKeyDown={(e) => e}
-          >
-            {item.text}
-          </li>
-        ))}
-      </ul>
-    </div>
+      {placeholder && !options.some((item) => item.value === "") && <option value="">{placeholder}</option>}
+      {options?.map((item, i) => <option key={`${item.value}-${i}`} value={item.value}>{item.text}</option>)}
+    </select>
   );
 };
 

@@ -48,7 +48,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f7fafc", display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
+    <main style={{ minHeight: "100vh", background: "#f7fafc", display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
       <div style={{ background: "#fff", borderRadius: 16, padding: "40px 36px", width: "100%", maxWidth: 420, boxShadow: "0 4px 24px rgba(0,0,0,0.08)" }}>
         <div style={{ textAlign: "center", marginBottom: 32 }}>
           <div style={{ fontSize: 22, fontWeight: 700, color: "#1a2332" }}>DG Property</div>
@@ -56,24 +56,30 @@ export default function LoginPage() {
         </div>
 
         {error && (
-          <div style={{ background: "#fff5f5", border: "1px solid #fed7d7", borderRadius: 8, padding: "10px 14px", color: "#c53030", fontSize: 14, marginBottom: 18 }}>
+          <div role="alert" aria-live="polite" style={{ background: "#fff5f5", border: "1px solid #fed7d7", borderRadius: 8, padding: "10px 14px", color: "#c53030", fontSize: 14, marginBottom: 18 }}>
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: 16 }}>
-            <label style={{ display: "block", fontSize: 13, fontWeight: 500, color: "#4a5568", marginBottom: 6 }}>Email address</label>
+            <label htmlFor="login-email" style={{ display: "block", fontSize: 13, fontWeight: 500, color: "#4a5568", marginBottom: 6 }}>Email address</label>
             <input
+              id="login-email"
               type="email" value={email} onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
+              required
               placeholder="you@example.com"
               style={{ width: "100%", padding: "10px 14px", border: "1px solid #e2e8f0", borderRadius: 8, fontSize: 14, outline: "none", boxSizing: "border-box" }}
             />
           </div>
           <div style={{ marginBottom: 24 }}>
-            <label style={{ display: "block", fontSize: 13, fontWeight: 500, color: "#4a5568", marginBottom: 6 }}>Password</label>
+            <label htmlFor="login-password" style={{ display: "block", fontSize: 13, fontWeight: 500, color: "#4a5568", marginBottom: 6 }}>Password</label>
             <input
+              id="login-password"
               type="password" value={password} onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+              required
               placeholder="••••••••"
               style={{ width: "100%", padding: "10px 14px", border: "1px solid #e2e8f0", borderRadius: 8, fontSize: 14, outline: "none", boxSizing: "border-box" }}
             />
@@ -90,6 +96,6 @@ export default function LoginPage() {
           <Link href="/" style={{ fontSize: 13, color: "#a0aec0", textDecoration: "none" }}>← Back to website</Link>
         </p>
       </div>
-    </div>
+    </main>
   );
 }

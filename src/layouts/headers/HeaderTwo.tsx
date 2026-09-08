@@ -17,7 +17,7 @@ const HeaderTwo = ({ style_1, style_2 }: any) => {
 
    return (
       <>
-         <div className={`theme-main-menu menu-overlay sticky-menu ${style_2 ? "menu-style-four" : style_1 ? "menu-style-three" : "menu-style-two"} ${sticky ? "fixed" : "white-vr"}`}>
+         <header className={`theme-main-menu menu-overlay sticky-menu ${style_2 ? "menu-style-four" : style_1 ? "menu-style-three" : "menu-style-two"} ${sticky ? "fixed" : "white-vr"}`}>
             <div className={`inner-content ${style_2 ? "gap-two" : "gap-one"}`}>
                <div className="top-header position-relative">
                   <div className="d-flex align-items-center">
@@ -35,12 +35,12 @@ const HeaderTwo = ({ style_1, style_2 }: any) => {
                                  <Link href={contactInfo.phoneHref} className="tran3s">{contactInfo.phoneDisplay}</Link>
                               </li>
                               <li>
-                                 <a onClick={() => setIsSearch(true)} style={{ cursor: "pointer" }} className="search-btn-one rounded-circle tran3s d-flex align-items-center justify-content-center"><i className="bi bi-search"></i></a>
+                                 <button onClick={() => setIsSearch(true)} type="button" aria-label="Search properties" style={{ cursor: "pointer", border: 0 }} className="search-btn-one rounded-circle tran3s d-flex align-items-center justify-content-center"><i className="bi bi-search" aria-hidden="true"></i></button>
                               </li>
                            </>) : (
                               <li className="d-none d-xl-block">
-                                 <button onClick={() => setOffCanvas(true)} style={{ cursor: "pointer" }} className="sidenavbtn rounded-circle tran3s" type="button">
-                                    <i className="fa-sharp fa-light fa-bars-filter"></i>
+                                 <button onClick={() => setOffCanvas(true)} style={{ cursor: "pointer" }} className="sidenavbtn rounded-circle tran3s" type="button" aria-label="Open quick contact and recent deals">
+                                    <i className="fa-sharp fa-light fa-bars-filter" aria-hidden="true"></i>
                                  </button>
                               </li>
                            )}
@@ -60,7 +60,7 @@ const HeaderTwo = ({ style_1, style_2 }: any) => {
                   </div>
                </div>
             </div>
-         </div>
+         </header>
 
          <Offcanvas offCanvas={offCanvas} setOffCanvas={setOffCanvas} />
          <HeaderSearchbar isSearch={isSearch} setIsSearch={setIsSearch} />

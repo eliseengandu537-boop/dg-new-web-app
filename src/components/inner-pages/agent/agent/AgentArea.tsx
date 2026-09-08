@@ -211,7 +211,7 @@ const AgentArea = async () => {
     <section style={{ background: "#f8f9fa", padding: "clamp(72px, 9vw, 100px) 0 clamp(56px, 7vw, 80px)" }}>
       <div className="container">
         <div style={{ textAlign: "center", marginBottom: 48 }}>
-          <p style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.22em", textTransform: "uppercase", color: "#c8973a", marginBottom: 12 }}>
+          <p style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.22em", textTransform: "uppercase", color: "#80601f", marginBottom: 12 }}>
             Our Team
           </p>
           <h2 style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.6rem)", fontWeight: 700, color: "#0d1f2d", marginBottom: 14, fontFamily: "var(--site-font-family)" }}>
@@ -252,10 +252,10 @@ const AgentArea = async () => {
             <TeamSection
               eyebrow="Leadership & Operations"
               title="Management"
-              description="The leadership and operational team responsible for DG Property’s direction, client experience and day-to-day excellence."
+              description="The leadership and operational team responsible for DG Property’s direction, client experience and day-to-day work."
               members={management}
               group="Management"
-              accent="#c8973a"
+              accent="#80601f"
             />
             <TeamSection
               eyebrow="Market Specialists"

@@ -1,6 +1,7 @@
 import "server-only";
 import type { Metadata } from "next";
 import { getServerApiRoot } from "./serverApiTargets";
+import { SOCIAL_IMAGE_PATH } from "./seo";
 
 // The live, canonical domain — used to build absolute URLs for SEO/social tags.
 export const SITE_URL = "https://dg-property.co.za";
@@ -104,7 +105,7 @@ export function buildPropertyMetadata(p: any, id: string | number): Metadata {
     .join(" ");
   const description = fromBody || fallback;
 
-  const image = absoluteImage(p?.featuredImage);
+  const image = absoluteImage(p?.featuredImage) || `${SITE_URL}${SOCIAL_IMAGE_PATH}`;
   const url = propertyUrl(id);
 
   return {
@@ -117,13 +118,13 @@ export function buildPropertyMetadata(p: any, id: string | number): Metadata {
       url,
       type: "website",
       siteName: "DG Property",
-      ...(image ? { images: [{ url: image }] } : {}),
+      images: [{ url: image, width: 1200, height: 630, alt: p?.title || "DG Property listing" }],
     },
     twitter: {
-      card: image ? "summary_large_image" : "summary",
+      card: "summary_large_image",
       title,
       description,
-      ...(image ? { images: [image] } : {}),
+      images: [image],
     },
   };
 }

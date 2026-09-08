@@ -24,7 +24,7 @@ const menu_data: MenuItem[] = [
         id: 1,
         has_dropdown: false,
         title: "Home",
-        link: "/home-two",
+        link: "/",
     },
 
     {
@@ -33,13 +33,13 @@ const menu_data: MenuItem[] = [
         title: "Properties",
         link: "#",
         sub_menus: [
-            { link: "/listing_07", title: "All Listings" },
+            { link: "/properties", title: "All Listings" },
             { link: "/commercial-for-lease", title: "Commercial To Let" },
             { link: "/fuel-station", title: "Fuel Station" },
             { link: "/investment", title: "Investment" },
-            { link: "/listing_09", title: "Retail Leasing" },
+            { link: "/retail-properties", title: "Retail Properties" },
             { link: "/development-land", title: "Development Land" },
-            { link: "/listing_03", title: "Industrial Warehouse" },
+            { link: "/industrial-warehouse", title: "Industrial & Warehouse" },
         ],
     },
 
@@ -49,9 +49,9 @@ const menu_data: MenuItem[] = [
         title: "Services",
         link: "#",
         sub_menus: [
-            { link: "/service_02", title: "Investment Sales" },
-            { link: "/service_details", title: "Retail Leasing" },
-            { link: "/service_03", title: "Development Leasing" },
+            { link: "/investment-sales", title: "Investment Sales" },
+            { link: "/retail-leasing", title: "Retail Leasing" },
+            { link: "/development-leasing", title: "Development Leasing" },
         ],
     },
 

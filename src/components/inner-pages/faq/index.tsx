@@ -8,7 +8,7 @@ const Faq = () => {
    return (
       <>
          <HeaderOne style={true} />
-         <BreadcrumbOne title="Question & Answers" link="#" link_title="Pages" sub_title="Faq’s" style={true} />
+         <BreadcrumbOne title="Questions & Answers" sub_title="Frequently Asked Questions" style={false} />
          <FaqArea/>
          <FancyBanner style={false} />
          <FooterFour />

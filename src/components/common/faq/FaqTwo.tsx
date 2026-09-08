@@ -9,7 +9,7 @@ const FaqTwo = () => {
             <div key={item.id} className="accordion-item">
                <h2 className="accordion-header">
                   <button className={`accordion-button ${item.id === 3 ? "" : "collapsed"}`} type="button"
-                     data-bs-toggle="collapse" data-bs-target={`#collapse${item.id}`} aria-expanded="true"
+                     data-bs-toggle="collapse" data-bs-target={`#collapse${item.id}`} aria-expanded={item.id === 3}
                      aria-controls={`collapse${item.id}`}>
                      {item.question}
                   </button>

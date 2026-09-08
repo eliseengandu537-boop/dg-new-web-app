@@ -107,11 +107,11 @@ const PropertyCard = ({ item, detailsLink = "/listing_details_06" }: PropertyCar
         ) : apiImg ? (
           <Link href={itemLink} className="d-block" style={{ display: "block", height: "100%" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={apiImg} alt={item.title || ""} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+            <img src={apiImg} alt={item.title || "Property listing"} loading="lazy" decoding="async" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
           </Link>
         ) : (
-          <Link href={itemLink} style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", background: "#e8edf2" }}>
-            <i className="bi bi-building" style={{ fontSize: 48, color: "#a0aec0" }}></i>
+          <Link href={itemLink} aria-label={`View ${item.title || "property"}`} style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", background: "#e8edf2" }}>
+            <i className="bi bi-building" aria-hidden="true" style={{ fontSize: 48, color: "#a0aec0" }}></i>
           </Link>
         )}
       </div>
@@ -127,7 +127,7 @@ const PropertyCard = ({ item, detailsLink = "/listing_details_06" }: PropertyCar
         </Link>
 
         {/* Address */}
-        <div style={{ display: "flex", alignItems: "flex-start", gap: 6, color: "#3d8c6f", marginBottom: 16, fontSize: 14 }}>
+        <div style={{ display: "flex", alignItems: "flex-start", gap: 6, color: "#2f6f57", marginBottom: 16, fontSize: 14 }}>
           <i className="bi bi-geo-alt-fill" style={{ marginTop: 2, flexShrink: 0 }}></i>
           <span>{address}</span>
         </div>
@@ -143,7 +143,7 @@ const PropertyCard = ({ item, detailsLink = "/listing_details_06" }: PropertyCar
           </div>
           {units > 0 && (
             <>
-              <span style={{ color: "#ccc", margin: "0 8px" }}>|</span>
+              <span aria-hidden="true" style={{ color: "#666", margin: "0 8px" }}>|</span>
               <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 13, color: "#555" }}>
                 <i className="bi bi-building" style={{ fontSize: 13 }}></i>
                 <span>{units} units</span>
@@ -155,19 +155,19 @@ const PropertyCard = ({ item, detailsLink = "/listing_details_06" }: PropertyCar
         {/* Price */}
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginTop: "auto" }}>
           <div>
-            <div style={{ fontSize: 10, fontWeight: 700, color: "#aaa", letterSpacing: 1.2, textTransform: "uppercase", marginBottom: 3 }}>
+            <div style={{ fontSize: 10, fontWeight: 700, color: "#595959", letterSpacing: 1.2, textTransform: "uppercase", marginBottom: 3 }}>
               {pricing.label}
             </div>
             <strong style={{ fontSize: 20, fontWeight: 800, color: "#1a1a2e" }}>
               {pricing.value}
             </strong>
           </div>
-          <Link href={itemLink} style={{
+          <Link href={itemLink} aria-label={`View details for ${item.title || "this property"}`} style={{
             width: 44, height: 44, background: "#1a1a2e", color: "#fff",
             borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
             textDecoration: "none", flexShrink: 0,
           }}>
-            <i className="bi bi-arrow-up-right"></i>
+            <i className="bi bi-arrow-up-right" aria-hidden="true"></i>
           </Link>
         </div>
       </div>

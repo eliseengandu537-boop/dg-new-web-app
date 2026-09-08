@@ -40,7 +40,7 @@ const FancyBannerTwo = () => {
                      className="tran3s">
                      Send an Inquiry <i className="bi bi-arrow-up-right"></i>
                   </Link>
-                  <Link href="/listing_07"
+                  <Link href="/properties"
                      style={{ display: "inline-flex", alignItems: "center", gap: 8, color: "rgba(255,255,255,0.65)", fontSize: 14, fontWeight: 500 }}
                      className="tran3s">
                      <i className="bi bi-buildings"></i> Browse All Listings
