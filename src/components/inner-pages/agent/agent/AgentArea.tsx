@@ -89,7 +89,7 @@ const TeamCard = ({ member, group }: TeamCardProps) => {
         </div>
 
         <h3 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#0d1f2d", marginBottom: 6 }}>
-          <Link href={`/agent_details?id=${member.id}`} style={{ color: "inherit", textDecoration: "none" }}>
+          <Link href={`/agent/${member.id}`} style={{ color: "inherit", textDecoration: "none" }}>
             {member.fullName.trim()}
           </Link>
         </h3>
@@ -108,7 +108,7 @@ const TeamCard = ({ member, group }: TeamCardProps) => {
         </p>
 
         <Link
-          href={`/agent_details?id=${member.id}`}
+          href={`/agent/${member.id}`}
           style={{
             display: "inline-flex",
             alignItems: "center",
