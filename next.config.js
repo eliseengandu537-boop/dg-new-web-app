@@ -23,7 +23,6 @@ const nextConfig = {
       { source: "/about_us_01", destination: "/about_us_02", permanent: true },
       { source: "/agency", destination: "/agent", permanent: true },
       { source: "/agency_details", destination: "/agent", permanent: true },
-      { source: "/agent_details", destination: "/agent", permanent: true },
       { source: "/blog_01", destination: "/property-news", permanent: true },
       { source: "/blog_02", destination: "/property-news", permanent: true },
       { source: "/blog_03", destination: "/property-news", permanent: true },
