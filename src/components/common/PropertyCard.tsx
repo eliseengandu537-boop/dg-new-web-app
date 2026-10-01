@@ -1,7 +1,9 @@
 "use client"
 import Image, { StaticImageData } from "next/image"
 import Link from "next/link"
+import Fancybox from "@/components/common/Fancybox"
 import { getPriceDisplay } from "@/utils/pricing"
+import { resolveMediaUrl } from "@/utils/publicMedia"
 
 interface PropertyCardProps {
   item: any;
@@ -16,6 +18,34 @@ function getBadgeColors(tag: string): { bg: string; color: string } {
   return { bg: "#2d3748", color: "#fff" };
 }
 
+const getGallery = (item: any, staticImage: StaticImageData | null) => {
+  let gallery: unknown[] = [];
+
+  if (Array.isArray(item.gallery)) {
+    gallery = item.gallery;
+  } else if (typeof item.gallery === "string") {
+    try {
+      const parsed = JSON.parse(item.gallery);
+      gallery = Array.isArray(parsed) ? parsed : [];
+    } catch {
+      gallery = [];
+    }
+  }
+
+  const staticGallery = Array.isArray(item.carousel_thumb)
+    ? item.carousel_thumb.map((entry: any) => entry?.img)
+    : [];
+
+  return [staticImage, item.featuredImage, ...staticGallery, ...gallery]
+    .map((image) => {
+      if (!image) return "";
+      if (typeof image === "string") return resolveMediaUrl(image);
+      if (typeof image === "object" && "src" in image) return String((image as StaticImageData).src);
+      return "";
+    })
+    .filter((image, index, images) => Boolean(image) && images.indexOf(image) === index);
+};
+
 const PropertyCard = ({ item, detailsLink = "/listing_details_06" }: PropertyCardProps) => {
   // Build the full link — API properties have a numeric id, append it as a query param
   const itemLink = item.id && !item.carousel_thumb
@@ -24,7 +54,9 @@ const PropertyCard = ({ item, detailsLink = "/listing_details_06" }: PropertyCar
 
   // Resolve image
   const staticImg: StaticImageData | null = item.carousel_thumb?.[0]?.img ?? null;
-  const apiImg: string | null = item.featuredImage ?? null;
+  const galleryImages = getGallery(item, staticImg);
+  const primaryImage = galleryImages[0] || null;
+  const galleryName = `listing-card-${item.id || "property"}`;
 
   // Badge
   const tag: string =
@@ -100,15 +132,47 @@ const PropertyCard = ({ item, detailsLink = "/listing_details_06" }: PropertyCar
           {tag}
         </div>
 
-        {staticImg ? (
-          <Link href={itemLink} className="d-block" style={{ display: "block", height: "100%" }}>
-            <Image src={staticImg} alt={item.title || ""} fill style={{ objectFit: "cover" }} />
-          </Link>
-        ) : apiImg ? (
-          <Link href={itemLink} className="d-block" style={{ display: "block", height: "100%" }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={apiImg} alt={item.title || "Property listing"} loading="lazy" decoding="async" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-          </Link>
+        {primaryImage ? (
+          <Fancybox options={{ Carousel: { infinite: true } }}>
+            <a
+              href={primaryImage}
+              data-fancybox={galleryName}
+              data-caption={item.title || "Property listing"}
+              aria-label={`Open photos for ${item.title || "this property"}`}
+              style={{ position: "relative", display: "block", height: 220, cursor: "zoom-in" }}
+            >
+              {staticImg ? (
+                <Image src={staticImg} alt={item.title || ""} fill style={{ objectFit: "cover" }} />
+              ) : (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img src={primaryImage} alt={item.title || "Property listing"} loading="lazy" decoding="async" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              )}
+            </a>
+
+            {galleryImages.slice(1).map((image, index) => (
+              <a
+                key={`${image}-${index}`}
+                href={image}
+                data-fancybox={galleryName}
+                data-caption={`${item.title || "Property listing"} — photo ${index + 2}`}
+                style={{ display: "none" }}
+              >
+                {`Photo ${index + 2}`}
+              </a>
+            ))}
+
+            <span style={{
+              position: "absolute", right: 12, bottom: 12, zIndex: 2,
+              display: "inline-flex", alignItems: "center", gap: 6,
+              padding: "6px 11px", borderRadius: 999,
+              background: "rgba(26,26,46,0.88)", color: "#fff",
+              boxShadow: "0 4px 14px rgba(0,0,0,0.18)",
+              fontSize: 11, fontWeight: 700, pointerEvents: "none",
+            }}>
+              <i className="bi bi-images" aria-hidden="true" />
+              View {galleryImages.length} photo{galleryImages.length === 1 ? "" : "s"}
+            </span>
+          </Fancybox>
         ) : (
           <Link href={itemLink} aria-label={`View ${item.title || "property"}`} style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", background: "#e8edf2" }}>
             <i className="bi bi-building" aria-hidden="true" style={{ fontSize: 48, color: "#a0aec0" }}></i>
