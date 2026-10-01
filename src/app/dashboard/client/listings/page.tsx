@@ -1,8 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Fancybox from "@/components/common/Fancybox";
 import { fetchClientListings, deleteClientListing, fetchMySubscription } from "@/utils/dashboardApi";
-import { resolveAbsoluteMediaUrl } from "@/utils/publicMedia";
+import { resolveMediaUrl } from "@/utils/publicMedia";
 
 interface Listing {
   id: number;
@@ -14,8 +15,28 @@ interface Listing {
   city?: string;
   price?: number;
   featuredImage?: string;
+  gallery?: string[] | string;
   createdAt: string;
 }
+
+const getListingImages = (listing: Listing) => {
+  let gallery: string[] = [];
+
+  if (Array.isArray(listing.gallery)) {
+    gallery = listing.gallery;
+  } else if (typeof listing.gallery === "string") {
+    try {
+      const parsed = JSON.parse(listing.gallery);
+      gallery = Array.isArray(parsed) ? parsed : [];
+    } catch {
+      gallery = [];
+    }
+  }
+
+  return [listing.featuredImage, ...gallery]
+    .map((image) => resolveMediaUrl(image))
+    .filter((image, index, images): image is string => Boolean(image) && images.indexOf(image) === index);
+};
 
 const STATUS_BADGE: Record<string, { bg: string; color: string; label: string }> = {
   draft:      { bg: "#f0f0f0", color: "#888",    label: "Draft" },
@@ -118,12 +139,13 @@ export default function ClientListingsPage() {
       )}
 
       {/* Listings grid */}
+      <Fancybox options={{ Carousel: { infinite: true } }}>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 20 }}>
         {listings.map((listing) => {
           const badge = STATUS_BADGE[listing.status] || STATUS_BADGE.draft;
-          const imgUrl = listing.featuredImage
-            ? resolveAbsoluteMediaUrl(listing.featuredImage)
-            : null;
+          const images = getListingImages(listing);
+          const imgUrl = images[0] || null;
+          const galleryName = `client-listing-${listing.id}`;
           const canEdit = ["draft", "pending"].includes(listing.status);
 
           return (
@@ -131,7 +153,46 @@ export default function ClientListingsPage() {
               {/* Image */}
               <div style={{ height: 150, background: "#f0f0f0", position: "relative" }}>
                 {imgUrl
-                  ? <img src={imgUrl} alt={listing.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  ? (
+                    <>
+                      <a
+                        href={imgUrl}
+                        data-fancybox={galleryName}
+                        data-caption={listing.title}
+                        aria-label={`Open photos for ${listing.title}`}
+                        style={{ display: "block", width: "100%", height: "100%", cursor: "zoom-in" }}
+                      >
+                        <img src={imgUrl} alt={listing.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      </a>
+                      {images.slice(1).map((image, index) => (
+                        <a
+                          key={`${image}-${index}`}
+                          href={image}
+                          data-fancybox={galleryName}
+                          data-caption={`${listing.title} — photo ${index + 2}`}
+                          style={{ display: "none" }}
+                        >
+                          {`Photo ${index + 2}`}
+                        </a>
+                      ))}
+                      <a
+                        href={imgUrl}
+                        data-fancybox-trigger={galleryName}
+                        data-fancybox-index="0"
+                        aria-label={`View ${images.length} photo${images.length === 1 ? "" : "s"} for ${listing.title}`}
+                        style={{
+                          position: "absolute", left: 10, bottom: 10,
+                          display: "inline-flex", alignItems: "center", gap: 6,
+                          padding: "5px 10px", borderRadius: 20,
+                          background: "rgba(26,35,50,0.86)", color: "#fff",
+                          fontSize: 11, fontWeight: 700, textDecoration: "none",
+                        }}
+                      >
+                        <i className="bi bi-images" />
+                        View {images.length} photo{images.length === 1 ? "" : "s"}
+                      </a>
+                    </>
+                  )
                   : <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: "#ccc", fontSize: 32 }}>🏢</div>
                 }
                 <span style={{
@@ -184,6 +245,7 @@ export default function ClientListingsPage() {
           );
         })}
       </div>
+      </Fancybox>
     </div>
   );
 }
