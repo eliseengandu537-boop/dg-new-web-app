@@ -26,9 +26,9 @@ const InquiryArea = () => {
                         We&apos;ll take it from here.
                      </h1>
                      <p className="dg-inquiry-hero__lead">
-                        Leasing commercial space, exploring an investment, selling a property or just
-                        scoping out the market? Use the form below and the right person at DG Property
-                        will come back to you with clear next steps.
+                        Looking for commercial property management, leasing space, exploring an
+                        investment, selling a property or just scoping out the market? Use the form
+                        below and the right person at DG Property will come back to you with clear next steps.
                      </p>
                   </div>
 

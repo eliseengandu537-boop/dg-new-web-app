@@ -52,6 +52,7 @@ const menu_data: MenuItem[] = [
             { link: "/investment-sales", title: "Investment Sales" },
             { link: "/retail-leasing", title: "Retail Leasing" },
             { link: "/development-leasing", title: "Development Leasing" },
+            { link: "/our-services#property-management", title: "Property Management" },
         ],
     },
 

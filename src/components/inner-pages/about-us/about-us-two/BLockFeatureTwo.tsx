@@ -15,6 +15,7 @@ const serviceLinks: Record<string, string> = {
    "Tenant Representation": "/inquiry",
    "Development Land": "/development-land",
    "Portfolio Advisory": "/inquiry",
+   "Commercial Property Management": "/inquiry",
 };
 
 const BLockFeatureTwo = () => {
@@ -29,7 +30,7 @@ const BLockFeatureTwo = () => {
                            Core <span>Services<Image src={serviceShape_1} alt="" className="lazy-img" /></span>
                         </h3>
                         <p className="fs-22 color-dark">
-                           Commercial, industrial, investment and development services across South Africa.
+                           Commercial, industrial, investment, development and property management services across South Africa.
                         </p>
                      </div>
                   </div>

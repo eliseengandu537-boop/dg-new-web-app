@@ -15,7 +15,7 @@ const FooterFour = () => {
                      <Image src={footerLogo} alt="DG Property" width={130} height={54} style={{ filter: "brightness(0) invert(1)", marginBottom: 24 }} />
                   </Link>
                   <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", lineHeight: 1.7, marginBottom: 20 }}>
-                     Specialist commercial property brokerage headquartered in Johannesburg.
+                     Specialist commercial property brokerage and management company headquartered in Johannesburg.
                   </p>
                   <p style={{ color: "rgba(255,255,255,0.78)", fontSize: "0.82rem", marginBottom: 4 }}>{contactInfo.fullAddress}</p>
                   <div><Link href={contactInfo.emailHref} style={{ color: "#e8b86d", fontSize: "0.9rem", textDecoration: "none" }}>{contactInfo.emailDisplay}</Link></div>
@@ -45,7 +45,7 @@ const FooterFour = () => {
                <div className="col-lg-2 col-md-3 col-6">
                   <h6 style={{ color: "#e8b86d", fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: 20 }}>Services</h6>
                   <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-                     {[["Investment Sales","/investment-sales"],["Retail Leasing","/retail-leasing"],["Development Leasing","/development-leasing"]].map(([title, href], i) => (
+                     {[["Investment Sales","/investment-sales"],["Retail Leasing","/retail-leasing"],["Development Leasing","/development-leasing"],["Property Management","/our-services#property-management"]].map(([title, href], i) => (
                         <li key={i} style={{ marginBottom: 10 }}>
                            <Link href={href} style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.88rem", textDecoration: "none" }}>{title}</Link>
                         </li>

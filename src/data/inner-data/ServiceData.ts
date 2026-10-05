@@ -67,6 +67,14 @@ const service_data: DataType[] = [
       desc: "Strategic guidance for property investors and corporate occupiers managing diverse portfolios.",
       data_delay_time: "0.2s",
    },
+   {
+      id: 7,
+      page: "service_1",
+      icon: serviceIcon_1,
+      title: "Commercial Property Management",
+      btn: "Enquire Now",
+      desc: "Professional day-to-day management covering tenants, leases, rentals, maintenance, operations and owner reporting.",
+   },
    
 ]
 

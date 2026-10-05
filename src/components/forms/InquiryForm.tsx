@@ -10,6 +10,7 @@ import Link from "next/link";
 
 type InquiryTypeId =
    | "lease-commercial"
+   | "property-management"
    | "investment"
    | "development-land"
    | "fuel-station"
@@ -30,6 +31,12 @@ const INQUIRY_TYPES: InquiryType[] = [
       label: "Lease commercial space",
       icon: "bi-building",
       blurb: "Retail, office, industrial or warehouse leasing.",
+   },
+   {
+      id: "property-management",
+      label: "Property management",
+      icon: "bi-building-gear",
+      blurb: "Tenant, lease, rental, maintenance and operational management.",
    },
    {
       id: "investment",
@@ -409,7 +416,7 @@ const InquiryForm = () => {
             </div>
          )}
 
-         {activeType === "sell-property" && (
+         {(activeType === "sell-property" || activeType === "property-management") && (
             <div className="dg-inquiry-grid">
                <div className="dg-field dg-field--full">
                   <label htmlFor={fieldKey("propertyAddress")}>Property address</label>
@@ -429,15 +436,17 @@ const InquiryForm = () => {
                      ))}
                   </select>
                </div>
-               <div className="dg-field">
-                  <label htmlFor={fieldKey("askingPrice")}>Asking price (if any)</label>
-                  <input
-                     id={fieldKey("askingPrice")}
-                     type="text"
-                     placeholder="e.g. R12,500,000"
-                     {...register("askingPrice")}
-                  />
-               </div>
+               {activeType === "sell-property" && (
+                  <div className="dg-field">
+                     <label htmlFor={fieldKey("askingPrice")}>Asking price (if any)</label>
+                     <input
+                        id={fieldKey("askingPrice")}
+                        type="text"
+                        placeholder="e.g. R12,500,000"
+                        {...register("askingPrice")}
+                     />
+                  </div>
+               )}
             </div>
          )}
 

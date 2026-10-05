@@ -16,7 +16,7 @@ const BlockFeatureTwo = ({ style }: any) => {
                <div className="col-xl-8 m-auto">
                   <div className="title-one text-center wow fadeInUp mb-40 lg-mb-20">
                      <h3 className={`${style ? "text-white" : ""}`}>Core <span>Services<Image src={serviceShape_1} alt="" className="lazy-img" /></span></h3>
-                     <p className={`fs-22 color-dark ${style ? "text-white" : ""}`}>Commercial, industrial, investment and development services across South Africa.</p>
+                     <p className={`fs-22 color-dark ${style ? "text-white" : ""}`}>Commercial, industrial, investment, development and property management services across South Africa.</p>
                   </div>
                </div>
             </div>

@@ -12,7 +12,7 @@ interface ContentType {
 
 const content_data: ContentType = {
    title: (<>Specialist services for <i>commercial property</i></>),
-   desc: "Retail leasing, investment sales and advisory support built around relationships and execution.",
+   desc: "Retail leasing, investment sales, property management and advisory support built around relationships and execution.",
 }
 const { title, desc } = content_data;
 

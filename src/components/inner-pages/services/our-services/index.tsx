@@ -9,31 +9,39 @@ const serviceCards = [
     icon: "bi-shop",
     title: "Retail Strategy",
     desc: "Strategic planning and positioning for retail assets to maximise occupancy and performance.",
+    href: "/retail-leasing",
   },
   {
     icon: "bi-building",
     title: "Leasing Services",
     desc: "End-to-end leasing solutions for commercial, retail and mixed-use developments.",
+    href: "/commercial-for-lease",
+  },
+  {
+    icon: "bi-building-gear",
+    title: "Commercial Property Management",
+    desc: "Accountable day-to-day management that protects owners' assets, supports tenants and improves property performance.",
+    href: "/inquiry",
+    linkLabel: "Enquire now",
+    anchor: "property-management",
   },
   {
     icon: "bi-buildings",
     title: "Development & Project Management",
     desc: "Full-cycle project management from concept to close-out, tailored to every development.",
+    href: "/development-leasing",
   },
   {
     icon: "bi-graph-up-arrow",
     title: "Sales & Acquisitions",
     desc: "Assisting landlords and developers with the disposal and acquisition of commercial assets.",
+    href: "/investment-sales",
   },
   {
     icon: "bi-lightbulb",
     title: "Alternative Income Solutions",
     desc: "Unlocking non-traditional revenue streams from your existing property portfolio.",
-  },
-  {
-    icon: "bi-megaphone",
-    title: "Marketing",
-    desc: "Targeted property marketing strategies that attract quality tenants and investors.",
+    href: "/investment",
   },
 ];
 
@@ -71,7 +79,7 @@ const OurServices = () => {
               </nav>
             </div>
             <div className="col-lg-5 mt-4 mt-lg-0 text-lg-end">
-              <p style={{ color: "rgba(255,255,255,0.82)", fontSize: 17, lineHeight: 1.7, marginBottom: 28 }}>Retail · Leasing · Development · Sales · Marketing</p>
+              <p style={{ color: "rgba(255,255,255,0.82)", fontSize: 17, lineHeight: 1.7, marginBottom: 28 }}>Retail · Leasing · Property Management · Development · Sales</p>
               <Link href="/inquiry" style={{ display: "inline-block", background: "linear-gradient(90deg, #c8973a, #e8b86d)", color: "#fff", fontWeight: 600, fontSize: 15, padding: "14px 34px", borderRadius: 50, textDecoration: "none", letterSpacing: 0.5 }}>Send Inquiry</Link>
             </div>
           </div>
@@ -107,8 +115,8 @@ const OurServices = () => {
 
           {/* service cards grid */}
           <div className="row gy-4 mt-50">
-            {serviceCards.map((card, i) => (
-              <div className="col-sm-6 col-lg-3" key={i}>
+            {serviceCards.map((card) => (
+              <div className="col-sm-6 col-lg-3" key={card.title} id={card.anchor}>
                 <div
                   style={{ background: "#ffffff", borderRadius: 12, padding: "32px 24px", height: "100%", display: "flex", flexDirection: "column", alignItems: "flex-start", boxShadow: "0 4px 20px rgba(0,0,0,0.06)", transition: "transform 0.2s, box-shadow 0.2s", cursor: "default" }}
                   onMouseEnter={e => {
@@ -125,7 +133,7 @@ const OurServices = () => {
                   </div>
                   <h6 style={{ fontSize: 15, fontWeight: 700, color: "#0d1f2d", marginBottom: 10, lineHeight: 1.35 }}>{card.title}</h6>
                   <p style={{ fontSize: 13.5, color: "#4a5568", lineHeight: 1.7, marginBottom: 14, flexGrow: 1 }}>{card.desc}</p>
-                  <Link href={["/retail-leasing", "/commercial-for-lease", "/development-leasing", "/investment-sales", "/investment", "/inquiry"][i]} style={{ fontSize: 13, fontWeight: 600, color: "#5f6758", letterSpacing: 0.2, textDecoration: "underline", textUnderlineOffset: 3 }}>View more</Link>
+                  <Link href={card.href} style={{ fontSize: 13, fontWeight: 600, color: "#5f6758", letterSpacing: 0.2, textDecoration: "underline", textUnderlineOffset: 3 }}>{card.linkLabel ?? "View more"}</Link>
                 </div>
               </div>
             ))}
