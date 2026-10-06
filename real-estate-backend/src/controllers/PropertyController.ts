@@ -287,10 +287,13 @@ const getLocationSearchValue = (property: Property) =>
 const getKeywordSearchValues = (property: Property) =>
   [
     property.title,
+    property.address,
     property.suburb,
     property.city,
+    property.province,
     property.referenceNumber,
     property.description,
+    property.categoryDetails?.area,
   ].filter(Boolean);
 
 const resolveListingCategory = (property: Property) =>
@@ -387,8 +390,11 @@ const buildPublicPropertySuggestions = (
       "reference",
       property.title ? `${property.referenceNumber} - ${property.title}` : property.referenceNumber
     );
+    addSuggestion(property.categoryDetails?.area, "location");
+    addSuggestion(property.address, "location");
     addSuggestion(property.suburb, "location");
     addSuggestion(property.city, "location");
+    addSuggestion(property.province, "location");
   });
 
   return suggestions.slice(0, 8);

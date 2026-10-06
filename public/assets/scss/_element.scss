@@ -1106,6 +1106,76 @@
                     background: $color-two;
                 }
             }
+            .header-search-suggestions {
+                position: absolute;
+                top: calc(100% + 10px);
+                left: 0;
+                right: 0;
+                max-height: min(420px, 55vh);
+                overflow-y: auto;
+                border: 1px solid rgba($color: #fff, $alpha: 0.16);
+                border-radius: 12px;
+                background: rgba($color: #101815, $alpha: 0.98);
+                box-shadow: 0 24px 55px rgba($color: #000, $alpha: 0.3);
+            }
+            .header-search-suggestions__state {
+                padding: 18px 20px;
+                color: rgba($color: #fff, $alpha: 0.72);
+                font-size: 15px;
+            }
+            .header-search-suggestion {
+                position: static;
+                width: 100%;
+                min-height: 70px;
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                padding: 12px 18px;
+                border: 0;
+                border-bottom: 1px solid rgba($color: #fff, $alpha: 0.09);
+                border-radius: 0;
+                background: transparent;
+                color: #fff;
+                text-align: left;
+                font-size: 16px;
+                transition: background 0.2s ease;
+                &:last-child {
+                    border-bottom: 0;
+                }
+                &:hover, &:focus-visible {
+                    background: rgba($color: $color-one, $alpha: 0.22);
+                }
+            }
+            .header-search-suggestion__icon {
+                width: 42px;
+                height: 42px;
+                flex: 0 0 42px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                background: rgba($color: #fff, $alpha: 0.1);
+                color: #fff;
+            }
+            .header-search-suggestion__copy {
+                min-width: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+            .header-search-suggestion__label {
+                overflow: hidden;
+                color: #fff;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .header-search-suggestion__type {
+                color: rgba($color: #fff, $alpha: 0.58);
+                font-size: 12px;
+                font-weight: 600;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+            }
         }
     }
 }
