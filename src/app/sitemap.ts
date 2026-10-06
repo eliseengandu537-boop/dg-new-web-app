@@ -24,6 +24,7 @@ const PATHS = [
   "/investment-sales",
   "/retail-leasing",
   "/development-leasing",
+  "/property-management",
   "/success-stories",
   "/property-news",
   "/courses",

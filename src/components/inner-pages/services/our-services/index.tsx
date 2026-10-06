@@ -21,8 +21,8 @@ const serviceCards = [
     icon: "bi-building-gear",
     title: "Commercial Property Management",
     desc: "Accountable day-to-day management that protects owners' assets, supports tenants and improves property performance.",
-    href: "/inquiry",
-    linkLabel: "Enquire now",
+    href: "/property-management",
+    linkLabel: "View service",
     anchor: "property-management",
   },
   {

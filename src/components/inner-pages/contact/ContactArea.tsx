@@ -29,6 +29,10 @@ const quickContact = [
    },
 ];
 
+const officeMapSrc = `https://maps.google.com/maps?width=600&height=400&hl=en&q=${encodeURIComponent(
+   `${contactInfo.locationName}, ${contactInfo.fullAddress}`
+)}&t=&z=16&ie=UTF8&iwloc=B&output=embed`;
+
 const ContactArea = () => {
    return (
       <>
@@ -363,13 +367,16 @@ const ContactArea = () => {
                                  </div>
                               </div>
 
-                              <div className="contact-map-frame" style={{ borderRadius: 22, minHeight: 320, boxShadow: "0 10px 30px rgba(14,24,37,.08)", marginTop: "auto", background: "linear-gradient(135deg,#e9eff2,#dbe6eb)", padding: 28, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center" }}>
-                                 <i className="bi bi-geo-alt-fill" aria-hidden="true" style={{ color: "#62695a", fontSize: 42, marginBottom: 14 }} />
-                                 <h3 style={{ color: "#152637", fontSize: "1.4rem", fontWeight: 700, marginBottom: 8 }}>Visit DG Property</h3>
-                                 <address style={{ color: "#425160", fontStyle: "normal", lineHeight: 1.7, maxWidth: 360 }}>{contactInfo.fullAddress}</address>
-                                 <Link href={quickContact[2].href} target="_blank" rel="noopener noreferrer" style={{ background: "#62695a", color: "#fff", padding: "12px 22px", borderRadius: 999, textDecoration: "none", fontWeight: 700, fontSize: 14 }}>
-                                    Open in Google Maps
-                                 </Link>
+                              <div className="contact-map-frame" style={{ borderRadius: 22, minHeight: 320, boxShadow: "0 10px 30px rgba(14,24,37,.08)", marginTop: "auto", background: "#e9eff2", overflow: "hidden" }}>
+                                 <iframe
+                                    src={officeMapSrc}
+                                    title={`Map showing ${contactInfo.locationName}, ${contactInfo.fullAddress}`}
+                                    width="100%"
+                                    height="320"
+                                    loading="lazy"
+                                    allowFullScreen
+                                    referrerPolicy="no-referrer-when-downgrade"
+                                 />
                               </div>
                            </div>
                         </div>

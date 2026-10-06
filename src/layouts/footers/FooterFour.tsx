@@ -45,7 +45,7 @@ const FooterFour = () => {
                <div className="col-lg-2 col-md-3 col-6">
                   <h6 style={{ color: "#e8b86d", fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: 20 }}>Services</h6>
                   <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-                     {[["Investment Sales","/investment-sales"],["Retail Leasing","/retail-leasing"],["Development Leasing","/development-leasing"],["Property Management","/our-services#property-management"]].map(([title, href], i) => (
+                     {[["Investment Sales","/investment-sales"],["Retail Leasing","/retail-leasing"],["Development Leasing","/development-leasing"],["Property Management","/property-management"]].map(([title, href], i) => (
                         <li key={i} style={{ marginBottom: 10 }}>
                            <Link href={href} style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.88rem", textDecoration: "none" }}>{title}</Link>
                         </li>

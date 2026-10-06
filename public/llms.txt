@@ -1,6 +1,6 @@
 # DG Property
 
-> De Gennaro Property is a South African commercial property brokerage specialising in commercial leasing, investment sales, retail leasing, development land and fuel-station opportunities.
+> De Gennaro Property is a South African commercial property company specialising in commercial leasing, investment sales, retail leasing, property management, development land and fuel-station opportunities.
 
 Canonical website: https://dg-property.co.za
 Primary location: Bedfordview, Johannesburg, Gauteng, South Africa
@@ -20,6 +20,7 @@ Contact: hello@dg-property.co.za | 087 630 2532
 - Investment sales: https://dg-property.co.za/investment-sales
 - Retail leasing: https://dg-property.co.za/retail-leasing
 - Development leasing: https://dg-property.co.za/development-leasing
+- Property management: https://dg-property.co.za/property-management
 - Team: https://dg-property.co.za/agent
 - Property news: https://dg-property.co.za/property-news
 - Success stories: https://dg-property.co.za/success-stories

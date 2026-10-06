@@ -15,7 +15,7 @@ const serviceLinks: Record<string, string> = {
    "Tenant Representation": "/inquiry",
    "Development Land": "/development-land",
    "Portfolio Advisory": "/inquiry",
-   "Commercial Property Management": "/inquiry",
+   "Commercial Property Management": "/property-management",
 };
 
 const BLockFeatureTwo = () => {
