@@ -9,20 +9,17 @@ const focusAreas = [
   {
     icon: "bi-person-check",
     title: "Owner Focus",
-    description:
-      "We act in the owner's interests within the agreed mandate, keeping decisions, tenant matters and operational issues organised and visible.",
+    description: "Act in the owner's interests at all times. Maintain visibility and organisation across the asset.",
   },
   {
     icon: "bi-people",
     title: "Tenant Focus",
-    description:
-      "We provide tenants with a professional point of contact for communication, issue resolution, onboarding and ongoing administration.",
+    description: "Professional communication and prompt issue resolution to sustain tenant confidence.",
   },
   {
     icon: "bi-building-check",
     title: "Asset Focus",
-    description:
-      "We monitor the property's operational position, identify issues early and report the information owners need to make informed decisions.",
+    description: "Monitor operations and provide informed, timely reporting on asset performance.",
   },
 ];
 
@@ -30,99 +27,106 @@ const managementServices = [
   {
     icon: "bi-people",
     title: "Tenant Management",
-    description: "Onboarding, communication, tenant records, requests and issue coordination.",
+    description: "Onboarding, communication, issue coordination.",
   },
   {
     icon: "bi-file-earmark-text",
     title: "Lease Administration",
-    description: "Lease information, key dates, documentation, renewals and administrative follow-up.",
+    description: "Lease records, key dates, renewal tracking.",
   },
   {
     icon: "bi-cash-stack",
     title: "Rental & Arrears",
-    description: "Rental monitoring, collections oversight, arrears follow-up and owner reporting.",
+    description: "Monitoring, collections oversight, follow-ups.",
   },
   {
     icon: "bi-tools",
     title: "Maintenance",
-    description: "Logging, coordinating and following up maintenance and service requirements.",
+    description: "Logging, coordinating and following through.",
   },
   {
     icon: "bi-gear-wide-connected",
     title: "Property Operations",
-    description: "Inspections, contractor coordination, operational records and site issues.",
+    description: "Inspections and contractor coordination.",
   },
   {
     icon: "bi-bar-chart-line",
     title: "Financial Reporting",
-    description: "Regular reporting on income, arrears, expenses, recoveries and key property matters.",
+    description: "Income, expenses, arrears and recoveries.",
   },
   {
     icon: "bi-lightning-charge",
     title: "Utilities & Recoveries",
-    description: "Administration and monitoring of recoverable property costs where included in the mandate.",
+    description: "Administration of recoverable costs.",
   },
   {
     icon: "bi-shield-check",
     title: "Compliance & Records",
-    description: "Maintaining core property records and coordinating required documents and information.",
+    description: "Documentation and regulatory coordination.",
   },
 ];
 
 const tenantLifecycle = [
-  ["01", "Onboard", "Collect tenant information, documents and contacts; capture lease and billing details."],
-  ["02", "Induct", "Provide property information, contacts, procedures and operational requirements."],
-  ["03", "Manage", "Handle communication, requests, queries, maintenance coordination and follow-up."],
-  ["04", "Monitor", "Track rental status, outstanding actions, lease dates and property issues."],
-  ["05", "Renew / Exit", "Manage timelines and coordinate renewals, notices and handovers."],
+  ["01", "Onboard", "Collect tenant details, documents and contacts."],
+  ["02", "Induct", "Provide property info, contacts and procedures."],
+  ["03", "Manage", "Handle communications, requests and maintenance."],
+  ["04", "Monitor", "Track rental status, lease dates and open issues."],
+  ["05", "Renew / Exit", "Manage timelines, renewals and clean handovers."],
 ];
 
 const financialServices = [
-  ["Rental Monitoring", "Track billed and received rental amounts and identify outstanding balances."],
-  ["Arrears Follow-Up", "Escalate and follow up overdue amounts in line with the owner's instructions."],
-  ["Recoveries", "Monitor recoverable operating expenses and utility-related charges where applicable."],
-  ["Owner Reporting", "Provide recurring information on collections, arrears, expenses and key exceptions."],
+  ["Rental Monitoring", "Track billed vs received rents and outstanding balances."],
+  ["Arrears Follow-Up", "Prompt escalation per the owner's instructions."],
+  ["Recoveries", "Monitor operating expenses and utilities recoveries."],
+  ["Owner Reporting", "Clear, regular updates on income, arrears and expenses."],
 ];
 
 const maintenanceSteps = [
-  ["Report", "Log the tenant or owner issue with the relevant detail."],
-  ["Assess", "Determine urgency, responsibility and the appropriate next action."],
-  ["Coordinate", "Engage the relevant contractor, subject to mandate and approvals."],
-  ["Follow Up", "Track progress, communicate updates and escalate delays."],
-  ["Close", "Confirm completion, update records and report exceptions."],
+  ["Report", "Tenant or owner issue logged with full details."],
+  ["Assess", "Urgency, responsibility and next steps determined."],
+  ["Coordinate", "Contractors engaged per the agreed mandate."],
+  ["Follow Up", "Progress tracked, delays escalated promptly."],
+  ["Close", "Confirm completion, update records, report."],
 ];
 
 const reportingAreas = [
-  ["bi-buildings", "Occupancy", "Current occupancy and vacancy position."],
-  ["bi-wallet2", "Rental Position", "Collections, arrears and material outstanding items."],
-  ["bi-people", "Tenant Matters", "Key tenant issues, notices, renewals and risks."],
-  ["bi-wrench-adjustable", "Maintenance", "Open, completed and escalated maintenance items."],
-  ["bi-pie-chart", "Financial Snapshot", "Income, recoveries and relevant property costs."],
-  ["bi-list-check", "Action Tracker", "Outstanding decisions, approvals and next actions."],
+  ["bi-buildings", "Occupancy", "Current occupancy and vacancy status."],
+  ["bi-wallet2", "Rental Position", "Collections, arrears, outstanding issues."],
+  ["bi-people", "Tenant Matters", "Key issues, notices, renewals, risks."],
+  ["bi-wrench-adjustable", "Maintenance", "Open, completed and escalated items."],
+  ["bi-pie-chart", "Financial Snapshot", "Income, recoveries and property costs."],
+  ["bi-list-check", "Action Tracker", "Outstanding decisions, approvals, next steps."],
 ];
 
 const ownerPrinciples = [
-  ["01", "One Point of Accountability", "A clear management contact coordinates day-to-day property matters."],
-  ["02", "Agreed Mandate", "We act within the authority, budgets, approval limits and responsibilities agreed with the owner."],
-  ["03", "Early Escalation", "Problems are highlighted early before they become larger operational or financial issues."],
-  ["04", "Transparent Communication", "Owners receive relevant updates, reports and requests for decisions."],
-  ["05", "Asset Protection", "Our focus is orderly operations, strong tenant relationships and protecting commercial value."],
+  ["01", "One Point of Accountability", "A single, clear management contact."],
+  ["02", "Agreed Mandate", "Authority, budgets and approvals defined with the owner."],
+  ["03", "Early Escalation", "Issues surfaced before they become problems."],
+  ["04", "Transparent Communication", "Timely updates and clear decision requests."],
+  ["05", "Asset Protection", "Operations, tenant support and commercial value preserved."],
 ];
 
 const leasingResponsibilities = [
-  "New tenant sourcing and leasing negotiations",
-  "Rental proposals and commercial negotiations",
-  "Letters of intent and lease transactions",
-  "Vacancy strategy and market engagement",
-  "Leasing fees and transaction progression",
+  "Tenant sourcing and lease negotiations",
+  "Rental proposals and LOI's",
+  "Lease transactions and vacancy strategy",
+  "Leasing fees and commercial terms",
 ];
 
 const managementResponsibilities = [
-  "Tenant onboarding and administration",
-  "Day-to-day tenant management",
-  "Rental and arrears monitoring",
-  "Maintenance and operational coordination",
-  "Ongoing property reporting",
+  "Tenant onboarding and day-to-day management",
+  "Rental monitoring and arrears follow-up",
+  "Maintenance coordination and inspections",
+  "Operational and financial reporting",
+];
+
+const whyChoose = [
+  ["01", "Commercial Experience", "Deep understanding of tenant and asset realities."],
+  ["02", "Hands-On Execution", "Focused on follow-through, not just documentation."],
+  ["03", "Owner Visibility", "Clear reporting and escalation without chasing."],
+  ["04", "Tenant Experience", "Professional communication and issue handling."],
+  ["05", "Integrated Knowledge", "Leasing, market and asset context in one team."],
+  ["06", "Scalable Service", "Tailored to asset, tenant profile and owner needs."],
 ];
 
 const PropertyManagement = () => {
@@ -136,7 +140,7 @@ const PropertyManagement = () => {
           <div className={`row align-items-center ${styles.heroRow}`}>
             <div className="col-lg-7">
               <p className={styles.eyebrow}>Commercial Property Management</p>
-              <h1>Professional Management.<br />Clear Accountability.</h1>
+              <h1>Professional Management That Protects And Enhances Assets.</h1>
               <div className={styles.goldRule} />
               <nav aria-label="Breadcrumb">
                 <ol className={styles.breadcrumbs}>
@@ -150,8 +154,8 @@ const PropertyManagement = () => {
             </div>
             <div className="col-lg-5 mt-4 mt-lg-0">
               <div className={styles.heroAside}>
-                <p>A Dedicated Management Service For Commercial Property Owners.</p>
-                <Link href="/inquiry" className={styles.goldButton}>Discuss Your Property</Link>
+                <p>Introducing DE GENNARO PROPERTY your integrated commercial property partner.</p>
+                <Link href="/inquiry" className={styles.goldButton}>Get Started</Link>
               </div>
             </div>
           </div>
@@ -164,14 +168,12 @@ const PropertyManagement = () => {
           <div className="container">
             <div className="row align-items-end g-4">
               <div className="col-lg-5">
-                <p className={styles.sectionLabel}>Your accountable partner</p>
-                <h2>Day-To-Day Management That Protects The Bigger Picture.</h2>
+                <p className={styles.sectionLabel}>Our service focus</p>
+                <h2>One Accountable Partner For Commercial Property Owners.</h2>
               </div>
               <div className="col-lg-6 offset-lg-1">
                 <p className={styles.introCopy}>
-                  DG Property Management gives owners one accountable partner to manage the commercial
-                  requirements of their property. We support tenants, maintain operational discipline and
-                  give owners clear visibility over the matters affecting their asset.
+                  DG Property Management gives owners one accountable partner to manage the commercial requirements of their property. We support tenants, maintain operational discipline and give owners clear visibility over the matters affecting their asset.
                 </p>
               </div>
             </div>
@@ -194,8 +196,7 @@ const PropertyManagement = () => {
           <div className="container">
             <div className={styles.centerHeading}>
               <p className={styles.sectionLabel}>What we manage</p>
-              <h2>A Structured Commercial Property Management Service.</h2>
-              <p>Core responsibilities are tailored to the asset, tenant profile and agreed owner mandate.</p>
+              <h2>Eight Service Areas, One Coordinated Partner.</h2>
             </div>
             <div className="row g-4">
               {managementServices.map((item) => (
@@ -216,10 +217,10 @@ const PropertyManagement = () => {
             <div className="row align-items-end g-4">
               <div className="col-lg-6">
                 <p className={styles.sectionLabelLight}>Tenant lifecycle management</p>
-                <h2>A Consistent Process Throughout Every Tenancy.</h2>
+                <h2>From Onboarding To Exit Managed, Not Chased.</h2>
               </div>
               <div className="col-lg-5 offset-lg-1">
-                <p className={styles.lightCopy}>From onboarding through occupation, renewal or exit, every action is tracked and followed through.</p>
+                <p className={styles.lightCopy}>Owners gain confidence in smooth tenant management without needing to chase.</p>
               </div>
             </div>
             <div className={styles.lifecycleGrid}>
@@ -244,7 +245,7 @@ const PropertyManagement = () => {
               <div className="col-lg-6">
                 <article className={styles.operationsPanel}>
                   <p className={styles.sectionLabel}>Financial & rental management</p>
-                  <h2>Better Visibility Over Property Income.</h2>
+                  <h2>Clear Visibility. Disciplined Follow-Through.</h2>
                   <div className={styles.detailList}>
                     {financialServices.map(([title, description]) => (
                       <div key={title}>
@@ -253,13 +254,13 @@ const PropertyManagement = () => {
                       </div>
                     ))}
                   </div>
-                  <p className={styles.panelNote}>Approvals and Owner Decisions Remain With the Client Where Required By The Agreed Mandate.</p>
+                  <p className={styles.panelNote}>Role: Financial transparency while preserving owner approval control.</p>
                 </article>
               </div>
               <div className="col-lg-6">
                 <article className={`${styles.operationsPanel} ${styles.operationsPanelDark}`}>
                   <p className={styles.sectionLabelLight}>Maintenance & operations</p>
-                  <h2>Moving issues from notification to resolution.</h2>
+                  <h2>A Disciplined Workflow For Every Property Issue.</h2>
                   <div className={styles.maintenanceList}>
                     {maintenanceSteps.map(([title, description], index) => (
                       <div key={title}>
@@ -268,7 +269,7 @@ const PropertyManagement = () => {
                       </div>
                     ))}
                   </div>
-                  <p className={styles.panelNoteDark}>Capital Expenditure And Material Works Remain Subject To Owner Approval Requirements.</p>
+                  <p className={styles.panelNoteDark}>Note: Capital expenditure remains subject to owner approval.</p>
                 </article>
               </div>
             </div>
@@ -289,7 +290,7 @@ const PropertyManagement = () => {
               </div>
               <div className="col-lg-7">
                 <p className={styles.sectionLabel}>Reporting & accountability</p>
-                <h2>Management Should Give Owners Visibility Not More Work.</h2>
+                <h2>Owners Informed Without The Extra Work.</h2>
                 <div className={styles.reportingGrid}>
                   {reportingAreas.map(([icon, title, description]) => (
                     <article key={title}>
@@ -306,9 +307,8 @@ const PropertyManagement = () => {
         <section className={styles.separationSection}>
           <div className="container">
             <div className={styles.centerHeading}>
-              <p className={styles.sectionLabel}>Clear responsibilities</p>
-              <h2>Leasing Secures The Transaction. Management Looks After The Property.</h2>
-              <p>Separate responsibilities reduce grey areas and create clearer accountability for owners.</p>
+              <p className={styles.sectionLabel}>Scope & separation</p>
+              <h2>Leasing And Management Distinct, By Design.</h2>
             </div>
             <div className="row g-4">
               <div className="col-lg-6">
@@ -337,7 +337,7 @@ const PropertyManagement = () => {
               <div className="col-lg-4">
                 <div className={styles.ownerHeading}>
                   <p className={styles.sectionLabelLight}>Our relationship with the owner</p>
-                  <h2>Built Around Communication, Accountability and Agreed Authority.</h2>
+                  <h2>Five Principles For An Effective Partnership.</h2>
                   <Link href="/inquiry" className={styles.goldButton}>Let Us Manage Your Property</Link>
                 </div>
               </div>
@@ -354,6 +354,27 @@ const PropertyManagement = () => {
             </div>
           </div>
         </section>
+
+        <section className={styles.servicesSection}>
+          <div className="container">
+            <div className={styles.centerHeading}>
+              <p className={styles.sectionLabel}>Why choose DG property</p>
+              <h2>What Sets DG Property Management Apart.</h2>
+            </div>
+            <div className="row g-4">
+              {whyChoose.map(([number, title, description]) => (
+                <div className="col-md-6 col-lg-4" key={number}>
+                  <article className={styles.serviceCard}>
+                    <span><strong>{number}</strong></span>
+                    <h3>{title}</h3>
+                    <p>{description}</p>
+                  </article>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
       </main>
 
       <FancyBanner />
