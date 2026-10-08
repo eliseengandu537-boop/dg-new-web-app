@@ -17,6 +17,7 @@ interface NewsPost {
   summary?: string;
   body?: string;
   imageUrl?: string;
+  pdfUrl?: string;
   tags?: string;
   publishedAt?: string;
   createdAt?: string;
@@ -30,6 +31,11 @@ const formatDate = (date?: string) => {
     month: "long",
     year: "numeric",
   });
+};
+
+const mediaUrl = (url?: string) => {
+  if (!url) return "";
+  return /^https?:\/\//i.test(url) ? url : `${BACKEND_ROOT}${url}`;
 };
 
 export default function PropertyNewsPage() {
@@ -211,17 +217,26 @@ export default function PropertyNewsPage() {
                         <div className="newsletter-card-media">
                           {post.imageUrl ? (
                             <img
-                              src={`${BACKEND_ROOT}${post.imageUrl}`}
+                              src={mediaUrl(post.imageUrl)}
                               alt={post.title}
                               loading={index === 0 ? "eager" : "lazy"}
                               decoding="async"
                             />
                           ) : (
-                            <div className="newsletter-card-placeholder" aria-hidden="true">
-                              <i className="bi bi-newspaper" />
+                            <div className={`newsletter-card-placeholder ${post.pdfUrl ? "newsletter-card-placeholder--pdf" : ""}`} aria-hidden="true">
+                              <i className={`bi ${post.pdfUrl ? "bi-file-earmark-pdf" : "bi-newspaper"}`} />
+                              {post.pdfUrl && (
+                                <iframe
+                                  src={`${mediaUrl(post.pdfUrl)}#page=1&toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
+                                  title=""
+                                  tabIndex={-1}
+                                  loading="lazy"
+                                />
+                              )}
                             </div>
                           )}
                           {post.category && <span className="newsletter-card-category">{post.category}</span>}
+                          {post.pdfUrl && <span className="newsletter-card-format"><i className="bi bi-file-earmark-pdf" aria-hidden="true" /> PDF edition</span>}
                           <span className="newsletter-card-number" aria-hidden="true">
                             {String(index + 1).padStart(2, "0")}
                           </span>
@@ -235,7 +250,7 @@ export default function PropertyNewsPage() {
                           <h3>{post.title}</h3>
                           {post.summary && <p>{post.summary}</p>}
                           <span className="newsletter-card-link">
-                            Read the edition <i className="bi bi-arrow-up-right" aria-hidden="true" />
+                            {post.pdfUrl ? "View designed edition" : "Read the edition"} <i className="bi bi-arrow-up-right" aria-hidden="true" />
                           </span>
                         </div>
                       </article>
@@ -292,9 +307,13 @@ export default function PropertyNewsPage() {
         .newsletter-card-media > img { width: 100%; height: 100%; object-fit: cover; transition: transform .45s ease; }
         .newsletter-card:hover .newsletter-card-media > img { transform: scale(1.035); }
         .newsletter-card-placeholder { display: grid; place-items: center; width: 100%; height: 100%; color: #8e9a89; background: linear-gradient(135deg,#e7ebe4,#d7ded4); font-size: 48px; }
+        .newsletter-card-placeholder--pdf { position:relative; color:#fff; background:linear-gradient(145deg,#a94435,#722c25); font-size:68px; }
+        .newsletter-card-placeholder--pdf>i { position:absolute; inset:0; display:grid; place-items:center; }
+        .newsletter-card-placeholder--pdf>iframe { position:relative; z-index:1; width:100%; height:100%; border:0; background:transparent; pointer-events:none; }
         .newsletter-card-category, .newsletter-card-number { position: absolute; z-index: 1; top: 16px; display: inline-flex; align-items: center; justify-content: center; min-height: 34px; padding: 0 12px; color: #fff; font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
         .newsletter-card-category { left: 16px; background: #76551f; }
         .newsletter-card-number { right: 16px; min-width: 38px; background: #102536; }
+        .newsletter-card-format { position:absolute; z-index:1; right:16px; bottom:16px; display:inline-flex; align-items:center; gap:7px; min-height:34px; padding:0 12px; background:rgba(16,37,54,.92); color:#fff; font-size:10px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
         .newsletter-card-copy { display: flex; flex-direction: column; padding: 30px; }
         .newsletter-card--featured .newsletter-card-copy { justify-content: center; padding: 46px; background: #102536; }
         .newsletter-card-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 18px; color: #596675; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }

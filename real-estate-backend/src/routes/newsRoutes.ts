@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   getPublicNews,
   getPublicNewsBySlug,
+  downloadPublicNewsPdf,
   getAllNews,
   createNews,
   updateNews,
@@ -15,6 +16,7 @@ const router = Router();
 
 // Public
 router.get("/public", getPublicNews);
+router.get("/public/:slug/pdf", downloadPublicNewsPdf);
 router.get("/public/:slug", getPublicNewsBySlug);
 
 // Admin

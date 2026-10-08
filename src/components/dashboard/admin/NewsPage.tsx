@@ -19,6 +19,7 @@ interface NewsPost {
   summary?: string;
   body?: string;
   imageUrl?: string;
+  pdfUrl?: string;
   tags?: string;
   isPublished: boolean;
   publishedAt?: string;
@@ -26,7 +27,6 @@ interface NewsPost {
   featuredStories?: string;
   deals?: string;
   gallery?: string;
-  leaderboard?: string;
   breakingNewsTitle?: string;
   breakingNewsDesc?: string;
   breakingNewsUrl?: string;
@@ -57,11 +57,6 @@ interface GalleryItem {
   _file?: File;
 }
 
-interface LeaderboardEntry {
-  name: string;
-  amount: string;
-}
-
 interface BreakingState {
   title: string;
   desc: string;
@@ -74,7 +69,6 @@ const EMPTY: Partial<NewsPost> = {
 };
 const EMPTY_STORY: FeaturedStory = { type: "", title: "", description: "", imageUrl: "", readMoreUrl: "", icon: "bi-file-text" };
 const EMPTY_DEAL: Deal = { dealType: "LOI", property: "", location: "", icon: "bi-building" };
-const EMPTY_ENTRY: LeaderboardEntry = { name: "", amount: "" };
 
 const STORY_ICONS = [
   "bi-file-text", "bi-heart", "bi-send", "bi-star", "bi-building",
@@ -121,12 +115,12 @@ export default function AdminNewsPage() {
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [coverPreview, setCoverPreview] = useState("");
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
 
   // Structured sections
   const [stories, setStories] = useState<FeaturedStory[]>([]);
   const [deals, setDeals] = useState<Deal[]>([]);
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
-  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [breaking, setBreaking] = useState<BreakingState>({ title: "", desc: "", url: "" });
 
   const load = async () => {
@@ -141,23 +135,24 @@ export default function AdminNewsPage() {
   useEffect(() => { load(); }, []);
 
   const resetStructured = () => {
-    setStories([]); setDeals([]); setGalleryItems([]); setLeaderboard([]);
+    setStories([]); setDeals([]); setGalleryItems([]);
     setBreaking({ title: "", desc: "", url: "" });
   };
 
   const openNew = () => {
     setEditing({ ...EMPTY }); setIsNew(true); setSaveError("");
     setCoverFile(null); setCoverPreview("");
+    setPdfFile(null);
     resetStructured(); setShowForm(true);
   };
 
   const openEdit = (p: NewsPost) => {
     setEditing({ ...p }); setIsNew(false); setSaveError("");
     setCoverFile(null); setCoverPreview("");
+    setPdfFile(null);
     try { setStories(p.featuredStories ? JSON.parse(p.featuredStories) : []); } catch { setStories([]); }
     try { setDeals(p.deals ? JSON.parse(p.deals) : []); } catch { setDeals([]); }
     try { setGalleryItems(p.gallery ? JSON.parse(p.gallery) : []); } catch { setGalleryItems([]); }
-    try { setLeaderboard(p.leaderboard ? JSON.parse(p.leaderboard) : []); } catch { setLeaderboard([]); }
     setBreaking({ title: p.breakingNewsTitle || "", desc: p.breakingNewsDesc || "", url: p.breakingNewsUrl || "" });
     setShowForm(true);
   };
@@ -167,11 +162,12 @@ export default function AdminNewsPage() {
     setSaving(true); setSaveError("");
     try {
       const fd = new FormData();
-      const skipKeys = ["id", "featuredStories", "deals", "gallery", "leaderboard", "breakingNewsTitle", "breakingNewsDesc", "breakingNewsUrl"];
+      const skipKeys = ["id", "pdfUrl", "featuredStories", "deals", "gallery", "leaderboard", "breakingNewsTitle", "breakingNewsDesc", "breakingNewsUrl"];
       Object.entries(editing).forEach(([k, v]) => {
         if (!skipKeys.includes(k) && v !== undefined && v !== null) fd.append(k, String(v));
       });
       if (coverFile) fd.append("image", coverFile);
+      if (pdfFile) fd.append("pdf", pdfFile);
       const storiesClean = stories.map(({ _file: _f, _preview: _p, ...s }) => s);
       fd.append("featuredStories", JSON.stringify(storiesClean));
       stories.forEach((s, i) => { if (s._file) fd.append(`storyImage_${i}`, s._file); });
@@ -182,7 +178,6 @@ export default function AdminNewsPage() {
       fd.append("gallery", JSON.stringify(galleryClean));
       galleryItems.forEach((g, i) => { if (g._file) fd.append(`galleryImage_${i}`, g._file); });
 
-      fd.append("leaderboard", JSON.stringify(leaderboard));
       fd.append("breakingNewsTitle", breaking.title);
       fd.append("breakingNewsDesc", breaking.desc);
       fd.append("breakingNewsUrl", breaking.url);
@@ -228,6 +223,7 @@ export default function AdminNewsPage() {
   const articleImageIndex = galleryItems.findIndex((item) => item.placement === "article");
   const articleImage = articleImageIndex >= 0 ? galleryItems[articleImageIndex] : undefined;
   const galleryPhotoCount = galleryItems.filter((item) => item.placement !== "article").length;
+  const hasPdfEdition = Boolean(pdfFile || editing?.pdfUrl);
 
   return (
     <div style={{ padding: "32px 28px", background: "#f7fafc", minHeight: "100vh" }}>
@@ -235,9 +231,9 @@ export default function AdminNewsPage() {
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 28 }}>
         <div>
           <h2 style={{ fontSize: 22, fontWeight: 700, color: "#1a2332", margin: 0 }}>Property News</h2>
-          <p style={{ color: "#718096", fontSize: 14, margin: "4px 0 0" }}>Create polished journal articles, featured cards and optional property updates</p>
+          <p style={{ color: "#718096", fontSize: 14, margin: "4px 0 0" }}>Upload designed PDF newsletters or create journal articles</p>
         </div>
-        <button onClick={openNew} style={btnPrimary}>+ New Article</button>
+        <button onClick={openNew} style={btnPrimary}>+ New Newsletter</button>
       </div>
 
       {error && <div style={errorBox}>{error}</div>}
@@ -261,7 +257,7 @@ export default function AdminNewsPage() {
                   <td style={tdStyle}>
                     {p.imageUrl
                       ? <img src={mediaUrl(p.imageUrl)} alt="" style={{ width: 64, height: 46, objectFit: "cover", borderRadius: 6 }} />
-                      : <div style={{ width: 64, height: 46, borderRadius: 6, background: "#e2e8f0", display: "flex", alignItems: "center", justifyContent: "center" }}><i className="bi bi-image" style={{ color: "#a0aec0", fontSize: 18 }} /></div>
+                      : <div style={{ width: 64, height: 46, borderRadius: 6, background: p.pdfUrl ? "#fff0ed" : "#e2e8f0", display: "flex", alignItems: "center", justifyContent: "center" }}><i className={`bi ${p.pdfUrl ? "bi-file-earmark-pdf" : "bi-image"}`} style={{ color: p.pdfUrl ? "#c24132" : "#a0aec0", fontSize: 18 }} /></div>
                     }
                   </td>
                   <td style={{ ...tdStyle, fontWeight: 600, color: "#1a2332", maxWidth: 260 }}>
@@ -281,6 +277,7 @@ export default function AdminNewsPage() {
                   <td style={tdStyle}>
                     <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                       {p.isPublished && <a href={`/property-news/${p.slug}`} target="_blank" rel="noreferrer" style={{ ...btnEdit, background: "#eef2ec", color: "#66715d", textDecoration: "none" }}><i className="bi bi-eye" /> View</a>}
+                      {p.pdfUrl && <a href={mediaUrl(p.pdfUrl)} target="_blank" rel="noreferrer" style={{ ...btnEdit, background: "#fff0ed", color: "#a63b2d", textDecoration: "none" }}><i className="bi bi-file-earmark-pdf" /> PDF</a>}
                       <button onClick={() => openEdit(p)} style={btnEdit}><i className="bi bi-pencil" /> Edit</button>
                       <button onClick={() => setDeleteId(p.id)} style={btnDanger}><i className="bi bi-trash" /></button>
                     </div>
@@ -313,8 +310,8 @@ export default function AdminNewsPage() {
           <div style={modal}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, marginBottom: 22, paddingBottom: 18, borderBottom: "1px solid #dfe5df" }}>
               <div>
-                <p style={sectionEyebrow}>DG Property journal editor</p>
-                <h3 style={{ margin: 0, fontSize: 24, fontWeight: 750, color: "#102536", letterSpacing: "-0.03em" }}>{isNew ? "Create a new article" : "Edit article"}</h3>
+                <p style={sectionEyebrow}>DG Property newsletter editor</p>
+                <h3 style={{ margin: 0, fontSize: 24, fontWeight: 750, color: "#102536", letterSpacing: "-0.03em" }}>{isNew ? "Publish a newsletter" : "Edit newsletter"}</h3>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                 {!isNew && editing.slug && <a href={`/property-news/${editing.slug}`} target="_blank" rel="noreferrer" style={{ ...btnEdit, background: "#eef2ec", color: "#66715d", textDecoration: "none", padding: "9px 14px" }}><i className="bi bi-box-arrow-up-right" /> Preview page</a>}
@@ -326,10 +323,10 @@ export default function AdminNewsPage() {
 
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(190px,1fr))", gap: 10, marginBottom: 20 }}>
                 {[
-                  ["01", "Header", "Category, title and introduction"],
-                  ["02", "Hero image", "The large rounded cover photo"],
-                  ["03", "Article", "Headings, paragraphs and images"],
-                  ["04", "Read more", "Sidebar and bottom story cards"],
+                  ["01", "Details", "Title, category and introduction"],
+                  ["02", "PDF", "Upload your finished newsletter"],
+                  ["03", "Cover", "Optional listing cover image"],
+                  ["04", "Article", "Optional website-only content"],
                 ].map(([number, title, copy]) => (
                   <div key={number} style={{ display: "flex", gap: 11, padding: "14px", border: "1px solid #dfe5df", borderRadius: 12, background: "#fff" }}>
                     <span style={{ display: "grid", placeItems: "center", flex: "0 0 32px", width: 32, height: 32, borderRadius: "50%", background: "#102536", color: "#fff", fontSize: 10, fontWeight: 800 }}>{number}</span>
@@ -339,10 +336,10 @@ export default function AdminNewsPage() {
               </div>
 
               <div style={sectionCard}>
-                <p style={sectionEyebrow}>01 · Article header</p>
-                <h4 style={{ margin: "0 0 18px", color: "#102536", fontSize: 19 }}>Headline and introduction</h4>
+                <p style={sectionEyebrow}>01 · Newsletter details</p>
+                <h4 style={{ margin: "0 0 18px", color: "#102536", fontSize: 19 }}>Title and listing information</h4>
                 <div className="row">
-                  <div className="col-md-8">{field("title", "Article title *", { placeholder: "e.g. Building a Sustainable Growth Strategy" })}</div>
+                  <div className="col-md-8">{field("title", "Newsletter title *", { placeholder: "e.g. DG Property October Newsletter" })}</div>
                   <div className="col-md-4">{field("slug", "Page URL", { placeholder: "auto-generated from title" })}</div>
                 </div>
                 <div className="row">
@@ -359,13 +356,42 @@ export default function AdminNewsPage() {
                 </div>
                 {field("summary", "Short introduction", { multiline: true, rows: 3, placeholder: "One or two sentences displayed below the title and on the article listing card…" })}
                 {field("tags", "Topic tags", { placeholder: "e.g. Marketing, Innovation, Agency, Strategy" })}
-                <p style={{ margin: "-8px 0 0", color: "#84908a", fontSize: 11 }}>Separate tags with commas. Add “Issue 05” for an issue label, or a PDF URL to show a download button.</p>
+                <p style={{ margin: "-8px 0 0", color: "#84908a", fontSize: 11 }}>Separate tags with commas. Add “Issue 05” to show an issue label.</p>
               </div>
 
               <div style={sectionCard}>
-                <p style={sectionEyebrow}>02 · Hero image</p>
-                <h4 style={{ margin: "0 0 6px", color: "#102536", fontSize: 19 }}>Large article cover</h4>
-                <p style={{ margin: "0 0 16px", color: "#718096", fontSize: 13 }}>Use a wide, high-quality image. A 1600 × 950 px JPG or WebP works best.</p>
+                <p style={sectionEyebrow}>02 · Designed newsletter PDF</p>
+                <h4 style={{ margin: "0 0 6px", color: "#102536", fontSize: 19 }}>Upload the finished design</h4>
+                <p style={{ margin: "0 0 16px", color: "#718096", fontSize: 13 }}>Your PDF will be shown exactly as designed on the newsletter page. Visitors can also open it full screen or download it.</p>
+                <label style={{ display: "flex", alignItems: "center", gap: 16, minHeight: 110, padding: 18, border: "2px dashed #d7aaa2", borderRadius: 14, background: "#fff8f6", cursor: "pointer" }}>
+                  <span style={{ display: "grid", placeItems: "center", flex: "0 0 58px", width: 58, height: 58, borderRadius: 12, background: "#b84635", color: "#fff", fontSize: 28 }}><i className="bi bi-file-earmark-pdf" /></span>
+                  <span style={{ minWidth: 0, flex: 1 }}>
+                    <strong style={{ display: "block", marginBottom: 5, color: "#102536" }}>{pdfFile ? "PDF ready to upload" : editing.pdfUrl ? "Replace current PDF" : "Choose newsletter PDF"}</strong>
+                    <span style={{ display: "block", overflow: "hidden", color: "#718096", fontSize: 12, textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{pdfFile?.name || (editing.pdfUrl ? "A PDF is already attached to this newsletter" : "PDF only · maximum 30 MB")}</span>
+                  </span>
+                  <span style={{ padding: "9px 13px", borderRadius: 8, background: "#fff", color: "#9b3c30", fontSize: 12, fontWeight: 800 }}>{editing.pdfUrl || pdfFile ? "Replace" : "Browse"}</span>
+                  <input type="file" accept="application/pdf,.pdf" style={{ display: "none" }} onChange={e => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
+                      setSaveError("Please choose a PDF file.");
+                      return;
+                    }
+                    if (file.size > 30 * 1024 * 1024) {
+                      setSaveError("The PDF must be 30 MB or smaller.");
+                      return;
+                    }
+                    setSaveError("");
+                    setPdfFile(file);
+                  }} />
+                </label>
+                {editing.pdfUrl && !pdfFile && <a href={mediaUrl(editing.pdfUrl)} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 12, color: "#9b3c30", fontSize: 12, fontWeight: 800, textDecoration: "none" }}><i className="bi bi-box-arrow-up-right" /> Open current PDF</a>}
+              </div>
+
+              <div style={sectionCard}>
+                <p style={sectionEyebrow}>03 · Optional cover image</p>
+                <h4 style={{ margin: "0 0 6px", color: "#102536", fontSize: 19 }}>Newsletter listing cover</h4>
+                <p style={{ margin: "0 0 16px", color: "#718096", fontSize: 13 }}>Optional: use a wide image for the newsletter listing card. If you leave it empty, a PDF cover tile will appear.</p>
                 <label style={{ display: "grid", gridTemplateColumns: (coverPreview || editing.imageUrl) ? "repeat(auto-fit,minmax(220px,1fr))" : "1fr", gap: 18, alignItems: "center", minHeight: 150, padding: 14, border: "2px dashed #cbd5cc", borderRadius: 14, background: "#f7f9f6", cursor: "pointer" }}>
                   {(coverPreview || editing.imageUrl) ? (
                     <img src={coverPreview || mediaUrl(editing.imageUrl)} alt="Article cover preview" style={{ display: "block", width: "100%", height: 150, objectFit: "cover", borderRadius: 10 }} />
@@ -383,10 +409,11 @@ export default function AdminNewsPage() {
                 </label>
               </div>
 
+              {!hasPdfEdition && <>
               <div style={sectionCard}>
-                <p style={sectionEyebrow}>03 · Main article</p>
-                <h4 style={{ margin: "0 0 6px", color: "#102536", fontSize: 19 }}>Article content</h4>
-                <p style={{ margin: "0 0 15px", color: "#718096", fontSize: 13 }}>Leave a blank line between content blocks. The page will format them into a clean editorial layout.</p>
+                <p style={sectionEyebrow}>04 · Optional website article</p>
+                <h4 style={{ margin: "0 0 6px", color: "#102536", fontSize: 19 }}>Extra article content</h4>
+                <p style={{ margin: "0 0 15px", color: "#718096", fontSize: 13 }}>{pdfFile || editing.pdfUrl ? "You can leave this entire section empty—the uploaded PDF is the newsletter." : "Use this only when creating a website article without a designed PDF."}</p>
                 {field("body", "Full article body", { multiline: true, rows: 12, placeholder: "Start with your introduction…\n\n## Section heading\n\nWrite the next paragraph here.\n\n### Smaller heading\n\n- First list item\n- Second list item" })}
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                   {["## Main heading", "### Small heading", "> Quote", "- List item", "!HL Highlight", "!BREAK Alert", "Image URL on its own line"].map(tip => <span key={tip} style={{ padding: "6px 9px", borderRadius: 7, background: "#eef2ec", color: "#65705c", fontSize: 11, fontWeight: 700 }}>{tip}</span>)}
@@ -526,20 +553,6 @@ export default function AdminNewsPage() {
                 {galleryPhotoCount === 0 && <p style={{ fontSize: 13, color: "#a0aec0", textAlign: "center", padding: "8px 0 0" }}>No gallery photos. This optional section will stay hidden.</p>}
               </div>
 
-              {/* ── BILLING LEADERBOARD ── */}
-              <div style={sectionCard}>
-                <SectionHeader icon="bi-trophy-fill" title="Billing Leaderboard" count={leaderboard.length} onAdd={() => setLeaderboard(prev => [...prev, { ...EMPTY_ENTRY }])} addLabel="Add Entry" />
-                {leaderboard.map((entry, i) => (
-                  <div key={i} style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 8 }}>
-                    <div style={{ width: 28, height: 28, borderRadius: "50%", background: i === 0 ? "#F6C700" : i === 1 ? "#C0C0C0" : i === 2 ? "#CD7F32" : "#e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: i < 3 ? "#fff" : "#718096", flexShrink: 0 }}>{i + 1}</div>
-                    <input type="text" value={entry.name} onChange={e => setLeaderboard(prev => prev.map((l, j) => j === i ? { ...l, name: e.target.value } : l))} placeholder="Broker name" style={{ ...smInput, flex: 2 }} />
-                    <input type="text" value={entry.amount} onChange={e => setLeaderboard(prev => prev.map((l, j) => j === i ? { ...l, amount: e.target.value } : l))} placeholder="e.g. R617,122.97" style={{ ...smInput, flex: 1 }} />
-                    <button type="button" onClick={() => setLeaderboard(prev => prev.filter((_, j) => j !== i))} style={{ background: "#fff5f5", color: "#c53030", border: "none", borderRadius: 6, padding: "8px 10px", cursor: "pointer", fontSize: 13 }}>×</button>
-                  </div>
-                ))}
-                {leaderboard.length === 0 && <p style={{ fontSize: 13, color: "#a0aec0", textAlign: "center", padding: "8px 0 0" }}>No leaderboard entries yet. Click + Add Entry.</p>}
-              </div>
-
               {/* ── BREAKING NEWS ── */}
               <div style={sectionCard}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
@@ -562,6 +575,7 @@ export default function AdminNewsPage() {
                   </div>
                 </div>
               </div>
+              </>}
 
               {/* Status */}
               <div style={{ marginBottom: 16 }}>
@@ -577,7 +591,7 @@ export default function AdminNewsPage() {
               <div style={{ display: "flex", gap: 12, justifyContent: "flex-end", paddingTop: 12, borderTop: "1px solid #e2e8f0" }}>
                 <button onClick={() => setShowForm(false)} style={{ ...btnEdit, background: "#f7fafc", color: "#4a5568", padding: "10px 20px" }}>Cancel</button>
                 <button onClick={handleSave} disabled={saving} style={{ ...btnPrimary, opacity: saving ? 0.7 : 1 }}>
-                  {saving ? "Saving…" : isNew ? "Save Article" : "Save Changes"}
+                  {saving ? "Saving…" : isNew ? "Save Newsletter" : "Save Changes"}
                 </button>
               </div>
 

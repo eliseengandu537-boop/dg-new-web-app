@@ -9,6 +9,7 @@ export interface PublicNewsPost {
   slug: string;
   summary?: string;
   imageUrl?: string;
+  pdfUrl?: string;
   featuredImage?: string;
 }
 

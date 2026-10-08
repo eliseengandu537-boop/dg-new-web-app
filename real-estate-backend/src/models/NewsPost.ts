@@ -24,6 +24,9 @@ export class NewsPost extends Model {
   imageUrl?: string;
 
   @Column({ type: DataType.STRING, allowNull: true })
+  pdfUrl?: string;
+
+  @Column({ type: DataType.STRING, allowNull: true })
   tags?: string;
 
   @Column({ type: DataType.BOOLEAN, allowNull: false, defaultValue: false })

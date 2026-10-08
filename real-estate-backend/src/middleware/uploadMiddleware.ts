@@ -83,9 +83,24 @@ export const uploadNewsImage = multer({
   limits: { fileSize: 10 * 1024 * 1024 },
 }).single("image");
 
-// Accepts cover image + per-story images (storyImage_N) + gallery images (galleryImage_N)
+const newsFileFilter: multer.Options["fileFilter"] = (_req, file, cb) => {
+  const extension = path.extname(file.originalname).toLowerCase();
+
+  if (file.fieldname === "pdf") {
+    if (extension === ".pdf" && file.mimetype === "application/pdf") {
+      cb(null, true);
+    } else {
+      cb(new Error("The newsletter file must be a PDF."));
+    }
+    return;
+  }
+
+  imageFilter(_req, file, cb);
+};
+
+// Accepts a designed newsletter PDF, cover image, per-story images and gallery images.
 export const uploadNewsFiles = multer({
   storage: createStorage("news"),
-  fileFilter: imageFilter,
-  limits: { fileSize: 10 * 1024 * 1024 },
+  fileFilter: newsFileFilter,
+  limits: { fileSize: 30 * 1024 * 1024, files: 30 },
 }).any();

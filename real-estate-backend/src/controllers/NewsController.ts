@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { NewsPost } from "../models/NewsPost";
+import { extractUploadFilename, getUploadFilePath } from "../utils/uploads";
 
 const slugify = (text: string) =>
   text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -60,6 +61,27 @@ export const getPublicNewsBySlug = async (req: Request, res: Response): Promise<
   }
 };
 
+// ── Public: download an uploaded newsletter PDF ───────────────────────────
+export const downloadPublicNewsPdf = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const post = await NewsPost.findOne({ where: { slug: req.params.slug, isPublished: true } });
+    const filename = extractUploadFilename(post?.pdfUrl);
+
+    if (!post || !filename) {
+      res.status(404).json({ error: "Newsletter PDF not found" });
+      return;
+    }
+
+    res.download(getUploadFilePath("news", filename), `${post.slug}.pdf`, (error) => {
+      if (error && !res.headersSent) {
+        res.status(404).json({ error: "Newsletter PDF not found" });
+      }
+    });
+  } catch {
+    res.status(500).json({ error: "Failed to download newsletter PDF" });
+  }
+};
+
 // ── Admin: all posts ───────────────────────────────────────────────────────
 export const getAllNews = async (_req: Request, res: Response): Promise<void> => {
   try {
@@ -77,6 +99,7 @@ export const createNews = async (req: Request, res: Response): Promise<void> => 
     const body = req.body;
 
     const imageUrl = getUploadedUrl(files, "image") || body.imageUrl || null;
+    const pdfUrl = getUploadedUrl(files, "pdf");
 
     const rawSlug = body.slug?.trim() ? slugify(body.slug) : slugify(body.title || "post");
     const existing = await NewsPost.findOne({ where: { slug: rawSlug } });
@@ -95,6 +118,7 @@ export const createNews = async (req: Request, res: Response): Promise<void> => 
       summary: body.summary || null,
       body: body.body || null,
       imageUrl,
+      pdfUrl,
       tags: body.tags || null,
       isPublished,
       publishedAt: isPublished ? new Date() : null,
@@ -124,6 +148,7 @@ export const updateNews = async (req: Request, res: Response): Promise<void> => 
     const body = req.body;
 
     const imageUrl = getUploadedUrl(files, "image") || (body.imageUrl ?? post.imageUrl);
+    const pdfUrl = getUploadedUrl(files, "pdf") || post.pdfUrl;
 
     const isPublished = body.isPublished === "true" || body.isPublished === true;
 
@@ -137,6 +162,7 @@ export const updateNews = async (req: Request, res: Response): Promise<void> => 
       summary: body.summary ?? post.summary,
       body: body.body ?? post.body,
       imageUrl,
+      pdfUrl,
       tags: body.tags ?? post.tags,
       isPublished,
       publishedAt: isPublished && !post.publishedAt ? new Date() : post.publishedAt,
